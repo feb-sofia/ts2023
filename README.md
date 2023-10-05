@@ -11,7 +11,7 @@
 You can find the compiled class notes here: https://feb-sofia.github.io/ts2023. 
 
 The class notes will be provided as `qmd` files in this repository. You can also use
-the notes in the [2020 script](https://feb-sofia.github.io/econometrics-2023).
+the notes from the econometrics class [2023](https://feb-sofia.github.io/econometrics-2023).
 
 ## Further Information
 
