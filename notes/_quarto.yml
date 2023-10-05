@@ -1,0 +1,19 @@
+project:
+  type: book
+
+book:
+  title: "Introduction to Time Series Analysis"
+  author: "Boyko Amarov"
+  date: "10/1/2023"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - references.qmd
+
+bibliography: ../refs.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
