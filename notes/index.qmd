@@ -36,6 +36,7 @@ dialog, click on the third option: version control. From the next menu, select g
 ![Step 1](figures/RStudio_new_project_1.png)
 ![Step 2](figures/RStudio_new_project_2.png)
 ![Step 3](figures/RStudio_new_project_3.png)
+
 In the Repository URL field, paste the address of the course repository:
 
 ```
@@ -48,14 +49,32 @@ Click on the Create Project button and wait for git R studio to clone the
 repository and open the project.
 
 ![Step 5](figures/RStudio_new_project_5.png)
+6. The content of the GitHub repository will be updated continuously throughout
+the semester. In order to download the new files or updated versions of already
+existing files, you can use git pull. Open the git window in the upper right pane
+of R studio and click the pull button. This will download all changes from the GitHub
+repository to your local copy.
 
-6. In the exercise classes, we will use many functions from the `tidyverse` system and several other packages. Before accessing these packages' functionality, you need to install them first. Find the R console in R studio and paste the following line on the command line. Press enter to run it and wait for the installation to complete.
+![Step 7](figures/RStudio_new_project_7.png)
+
+
+8. Note that if you have modified the files tracked by git that have changed
+in the repository, git pull will fail with an error similar to this one:
+
+![Pull error](figures/RStudio_new_project_8.png)
+
+To avoid this, you can roll back the file to its original state. Right-click
+on the file in the git window and choose "revert."
+
+![Revert](figures/RStudio_new_project_revert.png)
+
+9. In the exercise classes, we will use many functions from the `tidyverse` system and several other packages. Before accessing these packages' functionality, you need to install them first. Find the R console in R studio and paste the following line on the command line. Press enter to run it and wait for the installation to complete.
 
 ```{r, eval = FALSE}
 install.packages(c("tidyverse", "tidyverts", "xts", "quantmod", "urca"))
 ```
 
-![Step 6](figures/RStudio_new_project_6.png)
+![Install packages](figures/RStudio_new_project_install_packages.png)
 
 Optional: more on Quarto: <https://quarto.org/docs/guide/>
 
@@ -64,5 +83,5 @@ Optional: a base R cheatsheet: <https://www.datacamp.com/cheat-sheet/getting-sta
 
 ## Recommended Reading
 
-1.  @KIRCHGASSNER2013IntroductionModernTime
-2.  @COWPERTWAIT2009IntroductoryTimeSeries
+1. @KIRCHGASSNER2013IntroductionModernTime
+2. @COWPERTWAIT2009IntroductoryTimeSeries
