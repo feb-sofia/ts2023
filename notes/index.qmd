@@ -10,6 +10,13 @@
 
 The course consists of two parts: lectures and exercise classes. Your final grade will be the average of the grades of these two parts. To obtain a grade for the exercise classes, you need to complete a homework project at the end of the semester—details to be announced.
 
+## GitHub Repository
+
+All course materials for the exercise classes will be available in the GitHub
+repository:
+
+[https://github.com/feb-sofia/ts2023](https://github.com/feb-sofia/ts2023)
+
 ## Software Setup
 
 The exercise classes require a minimal software setup:
