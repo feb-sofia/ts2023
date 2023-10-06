@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Introduction to Time Series Analysis"
+  title: "Introduction to Time Series Analysis 2023/2024"
   author: "Boyko Amarov"
   date: "10/1/2023"
   chapters:
