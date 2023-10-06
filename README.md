@@ -15,4 +15,5 @@ the notes from the econometrics class [2023](https://feb-sofia.github.io/econome
 
 ## Further Information
 
-You can find 
+You can find information about the grading and software setup [here](https://feb-sofia.github.io/ts2023/)
+
