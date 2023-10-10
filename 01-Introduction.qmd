@@ -5,199 +5,361 @@ date: "10/12/2021"
 output: html_document
 ---
 
-# Introduction to time series analysis
-
-## Some examples of time series
-
-```{r}
-# Packages
-
-# install.packages(
-#   c(
-#     "quantmod",
-#     "tidyverts",
-#     "tidyverse",
-#     "xts",
-#     "urca"
-#   )
-# )
+```{r intro-install-pck}
+install.packages(c(
+  "tidyverse",
+  "xts",
+  "quantmod",
+  "fable",
+  "feasts",
+  "tsibble",
+  "lubridate",
+  "tsbox",
+  "eurostat"
+))
 ```
 
 
-```{r}
+
+## Introduction
+
+```{r intro-load-pck, warning=FALSE, output=FALSE}
+Sys.setlocale("LC_ALL","en_US.utf8")
+
 library(tidyverse)
 library(xts)
 library(quantmod)
+library(fable)
+library(feasts)
 library(tsibble)
+library(lubridate)
+library(eurostat)
+library(tsbox)
+```
 
-bitcoin_r <- getSymbols("BTC-USD", from="2015-01-01", src="yahoo", periodicity="daily", env = NULL)
 
-bikes_r <-
-  read_csv("https://raw.githubusercontent.com/feb-sofia/ts2023/main/data/bike-sharing/day.csv") |>
-  select(instant, dteday, casual, registered, cnt)
+A _time series_ is a sequence of values ordered by time. In this course, we will focus
+on series that take values in $\mathbb{R}$. Let $x_1, x_2, \ldots, x_T$ be a sequence of values ordered by a time index $t = 1,\ldots,T$. The value of the series is determined by:
 
-electr_r <- read_csv("https://raw.githubusercontent.com/feb-sofia/ts2023/main/data/electricity/bg_internal_consumption.csv") |>
+$$
+\begin{align}
+x_t & = 1.02^{t} x_0\\
+x_0 & = 10
+\end{align}
+$$ {#eq-geom-series}
+
+```{r intro-gs}
+tidx <- 1:20
+x0 <- 10
+x <- x0*(1 + 0.02)^tidx
+
+tibble(
+  tidx = tidx,
+  x = x
+) %>%
+  ggplot(aes(x = tidx, y = x)) +
+    geom_point() + 
+    geom_line() + 
+    scale_x_continuous(breaks = seq(1, 20, 2)) +
+    labs(
+      x = "t",
+      y = expression(x[t])
+    )
+```
+
+This series is an example of a _deterministic_ sequence. For every point in time $t$, you can use the formula in @eq-geom-series to compute the value of the 
+series, e.g.:
+
+$$
+x_{7} = 1.02^{7}\times 10 \approx 11.487
+$$
+
+## Date and Time objects in R
+
+Internally, dates are stored as the number of days since a reference epoch (origin). 
+The default reference in R is the first of January 1970.
+
+```{r}
+origin <- as.Date("1970-01-01")
+jan02.1970 <- as.Date("1970-01-02")
+
+as.numeric(origin)
+as.numeric(jan02.1970)
+```
+
+Time is stored as the number of seconds (and fractions of a second) since the origin: 1970-01-01 00:00:00 [UCT](https://en.wikipedia.org/wiki/Coordinated_Universal_Time). POSIX stands for [Portable Operating System Interface](https://en.wikipedia.org/wiki/POSIX).
+
+```{r}
+origin_time <- as.POSIXct("1970-01-01 00:00:00", tz = "UCT")
+some_other_time <- as.POSIXct("1970-01-01 00:01:00", tz = "UCT")
+as.numeric(origin_time)
+as.numeric(some_other_time)
+```
+
+```{r}
+class(origin_time)
+```
+
+The package `lubridate` provides utility functions for working with date and
+time objects. You can look at this online guide [here](https://lubridate.tidyverse.org/).
+
+```{r}
+now <- Sys.time()
+
+# Day of the month
+day(now)
+# Day of the week (depends on the start of week assumption)
+wday(now)
+wday(now, week_start = 1)
+# Day of the week as string (locale dependent)
+wday(now, label = TRUE)
+# Day of the year
+yday(now)
+# Week of the year
+week(now)
+# Month of the year
+month(now)
+# Quarter of the year
+quarter(now)
+```
+
+
+## Time series objects
+
+- `ts`
+- `xts`
+- `tsibble`
+
+```{r}
+ts(x, start = 1960, frequency = 12)
+```
+
+```{r}
+ts(x, start = 1960, frequency = 4)
+```
+
+```{r}
+ts(x, start = 1960, frequency = 1)
+```
+
+```{r}
+as.yearmon("2007-12")
+```
+
+Unlike `ts`, `xts` requires an explicit time index in the form of date-like objects:
+
+- yearmon (package `zoo`)
+- yearqtr (package `zoo`)
+- Date
+- POSIX
+
+
+```{r}
+ets_ex <- xts(
+  x, 
+  order.by = as.yearmon("1960-01") + (0:(length(x) - 1)) / 12
+)
+ets_ex
+```
+```{r}
+as.yearmon("1960-01") + (0:(length(x) - 1)) / 12
+```
+
+Like `xts`, `tsibble` requires an explicit date-like object as an index. You can use the
+`tsibble` provided functions `yearmonth`, `yearquarter`, etc.
+
+
+```{r}
+ets_tsibble <- tibble(x = x, month = yearmonth("1960-01") + 0:(length(x) - 1)) %>%
+  as_tsibble(index = month)
+ets_tsibble
+```
+
+The package `tsbox` provides functions that can convert between these classes. You can
+ find out more about the package [here](https://docs.ropensci.org/tsbox/).
+
+## Features of a Time Series
+
+- Trend
+- Seasonal patterns
+- Cyclical patterns
+- Non-systematic fluctuations
+
+
+## Electricity Production Example
+
+The dataset `electr_r` contains monthly values of the electricity available in
+the internal market in [Bulgaria](https://ec.europa.eu/eurostat/cache/metadata/en/nrg_quant_esms.htm).
+
+```{r, warning=FALSE, output=FALSE}
+
+electr_r <- read_csv("https://raw.githubusercontent.com/feb-sofia/ts2023/main/data/electricity/bg_internal_consumption.csv") %>%
   mutate(
     electr = as.numeric(electr)
-  ) |>
-  filter(!is.na(electr))
-```
-### XTS
-
-```{r}
-bikes <- xts(bikes_r, order.by = as.Date(bikes_r$dteday))
+  ) %>%
+  filter(!is.na(electr)) %>%
+  rename(
+    GWh = electr
+  )
 ```
 
 ```{r}
-electr <- xts(electr_r, order.by = as.yearmon(electr_r$month))
-```
-
-The Bitcoin-USD exchange rate is already a `xts` object.
-
-
-### Tsibble
-
-An extension of `tibble` for time series objects.
-
-
-```{r}
-electr_ts <- electr_r |>
+electr <- electr_r %>%
   mutate(
     month = yearmonth(month)
-  ) |>
+  ) %>%
   as_tsibble(index = month)
 ```
 
 ```{r}
-electr_ts |> autoplot(electr)
+electr %>%
+  autoplot()
 ```
+An advantage of the `tsibble` objects is that you can use
+familiar verbs for example
 
-- Plot the time series
+- `mutate`: to create new columns or modify existing ones
+- `select`: to select a subset of columns
+- `filter`: to select a subset of rows
+
+For more information, check the documentation [here](https://tsibble.tidyverts.org/reference/tsibble-tidyverse.html).
 
 
 ```{r}
-plot(bc_ts)
+electr1 <- electr %>%
+  mutate(
+    GWh_centered = GWh - mean(GWh),
+    GWh_log = log(GWh),
+  ) %>%
+  select(-GWh)
 ```
 
-
-Homework: provide a brief description of the main patterns visible in the time
-series plot
-
-- Compute the average exchange rate over the whole observation period
+You can also use the `mean`, `sd`, `summary`, etc. by selecting the columns
+from the `tsibble` using the \$ syntax.
 
 ```{r}
-## Compute the global mean of the series
-```
-- Compute the average exchange rate for June 2017. Use the subset syntax of `xts` to select the observations for June
-2017, then apply the `mean` function. For more information on using `xts`, have a look at this [cheat sheet](http://datacamp-community-prod.s3.amazonaws.com/72771032-0653-4d87-a798-4a83879e99c8) and at the [online documentation](https://rdrr.io/cran/xts/f/inst/doc/xts.pdf) of the package.
-
-```{r}
-## Subset the time series, then apply the mean function
-## Use the default date format: YYYY-MM-DD
-```
-
-- Compute the average exchange rate for October 2017
-
-```{r}
-## Same as for June 2017
-```
-
-- Compute the average exchange rate before (and including) and after October 2017
-
-```{r}
-```
-```{r}
-```
-- Compute the standard deviation for the four periods
-
-What does the standard deviation measure?
-It measures how much the daily exchange rates vary around their mean: volatility (variation).
-
-```{r}
-## Subset the time series, then apply the sd function (which computes the standard deviation)
+mean(electr$GWh)
 ```
 
 ```{r}
-## Same as for June 2017
+summary(electr$GWh)
+```
+
+
+```{r}
+electr %>%
+  gg_season() + 
+  labs(
+    x = "Month",
+    colour = "Year"
+  )
+```
+```{r}
+electr %>%
+  gg_subseries() + 
+  labs(
+    x = "Year"
+  )
+```
+Both `tsibble` and `xts` objects support convenient filtering by the time index.
+You can check the syntax of both packages here:
+
+- xts [cheatsheet](https://images.datacamp.com/image/upload/v1676303253/Marketing/Blog/xts_Cheat_Sheet.pdf)
+- tsibble [filter_index](https://tsibble.tidyverts.org/reference/filter_index.html)
+
+```{r}
+electr %>%
+  filter_index("2008-01"~"2008-12")
 ```
 
 ```{r}
+electr %>%
+  filter_index("2008-01"~"2008-12") %>%
+  as_tibble() %>%
+  summarise(
+    mean = mean(GWh)
+  )
+```
+
+You can use `index_by` and `summarise` to change the frequency of the data, i.e., to collapse the time series (e.g., from daily to monthly, from monthly to annual, etc.).
+
+```{r}
+electr %>%
+  index_by(qrt = ~ yearquarter(.)) %>%
+  summarise(
+    GWh = sum(GWh)
+  ) %>%
+  autoplot()
+```
+## Bitcoin Exchange Rate Example
+
+```{r}
+bitcoin <- getSymbols(
+  "BTC-USD", 
+  from="2015-01-01",
+  src="yahoo", 
+  periodicity="daily", 
+  env = NULL)
+
+names(bitcoin) <- c("Open", "High", "Low", "Close", "Volume", "Adjusted")
 ```
 
 ```{r}
+bc <- bitcoin %>%
+  ts_tsibble() %>%
+  pivot_wider(
+    names_from = id,
+    values_from = value
+  )
 ```
 
-- Compute the average exchange rate for every week during the observation period
 
 ```{r}
+bc %>%
+  autoplot(Close) + 
+  labs(
+    x = "Date",
+    y = "USD/BTC"
+  )
 ```
-
-
-- Compute the standard deviation of the exchange rate for every week during the observation period
 
 ```{r}
+bc %>%
+  gg_season(period = "month")
 ```
 
-### Deterministic processes
+## Exercise
 
-- Geometric growth
+The following chunk uses the `eurostat` package to download quarterly,
+seasonally unadjusted series in constant 2015 prices for the Bulgarian GDP between 1995 and 2023.
 
-$$
-x_{t} = r x_{t - 1} \\
-x_0 = 10 \\
-r = 1.1 \\
-$$
 
-$$
-\begin{align}
-y_0 & = 10 \\
-y_1 &= 1.1 \times 10 \\
-y_2 &= 1.1 \times (1.1 \times 10) = 1.1^2 \times 10 \\
-y_3 &= 1.1^3 \times 10 \\
-\vdots \\
-y_t = 1.1^{t} \times 10
-\end{align}
-$$
-
-```{r}
-dt_geom <- tibble(
-  tm = 0:10,
-  y = 1.1^tm * 10
-)
-
-dt_geom |>
-  ggplot(aes(x = tm, y = y)) + 
-  geom_line()
+```{r, warning=FALSE, output=FALSE}
+gdp_q <- get_eurostat(
+  "namq_10_gdp",
+  filters = list(
+    geo="BG",
+    na_item = "B1GQ",
+    unit = "CLV_I15",
+    s_adj = "NSA"
+  ),
+  cache = FALSE,
+  type = "code"
+) %>%
+  filter(!is.na(values)) %>%
+  mutate(
+    time = str_replace(time, "-", " "),
+    values = as.numeric(values)
+  )
 ```
 
-$$
-y_0 = 10\\
-r = 0.2
-$$
-
-```{r}
-dt_geom <- tibble(
-  tm = 0:10,
-  y = 0.2^tm * 10
-)
-
-dt_geom |>
-  ggplot(aes(x = tm, y = y)) + 
-  geom_line()
-```
-
-
-
-### Purely random process
-
-What is a good prediction?
-
-```{r}
-e <- rnorm(100, mean = 0, sd = 2)
-
-sum((e - (1))^2) / 100
-sum((e - 0)^2) / 100
-```
-
-Sample update...
-
+1. Create a `tsibble` object to hold the time series. Hint: use the `as_tsibble` and `yearquarter` functions from the `tsibble` package.
+2. What is the unit of measurement: EUR or BGN? Take a look at the values and make a guess.
+3. What are the dates of the first and the last observations?
+4. What is the average quarterly GDP over the whole period.
+5. Compute the average GDP by quarter.
+7. Create a series of annual GDP measurements by summing the values of the quarterly GDP 
+in each year. Hint: use `index_by` and `summarise`.
+8. Is there a seasonal pattern in the data? Create a seasonal plot using the `gg_season` function from the `tsibble` package. Which quarter tends to have the lowest GDP?
+9. Is there a trend visible in the data?
+12. Compute the average quarterly GDP between before 2009 and after (and including) 2009.
