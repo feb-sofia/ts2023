@@ -1,28 +1,19 @@
----
-title: "Introduction to time series analysis"
-author: "Boyko Amarov"
-date: "10/12/2021"
-output: html_document
-editor: 
-  markdown: 
-    wrap: 72
----
+
+# Introduction
 
 ```{r intro-install-pck}
-install.packages(c(
-  "tidyverse",
-  "xts",
-  "quantmod",
-  "fable",
-  "feasts",
-  "tsibble",
-  "lubridate",
-  "tsbox",
-  "eurostat"
-))
+# install.packages(c(
+#   "tidyverse",
+#   "xts",
+#   "quantmod",
+#   "fable",
+#   "feasts",
+#   "tsibble",
+#   "lubridate",
+#   "tsbox",
+#   "eurostat"
+# ))
 ```
-
-## Introduction
 
 ```{r intro-load-pck, warning=FALSE, output=FALSE}
 Sys.setlocale("LC_ALL","en_US.utf8")
@@ -38,27 +29,24 @@ library(eurostat)
 library(tsbox)
 ```
 
-A *time series* is a sequence of values ordered by time. In this course,
-we will focus on series that take values in $\mathbb{R}$. Let
+A *time series* is a sequence of values ordered by time. This course will focus on series that take values in $\mathbb{R}$. Let
 $x_1, x_2, \ldots, x_T$ be a sequence of values ordered by a time index
 $t = 1,\ldots,T$. The value of the series is determined by:
 
 $$
 \begin{align}
-x_t & = 1.02^{t} x_0\\
-x_0 & = 10
+x_t & = (1 + 0.02)x_{t - 1},\quad x_0 = 10 \implies \\
+x_t & = 10 \times(1 + 0.02)^{t} \\
 \end{align}
 $$ {#eq-geom-series}
 
 ```{r intro-gs}
-tidx <- 1:20
-x0 <- 10
-x <- x0*(1 + 0.02)^tidx
+dt <- tibble(
+  tidx = 1:20,
+  x = 10 *(1 + 0.02)^tidx
+)
 
-tibble(
-  tidx = tidx,
-  x = x
-) %>%
+dt %>%
   ggplot(aes(x = tidx, y = x)) +
     geom_point() + 
     geom_line() + 
@@ -79,15 +67,20 @@ $$
 
 ## Date and Time objects in R
 
-Internally, dates are stored as the number of days since a reference
-epoch (origin). The default reference in R is the first of January 1970.
+Internally, dates are stored as the number of days since a (arbitrary) reference (origin). The default origin in R is the first of January 1970.
 
 ```{r}
 origin <- as.Date("1970-01-01")
 jan02.1970 <- as.Date("1970-01-02")
 
+origin
+jan02.1970
+
 as.numeric(origin)
 as.numeric(jan02.1970)
+
+origin + 5
+origin + 5:10
 ```
 
 Time is stored as the number of seconds (and fractions of a second)
@@ -99,7 +92,17 @@ Interface](https://en.wikipedia.org/wiki/POSIX).
 ```{r}
 origin_time <- as.POSIXct("1970-01-01 00:00:00", tz = "UCT")
 some_other_time <- as.POSIXct("1970-01-01 00:01:00", tz = "UCT")
+
+# Print the value of origin_time
+origin_time
+
+# Print the value of origin_time
+some_other_time
+
+# Print the numeric value of origin_time (seconds since the origin)
 as.numeric(origin_time)
+
+# Print the numeric value of some_other_time (seconds since the origin)
 as.numeric(some_other_time)
 ```
 
@@ -112,46 +115,59 @@ and time objects. You can look at this online guide
 [here](https://lubridate.tidyverse.org/).
 
 ```{r}
+# Sys.time returns the current time
 now <- Sys.time()
+
+# Print the value of now
+now
 
 # Day of the month
 day(now)
+
 # Day of the week (depends on the start of week assumption)
 wday(now)
 wday(now, week_start = 1)
+
 # Day of the week as string (locale dependent)
 wday(now, label = TRUE)
+
 # Day of the year
 yday(now)
+
 # Week of the year
 week(now)
+
 # Month of the year
 month(now)
+
 # Quarter of the year
 quarter(now)
 ```
 
 ## Time series objects
 
--   `ts`
--   `xts`
--   `tsibble`
+There are several classes that are used for storing time series in
+R. We will mainly focus on `tsibble`, but some functions we will encounter later in the course return or require `ts` or `xts` objects.
+
+- `ts`
+- `xts` (see the [xts vignette](https://cran.r-project.org/web/packages/xts/vignettes/xts.pdf))
+- `tsibble` (see the [introduction to tsibble](https://cran.rstudio.com/web/packages/tsibble/vignettes/intro-tsibble.html))
+
+### Creating ts Objects
 
 ```{r}
-ts(x, start = 1960, frequency = 12)
+ts(dt$x, start = 1960, frequency = 12)
 ```
 
 ```{r}
-ts(x, start = 1960, frequency = 4)
+ts(dt$x, start = 1960, frequency = 4)
 ```
 
 ```{r}
-ts(x, start = 1960, frequency = 1)
+ts(dt$x, start = 1960, frequency = 1)
 ```
 
-```{r}
-as.yearmon("2007-12")
-```
+### Creating xts Objects
 
 Unlike `ts`, `xts` requires an explicit time index in the form of
 date-like objects:
@@ -162,29 +178,60 @@ date-like objects:
 -   POSIX
 
 ```{r}
+# Here, we arbitrarily choose monthly measurements 
+# to demonstrate the construction of xts objects
+
+# First, we construct a time index: the months from Feb 1960 to Sep 1961 by using the as.yearmon function. Note that yearmon stores a month as the year plus a fraction
+
+as.yearmon("1960-01")
+as.yearmon("1960-02")
+as.yearmon("1960-03")
+
+as.yearmon("1960-01") + 1:20 / 12
+
+dt <- dt %>%
+  mutate(
+    # n() counts the number of rows in the table,
+    month = as.yearmon("1960-01") + 1:n() / 12
+  )
+
 ets_ex <- xts(
-  x, 
-  order.by = as.yearmon("1960-01") + (0:(length(x) - 1)) / 12
+  dt, 
+  order.by = dt$month
 )
+
 ets_ex
 ```
 
-```{r}
-as.yearmon("1960-01") + (0:(length(x) - 1)) / 12
-```
 
 Like `xts`, `tsibble` requires an explicit date-like object as an index.
 You can use the `tsibble` provided functions `yearmonth`, `yearquarter`,
 etc.
 
+Note that `yearmonth` and `yearquarter` behave differently from 
+`as.yearmon` and `as.yearqtr`. `yearmonth` counts the number of months since the origin. `yearquarter` tracks the number of quarters since the origin.
+
 ```{r}
-ets_tsibble <- tibble(x = x, month = yearmonth("1960-01") + 0:(length(x) - 1)) %>%
-  as_tsibble(index = month)
-ets_tsibble
+yearquarter("2021-10")
+as.numeric(yearquarter("2021-10"))
+```
+
+
+```{r}
+intr_tsibble <- dt %>% 
+  mutate(
+    x = x, 
+    month = yearmonth("1960-01") + 1:n()
+    ) %>%
+  as_tsibble(
+    index = month
+  )
+
+intr_tsibble
 ```
 
 The package `tsbox` provides functions that can convert between these
-classes. You can find out more about the package
+classes. You can learn more about the package
 [here](https://docs.ropensci.org/tsbox/).
 
 ## Features of a Time Series
@@ -197,11 +244,10 @@ classes. You can find out more about the package
 ## Electricity Production Example
 
 The dataset `electr_r` contains monthly values of the electricity
-available in the internal market in
+available in the internal market (in GWh) in
 [Bulgaria](https://ec.europa.eu/eurostat/cache/metadata/en/nrg_quant_esms.htm).
 
 ```{r, warning=FALSE, output=FALSE}
-
 electr_r <- read_csv("https://raw.githubusercontent.com/feb-sofia/ts2023/main/data/electricity/bg_internal_consumption.csv") %>%
   mutate(
     electr = as.numeric(electr)
@@ -213,29 +259,47 @@ electr_r <- read_csv("https://raw.githubusercontent.com/feb-sofia/ts2023/main/da
 ```
 
 ```{r}
+# Returns the first rows so that we can get an idea about
+# the contents of the tibble (data table).
+
+head(electr_r)
+```
+
+The raw data `electr_r` contains a column called `month` that shows the month to which the value in `GHw` refers. The `month` column is character (chr) and is not in a format we can use as a time index. We need to _parse_ the text to get a numeric representation of the month. This is what the `yearmonth` function does (for monthly measurements).
+
+```{r}
 electr <- electr_r %>%
   mutate(
-    month = yearmonth(month)
+    # Create a new column called ym that holds the numeric 
+    # time index
+    ym = yearmonth(month)
   ) %>%
-  as_tsibble(index = month)
+  as_tsibble(
+    # This assigns the newly created column ym as the time index
+    index = ym
+  )
 ```
 
 ```{r}
 electr %>%
-  autoplot()
+  autoplot(GWh) + 
+  labs(
+    x = "Month"
+  )
 ```
 
-An advantage of the `tsibble` objects is that you can use familiar verbs
-for example
+An advantage of the `tsibble` objects is that you can use familiar verbs, for example:
 
--   `mutate`: to create new columns or modify existing ones
--   `select`: to select a subset of columns
--   `filter`: to select a subset of rows
+- `mutate`: to create new columns or modify existing ones
+- `select`: to select a subset of columns
+- `filter`: to select a subset of rows
 
 For more information, check the documentation
 [here](https://tsibble.tidyverts.org/reference/tsibble-tidyverse.html).
 
 ```{r}
+# Examples for creating new columns with mutate
+
 electr1 <- electr %>%
   mutate(
     GWh_centered = GWh - mean(GWh),
@@ -248,6 +312,14 @@ You can also use the `mean`, `sd`, `summary`, etc. by selecting the
 columns from the `tsibble` using the \$ syntax.
 
 ```{r}
+electr$GWh
+```
+
+
+```{r}
+# Compute the arithmetic average of the values
+# in the GWh column of the data set electr
+
 mean(electr$GWh)
 ```
 
@@ -304,7 +376,7 @@ electr %>%
   summarise(
     GWh = sum(GWh)
   ) %>%
-  autoplot()
+  autoplot(GWh)
 ```
 
 ## Bitcoin Exchange Rate Example
@@ -368,19 +440,18 @@ gdp_q <- get_eurostat(
   )
 ```
 
-1.  Create a `tsibble` object to hold the time series. Hint: use the
+1. Create a `tsibble` object to hold the time series. Hint: Use the
     `as_tsibble` and `yearquarter` functions from the `tsibble` package.
-2.  What is the unit of measurement: EUR or BGN? Take a look at the
+2. What is the unit of measurement: EUR or BGN? Take a look at the
     values and make a guess.
-3.  What are the dates of the first and the last observations?
-4.  What is the average quarterly GDP over the whole period.
-5.  Compute the average GDP by quarter.
-6.  Create a series of annual GDP measurements by summing the values of
+3. What are the dates of the first and the last observations?
+4. What is the average quarterly GDP over the whole period.
+5. Compute the average GDP by quarter.
+6. Create a series of annual GDP measurements by summing the values of
     the quarterly GDP in each year. Hint: use `index_by` and
     `summarise`.
-7.  Is there a seasonal pattern in the data? Create a seasonal plot
+7. Is there a seasonal pattern in the data? Create a seasonal plot
     using the `gg_season` function from the `tsibble` package. Which
     quarter tends to have the lowest GDP?
-8.  Is there a trend visible in the data?
-9.  Compute the average quarterly GDP between before 2009 and after (and
-    including) 2009.
+8. Is there a trend visible in the data?
+9. Compute the average quarterly GDP between before 2009 and after (and including) 2009.
