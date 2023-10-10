@@ -144,6 +144,22 @@ month(now)
 quarter(now)
 ```
 
+:::{#exr-date-objecs}
+
+## Date Objects in R
+
+
+1. What day of the week was the 10-th of June 2019?
+2. Create a sequence of 30 consecutive days starting on the 2-nd of January 2017.
+
+:::
+:::{.solution}
+```{r}
+# Type your code here
+
+```
+:::
+
 ## Time series objects
 
 There are several classes that are used for storing time series in
@@ -184,8 +200,13 @@ date-like objects:
 # First, we construct a time index: the months from Feb 1960 to Sep 1961 by using the as.yearmon function. Note that yearmon stores a month as the year plus a fraction
 
 as.yearmon("1960-01")
+as.numeric(as.yearmon("1960-01"))
+
 as.yearmon("1960-02")
+as.numeric(as.yearmon("1960-02"))
+
 as.yearmon("1960-03")
+as.numeric(as.yearmon("1960-03"))
 
 as.yearmon("1960-01") + 1:20 / 12
 
@@ -195,12 +216,12 @@ dt <- dt %>%
     month = as.yearmon("1960-01") + 1:n() / 12
   )
 
-ets_ex <- xts(
+dt_xts <- xts(
   dt, 
   order.by = dt$month
 )
 
-ets_ex
+dt_xts
 ```
 
 
@@ -218,7 +239,7 @@ as.numeric(yearquarter("2021-10"))
 
 
 ```{r}
-intr_tsibble <- dt %>% 
+dt_ts <- dt %>% 
   mutate(
     x = x, 
     month = yearmonth("1960-01") + 1:n()
@@ -227,12 +248,34 @@ intr_tsibble <- dt %>%
     index = month
   )
 
-intr_tsibble
+dt_ts
 ```
 
 The package `tsbox` provides functions that can convert between these
 classes. You can learn more about the package
 [here](https://docs.ropensci.org/tsbox/).
+
+:::{#exr-tsibble-constr}
+## Tsibbles
+
+The following chunk creates `tibble` (dt_r) with the integers from 5 to 18 in the column "x". These are quarterly measurements with the first observation corresponding to 2018Q2. Use `mutate` to add column holding a time index using the `yearquarter` function and create a `tsibble` using the `as_tsibble` function.
+
+```{r}
+dt_r <- tibble(
+  x = 5:18
+)
+```
+
+
+:::
+:::{.solution}
+
+```{r}
+# Type your code here
+
+```
+
+:::
 
 ## Features of a Time Series
 
@@ -415,7 +458,9 @@ bc %>%
   gg_season(period = "month")
 ```
 
-## Exercise
+:::{#exr-data-prep}
+
+## Reading and Working with tsibble Objects
 
 The following chunk uses the `eurostat` package to download quarterly,
 seasonally unadjusted series in constant 2015 prices for the Bulgarian
@@ -456,7 +501,7 @@ gdp_q <- get_eurostat(
 8. Is there a trend visible in the data?
 9. Compute the average quarterly GDP between before 2009 and after (and
     including) 2009.
-
+:::
 
 <!-- ```{r} -->
 <!-- gdp <- gdp_q %>% -->
