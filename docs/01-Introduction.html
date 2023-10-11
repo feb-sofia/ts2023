@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -195,6 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>For a very quick introduction to R, you can refer to the <a href="https://feb-sofia.github.io/econometrics-2023/01-Introduction-to-R.html">Introduction to Econometrics 2023 course</a>. <span class="citation" data-cites="WICKHAM2016DataScienceImport">Wickham and Grolemund (<a href="references.html#ref-WICKHAM2016DataScienceImport" role="doc-biblioref">2016</a>)</span> offer a more thorough introduction to the tidyverse packages in their <a href="https://r4ds.had.co.nz/">R for data science book</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c(</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   "tidyverse",</span></span>
@@ -228,6 +248,7 @@ x_t &amp; = (1 + 0.02)x_{t - 1},\quad x_0 = 10 \implies \\
 x_t &amp; = 10 \times(1 + 0.02)^{t} \\
 \end{align}
 \tag{1.1}\]</span></span></p>
+<p>Lets compute and plot the values of this sequence for <span class="math inline">\(t = 1,\ldots,20\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">tidx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,</span>
@@ -324,32 +345,32 @@ x_{7} = 1.02^{7}\times 10 \approx 11.487
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the value of now</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>now</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2023-10-10 19:47:50 EEST"</code></pre>
+<pre><code>[1] "2023-10-11 12:03:17 EEST"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Day of the month</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">day</span>(now)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 10</code></pre>
+<pre><code>[1] 11</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Day of the week (depends on the start of week assumption)</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wday</span>(now)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
+<pre><code>[1] 4</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wday</span>(now, <span class="at">week_start =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code>[1] 3</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Day of the week as string (locale dependent)</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wday</span>(now, <span class="at">label =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] Tue
+<pre><code>[1] Wed
 Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Day of the year</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">yday</span>(now)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 283</code></pre>
+<pre><code>[1] 284</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Week of the year</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">week</span>(now)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -371,7 +392,7 @@ Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat</code></pre>
 <p><span class="theorem-title"><strong>Exercise 1.1 (Date Objects in R) </strong></span>&nbsp;</p>
 <ol type="1">
 <li>What day of the week was the 10-th of June 2019?</li>
-<li>Create a sequence of 30 consecutive days starting on the 2-nd of January 2017.</li>
+<li>Create a sequence of 34 consecutive dates starting on the 2-nd of January 2017. What was the year quarter of the last date of this sequence?</li>
 </ol>
 </div>
 <div class="solution proof">
@@ -635,7 +656,7 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Month"</span></span>
 <span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>An advantage of the <code>tsibble</code> objects is that you can use familiar verbs, for example:</p>
@@ -698,7 +719,7 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <pre><code>Plot variable not specified, automatically selected `y = GWh`</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -711,7 +732,7 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <pre><code>Plot variable not specified, automatically selected `y = GWh`</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Both <code>tsibble</code> and <code>xts</code> objects support convenient filtering by the time index. You can check the syntax of both packages here:</p>
@@ -763,7 +784,7 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(GWh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -795,7 +816,7 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"USD/BTC"</span></span>
 <span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -805,7 +826,7 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <pre><code>Plot variable not specified, automatically selected `y = Adjusted`</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div id="exr-data-prep" class="theorem exercise">
@@ -882,6 +903,11 @@ Sep 1961   20 14.85947 Sep 1961</code></pre>
 <!-- ``` -->
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-WICKHAM2016DataScienceImport" class="csl-entry" role="listitem">
+Wickham, Hadley, and Garrett Grolemund. 2016. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. First edition. <span>Sebastopol, CA</span>: <span>O’Reilly</span>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

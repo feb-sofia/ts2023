@@ -7,6 +7,11 @@ editor:
   markdown: 
     wrap: 72
 ---
+
+For a very quick introduction to R, you can refer to the 
+[Introduction to Econometrics 2023 course](https://feb-sofia.github.io/econometrics-2023/01-Introduction-to-R.html). @WICKHAM2016DataScienceImport offer a more thorough introduction to the tidyverse packages in their [R for data science book](https://r4ds.had.co.nz/).
+
+
 ```{r intro-install-pck}
 # install.packages(c(
 #   "tidyverse",
@@ -46,6 +51,8 @@ x_t & = 10 \times(1 + 0.02)^{t} \\
 \end{align}
 $$ {#eq-geom-series}
 
+Lets compute and plot the values of this sequence for $t = 1,\ldots,20$.
+
 ```{r intro-gs}
 dt <- tibble(
   tidx = 1:20,
@@ -63,9 +70,6 @@ dt %>%
     )
 ```
 
-This series is an example of a *deterministic* sequence. For every point
-in time $t$, you can use the formula in @eq-geom-series to compute the
-value of the series, e.g.:
 
 $$
 x_{7} = 1.02^{7}\times 10 \approx 11.487
@@ -73,9 +77,8 @@ $$
 
 ## Date and Time objects in R
 
-Internally, dates are stored as the number of days since a (arbitrary) reference (origin). The default origin in R is the first of January 1970.
 
-```{r}
+```{r intro-dates-1}
 origin <- as.Date("1970-01-01")
 jan02.1970 <- as.Date("1970-01-02")
 
@@ -89,13 +92,7 @@ origin + 5
 origin + 5:10
 ```
 
-Time is stored as the number of seconds (and fractions of a second)
-since the origin: 1970-01-01 00:00:00
-[UCT](https://en.wikipedia.org/wiki/Coordinated_Universal_Time). POSIX
-stands for [Portable Operating System
-Interface](https://en.wikipedia.org/wiki/POSIX).
-
-```{r}
+```{r intro-times}
 origin_time <- as.POSIXct("1970-01-01 00:00:00", tz = "UCT")
 some_other_time <- as.POSIXct("1970-01-01 00:01:00", tz = "UCT")
 
@@ -156,7 +153,7 @@ quarter(now)
 
 
 1. What day of the week was the 10-th of June 2019?
-2. Create a sequence of 30 consecutive days starting on the 2-nd of January 2017.
+2. Create a sequence of 34 consecutive dates starting on the 2-nd of January 2017. What was the year quarter of the last date of this sequence?
 
 :::
 :::{.solution}
@@ -167,9 +164,6 @@ quarter(now)
 :::
 
 ## Time series objects
-
-There are several classes that are used for storing time series in
-R. We will mainly focus on `tsibble`, but some functions we will encounter later in the course return or require `ts` or `xts` objects.
 
 - `ts`
 - `xts` (see the [xts vignette](https://cran.r-project.org/web/packages/xts/vignettes/xts.pdf))
@@ -234,9 +228,6 @@ dt_xts
 Like `xts`, `tsibble` requires an explicit date-like object as an index.
 You can use the `tsibble` provided functions `yearmonth`, `yearquarter`,
 etc.
-
-Note that `yearmonth` and `yearquarter` behave differently from 
-`as.yearmon` and `as.yearqtr`. `yearmonth` counts the number of months since the origin. `yearquarter` tracks the number of quarters since the origin.
 
 ```{r}
 yearquarter("2021-10")
@@ -314,7 +305,6 @@ electr_r <- read_csv("https://raw.githubusercontent.com/feb-sofia/ts2023/main/da
 head(electr_r)
 ```
 
-The raw data `electr_r` contains a column called `month` that shows the month to which the value in `GHw` refers. The `month` column is character (chr) and is not in a format we can use as a time index. We need to _parse_ the text to get a numeric representation of the month. This is what the `yearmonth` function does (for monthly measurements).
 
 ```{r}
 electr <- electr_r %>%
@@ -337,14 +327,6 @@ electr %>%
   )
 ```
 
-An advantage of the `tsibble` objects is that you can use familiar verbs, for example:
-
-- `mutate`: to create new columns or modify existing ones
-- `select`: to select a subset of columns
-- `filter`: to select a subset of rows
-
-For more information, check the documentation
-[here](https://tsibble.tidyverts.org/reference/tsibble-tidyverse.html).
 
 ```{r}
 # Examples for creating new columns with mutate
