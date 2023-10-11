@@ -37,12 +37,12 @@ these video guides:
 - [Mac](https://www.youtube.com/watch?v=hMEyBtsuAJE)
 - [Linux](https://www.youtube.com/watch?v=bc3_FL9zWWs)
 
-5. Open R Studio and open a new project dialog: File -> New Project. In the 
+5. **The following steps depend on git being installed**. Open R Studio and open a new project dialog: File -> New Project. In the 
 dialog, click on the third option: version control. From the next menu, select git.
 
-![Step 1](figures/RStudio_new_project_1.png)
-![Step 2](figures/RStudio_new_project_2.png)
-![Step 3](figures/RStudio_new_project_3.png)
+![Open a new project.](figures/RStudio_new_project_1.png)
+![Select version control](figures/RStudio_new_project_2.png)
+![Select git](figures/RStudio_new_project_3.png)
 
 In the Repository URL field, paste the address of the course repository:
 
@@ -51,7 +51,7 @@ https://github.com/feb-sofia/ts2023.git
 ```
 
 
-![Step 4](figures/RStudio_new_project_4.png)
+![Paste the git repository address](figures/RStudio_new_project_4.png)
 Click on the Create Project button and wait for git R studio to clone the
 repository and open the project.
 
