@@ -166,7 +166,7 @@ quarter(now)
 ```
 :::
 
-## Time series objects
+## Time Series Classes
 
 There are several classes that are used for storing time series in
 R. We will mainly focus on `tsibble`, but some functions we will encounter later in the course return or require `ts` or `xts` objects.

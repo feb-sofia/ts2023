@@ -183,7 +183,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#date-and-time-objects-in-r" id="toc-date-and-time-objects-in-r" class="nav-link active" data-scroll-target="#date-and-time-objects-in-r"><span class="header-section-number">1.1</span> Date and Time objects in R</a></li>
-  <li><a href="#time-series-objects" id="toc-time-series-objects" class="nav-link" data-scroll-target="#time-series-objects"><span class="header-section-number">1.2</span> Time series objects</a>
+  <li><a href="#time-series-classes" id="toc-time-series-classes" class="nav-link" data-scroll-target="#time-series-classes"><span class="header-section-number">1.2</span> Time Series Classes</a>
   <ul class="collapse">
   <li><a href="#creating-ts-objects" id="toc-creating-ts-objects" class="nav-link" data-scroll-target="#creating-ts-objects"><span class="header-section-number">1.2.1</span> Creating ts Objects</a></li>
   <li><a href="#creating-xts-objects" id="toc-creating-xts-objects" class="nav-link" data-scroll-target="#creating-xts-objects"><span class="header-section-number">1.2.2</span> Creating xts Objects</a></li>
@@ -345,7 +345,7 @@ x_{7} = 1.02^{7}\times 10 \approx 11.487
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the value of now</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>now</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "2023-10-11 12:03:17 EEST"</code></pre>
+<pre><code>[1] "2023-10-11 12:06:06 EEST"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Day of the month</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">day</span>(now)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -402,8 +402,8 @@ Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat</code></pre>
 </div>
 </div>
 </section>
-<section id="time-series-objects" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="time-series-objects"><span class="header-section-number">1.2</span> Time series objects</h2>
+<section id="time-series-classes" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="time-series-classes"><span class="header-section-number">1.2</span> Time Series Classes</h2>
 <p>There are several classes that are used for storing time series in R. We will mainly focus on <code>tsibble</code>, but some functions we will encounter later in the course return or require <code>ts</code> or <code>xts</code> objects.</p>
 <ul>
 <li><code>ts</code></li>
