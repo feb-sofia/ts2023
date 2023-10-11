@@ -13,17 +13,17 @@ For a very quick introduction to R, you can refer to the
 
 
 ```{r intro-install-pck}
-# install.packages(c(
-#   "tidyverse",
-#   "xts",
-#   "quantmod",
-#   "fable",
-#   "feasts",
-#   "tsibble",
-#   "lubridate",
-#   "tsbox",
-#   "eurostat"
-# ))
+install.packages(c(
+  "tidyverse",
+  "xts",
+  "quantmod",
+  "fable",
+  "feasts",
+  "tsibble",
+  "lubridate",
+  "tsbox",
+  "eurostat"
+))
 ```
 
 ```{r intro-load-pck, warning=FALSE, output=FALSE}
