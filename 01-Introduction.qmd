@@ -238,7 +238,6 @@ as.numeric(yearquarter("2021-10"))
 ```{r}
 dt_ts <- dt %>% 
   mutate(
-    x = x, 
     month = yearmonth("1960-01") + 1:n()
     ) %>%
   as_tsibble(
