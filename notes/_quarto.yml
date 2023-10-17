@@ -8,6 +8,7 @@ book:
   chapters:
     - index.qmd
     - 01-Introduction.qmd
+    - 02-Statistics-Review.qmd
     - references.qmd
 
 bibliography: ../refs.bib
