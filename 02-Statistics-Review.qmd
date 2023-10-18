@@ -66,18 +66,22 @@ sum(px$p)
 ## Sampling from a univariate distribution
 
 ```{r}
-# set.seed(12)
+set.seed(12)
 
 smpl_x <- px %>%
-  slice_sample(n = 10, weight_by = p, replace = TRUE)
+  slice_sample(n = 1e5, weight_by = p, replace = TRUE)
 
-head(smpl_x)
+head(smpl_x) %>%
+  knitr::kable(digits=3)
 ```
 
 It is useful to visualize the observed frequency of each outcome.
 
 ```{r}
+# Absolute frequencies (counts)
 table(smpl_x$x)
+
+# Relative frequencies (shares)
 table(smpl_x$x) / nrow(smpl_x)
 ```
 
@@ -100,11 +104,12 @@ smpl_x %>%
 Show that the probability mass function of $Y$ in @tbl-distr-y sums to one.
 Sample 10000 values from its distribution and compute the sample frequency of each outcome. 
 :::
-
+:::{.solution}
 ```{r}
 # Type your code here
 
 ```
+:::
 
 ## Expectation
 
@@ -127,10 +132,12 @@ mu_x
 
 Compute the expected value of $Y$.
 :::
+:::{.solution}
 ```{r}
 # Type your code here
 
 ```
+:::
 
 
 If you want to predict future values of a random variable, the expected value is your best guess in the sense that it minimises the expected value of the quadratic loss function:
