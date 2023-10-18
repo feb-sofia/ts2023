@@ -172,10 +172,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#expectation" id="toc-expectation" class="nav-link active" data-scroll-target="#expectation"><span class="header-section-number">2.1</span> Expectation</a></li>
   <li><a href="#variance" id="toc-variance" class="nav-link" data-scroll-target="#variance"><span class="header-section-number">2.2</span> Variance</a></li>
   <li><a href="#joint-distribution" id="toc-joint-distribution" class="nav-link" data-scroll-target="#joint-distribution"><span class="header-section-number">2.3</span> Joint Distribution</a></li>
-  <li><a href="#sampling-from-the-joint-distribution" id="toc-sampling-from-the-joint-distribution" class="nav-link" data-scroll-target="#sampling-from-the-joint-distribution"><span class="header-section-number">2.4</span> Sampling from the Joint Distribution</a></li>
-  <li><a href="#joint-distribution-under-independence" id="toc-joint-distribution-under-independence" class="nav-link" data-scroll-target="#joint-distribution-under-independence"><span class="header-section-number">2.5</span> Joint Distribution under Independence</a></li>
-  <li><a href="#conditional-expectation-1" id="toc-conditional-expectation-1" class="nav-link" data-scroll-target="#conditional-expectation-1"><span class="header-section-number">2.6</span> Conditional Expectation</a></li>
-  <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance"><span class="header-section-number">2.7</span> Covariance</a></li>
+  <li><a href="#marginal-distributions" id="toc-marginal-distributions" class="nav-link" data-scroll-target="#marginal-distributions"><span class="header-section-number">2.4</span> Marginal Distributions</a></li>
+  <li><a href="#conditional-distributions" id="toc-conditional-distributions" class="nav-link" data-scroll-target="#conditional-distributions"><span class="header-section-number">2.5</span> Conditional Distributions</a></li>
+  <li><a href="#joint-distribution-under-independence" id="toc-joint-distribution-under-independence" class="nav-link" data-scroll-target="#joint-distribution-under-independence"><span class="header-section-number">2.6</span> Joint Distribution under Independence</a></li>
+  <li><a href="#conditional-expectation" id="toc-conditional-expectation" class="nav-link" data-scroll-target="#conditional-expectation"><span class="header-section-number">2.7</span> Conditional Expectation</a></li>
+  <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance"><span class="header-section-number">2.8</span> Covariance</a></li>
   </ul>
 </nav>
     </div>
@@ -294,7 +295,7 @@ p_Y(y) = \begin{cases}
 </div>
 </div>
 <div id="exm-sampling-x" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1 (Samling from the distribution of <span class="math inline">\(X\)</span>) </strong></span>&nbsp;</p>
+<p><span class="theorem-title"><strong>Example 2.1 (Sampling from a univariate distribution) </strong></span>&nbsp;</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(12)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -306,12 +307,12 @@ p_Y(y) = \begin{cases}
 <pre><code># A tibble: 6 × 2
       x     p
   &lt;dbl&gt; &lt;dbl&gt;
-1     3 0.383
-2     0 0.25 
-3     0 0.25 
+1     2 0.272
+2     3 0.383
+3     3 0.383
 4     3 0.383
-5     3 0.383
-6     3 0.383</code></pre>
+5     2 0.272
+6     0 0.25 </code></pre>
 </div>
 </div>
 <p>It is useful to visualize the observed frequency of each outcome.</p>
@@ -320,13 +321,13 @@ p_Y(y) = \begin{cases}
 <div class="cell-output cell-output-stdout">
 <pre><code>
 0 2 3 
-4 1 5 </code></pre>
+1 5 4 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(smpl_x<span class="sc">$</span>x) <span class="sc">/</span> <span class="fu">nrow</span>(smpl_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   0   2   3 
-0.4 0.1 0.5 </code></pre>
+0.1 0.5 0.4 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -608,198 +609,35 @@ p_{XY}(x=2, y=3) = 0.043
 <p>First we will construct a special joint distribution under the assumption of <em>independence</em>. Intuitively, two random variables are independent, if the outcome of one of the variables does not influence the probability distribution of the other. Imagine that you hold two lottery tickets: one from a lottery in Germany and another from a lottery in Bulgaria. It would be safe to assume that the realized winnings from the German lottery will not affect the odds to win from the Bulgarian ticket.</p>
 <p>Now let us consider a case of <em>dependent</em> random variables. Let <span class="math inline">\(X\)</span> be the level of a river (at some measurement point) at time <span class="math inline">\(t\)</span> and <span class="math inline">\(Y\)</span> be the level of the same river five minutes later. It woule be safe to assume that if the level of the river was high at <span class="math inline">\(t\)</span> this would affect the distribution of the level of the river at <span class="math inline">\(t\)</span> plus five minutes.</p>
 </section>
-<section id="sampling-from-the-joint-distribution" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="sampling-from-the-joint-distribution"><span class="header-section-number">2.4</span> Sampling from the Joint Distribution</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sample_joint <span class="ot">&lt;-</span> pxy <span class="sc">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">weight_by =</span> p, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample_joint)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 3
-      x     y     p
-  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1     2     2 0.229
-2     0     2 0.241
-3     3     3 0.182
-4     3     3 0.182
-5     3     3 0.182
-6     3     3 0.182</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>sample_joint <span class="sc">%&gt;%</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x, y) <span class="sc">%&gt;%</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">first</span>(p),</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">f =</span> n <span class="sc">/</span> <span class="fu">nrow</span>(sample_joint)</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'x'. You can override using the `.groups`
-argument.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 5
-# Groups:   x [4]
-      x     y     p     n     f
-  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
-1     0     2 0.241   240 0.24 
-2     0     3 0.009     4 0.004
-3     1     2 0.089    83 0.083
-4     1     3 0.006     3 0.003
-5     2     2 0.229   229 0.229
-6     2     3 0.043    33 0.033
-7     3     2 0.201   210 0.21 
-8     3     3 0.182   198 0.198</code></pre>
-</div>
-</div>
-</section>
-<section id="joint-distribution-under-independence" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="joint-distribution-under-independence"><span class="header-section-number">2.5</span> Joint Distribution under Independence</h2>
-<p>Lets construct the joint distribution <span class="math inline">\(p_{XY}(x, y)\)</span> that assigns a probability to the points <span class="math inline">\((x, y)\)</span>, assuming that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
-<p>For independent random variables the joint probability of occurrence is simply the product of the <em>marginal</em> distributions.</p>
-<p><span class="math display">\[
-p_{XY}(x, y) = p_X(x)p_Y(y)
-\]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pxy_ind <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  px <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">p_x =</span> p), </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  py <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">p_y =</span> p)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>pxy_ind <span class="ot">&lt;-</span> pxy_ind <span class="sc">%&gt;%</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> p_x <span class="sc">*</span> p_y</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="ot">&lt;-</span> pxy_ind <span class="sc">%&gt;%</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> x,</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> y,</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> p,</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"y="</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="sc">%&gt;%</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="tbl-distr-indep" class="anchored">
-<table class="table table-sm table-striped small">
-<caption>Table&nbsp;2.4: Joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> under independence.</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">x</th>
-<th style="text-align: right;">y=2</th>
-<th style="text-align: right;">y=3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.190</td>
-<td style="text-align: right;">0.060</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.072</td>
-<td style="text-align: right;">0.023</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.207</td>
-<td style="text-align: right;">0.065</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.291</td>
-<td style="text-align: right;">0.092</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>Let’s look at the <em>conditional</em> distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>. These answer the questions of the type: if <span class="math inline">\(X\)</span> turns out to be <span class="math inline">\(0\)</span>, what are the probabilities for <span class="math inline">\(Y = 2\)</span> and <span class="math inline">\(Y = 3\)</span>.</p>
-<p>To get the conditional distributions of Y for each possible value of <span class="math inline">\(X\)</span> we divide the cells of the joint distribution table by the marginal probabilities of each <span class="math inline">\(x\)</span>.</p>
-<p><span class="math display">\[
-p_{Y|X}(x, y) = \frac{p_{XY}(x, y)}{p_X(x)}
-\]</span> The marginal distribution of <span class="math inline">\(X\)</span> is obtained by summing the joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> over all possible values of <span class="math inline">\(Y\)</span>.</p>
+<section id="marginal-distributions" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="marginal-distributions"><span class="header-section-number">2.4</span> Marginal Distributions</h2>
+<p>The marginal distribution of <span class="math inline">\(X\)</span> is obtained by summing the joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> over all possible values of <span class="math inline">\(Y\)</span>.</p>
 <p><span class="math display">\[
 p_X(x) = \sum_{y=2}^{3}p_{XY}(x, y)
 \]</span></p>
+</section>
+<section id="conditional-distributions" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="conditional-distributions"><span class="header-section-number">2.5</span> Conditional Distributions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="sc">%&gt;%</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_x =</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span>,</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">/</span> p_x,</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="sc">/</span> p_x</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="tbl-xy-distr-ind-w" class="anchored">
-<table class="table table-sm table-striped small">
-<caption>Table&nbsp;2.5: Conditional distributions of <span class="math inline">\(Y\)</span>. Independence case.</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">x</th>
-<th style="text-align: right;">y=2</th>
-<th style="text-align: right;">y=3</th>
-<th style="text-align: right;">p_x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.250</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.095</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.272</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.383</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>What you should see in <a href="#tbl-xy-distr-ind-w">Table&nbsp;<span>2.5</span></a> is that the conditional distributions of <span class="math inline">\(Y\)</span> are the same for every possible value of <span class="math inline">\(X\)</span>. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
-<p>Next, we construct the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> for the dependent case.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pxy_w <span class="ot">&lt;-</span> pxy <span class="sc">%&gt;%</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> x,</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> y,</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> p,</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"y="</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_x =</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span>,</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">/</span> p_x,</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="sc">/</span> p_x</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>pxy_w <span class="sc">%&gt;%</span></span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pxy_w <span class="ot">&lt;-</span> pxy <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> x,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> y,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> p,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"y="</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_x =</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span>,</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">/</span> p_x,</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="sc">/</span> p_x</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>pxy_w <span class="sc">%&gt;%</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-cond-distr-y-dep-x" class="anchored">
 <table class="table table-sm table-striped small">
-<caption>Table&nbsp;2.6: Conditional distributions of</caption>
+<caption>Table&nbsp;2.4: Conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span></caption>
 <thead>
 <tr class="header">
 <th style="text-align: right;">x</th>
@@ -838,33 +676,149 @@ p_X(x) = \sum_{y=2}^{3}p_{XY}(x, y)
 </div>
 </div>
 </div>
-<p>Looking at the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.6</span></a>, you should notice that these are not the same for each value of <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y=2\)</span> is much more likely when <span class="math inline">\(X = 0\)</span> compared to <span class="math inline">\(X = 3\)</span>.</p>
-<div id="exr-conditional-exp" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.6 (Conditional Expectation) </strong></span>Compute the expectation of <span class="math inline">\(Y\)</span>, given <span class="math inline">\(X = 0\)</span> using the distribution in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.6</span></a>. For which value of <span class="math inline">\(X\)</span> is the condtitional expectation of <span class="math inline">\(Y\)</span> greatest?</p>
-<p><span class="math display">\[
-E(Y|X=0) = ?
-\]</span></p>
-</div>
+<p>Looking at the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.4</span></a>, you should notice that these are not the same for each value of <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y=2\)</span> is much more likely when <span class="math inline">\(X = 0\)</span> compared to <span class="math inline">\(X = 3\)</span>.</p>
 </section>
-<section id="conditional-expectation-1" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="conditional-expectation-1"><span class="header-section-number">2.6</span> Conditional Expectation</h2>
+<section id="joint-distribution-under-independence" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="joint-distribution-under-independence"><span class="header-section-number">2.6</span> Joint Distribution under Independence</h2>
+<p>Lets construct the joint distribution <span class="math inline">\(p_{XY}(x, y)\)</span> that assigns a probability to the points <span class="math inline">\((x, y)\)</span>, assuming that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+<p>For independent random variables the joint probability of occurrence is simply the product of the <em>marginal</em> distributions.</p>
+<p><span class="math display">\[
+p_{XY}(x, y) = p_X(x)p_Y(y)
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>pxy_ind <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  px <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">p_x =</span> p), </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  py <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">p_y =</span> p)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>pxy_ind <span class="ot">&lt;-</span> pxy_ind <span class="sc">%&gt;%</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> p_x <span class="sc">*</span> p_y</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="ot">&lt;-</span> pxy_ind <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> x,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> y,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> p,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"y="</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="sc">%&gt;%</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-distr-indep" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2.5: Joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> under independence.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y=2</th>
+<th style="text-align: right;">y=3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.190</td>
+<td style="text-align: right;">0.060</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.023</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.207</td>
+<td style="text-align: right;">0.065</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.092</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Let’s look at the <em>conditional</em> distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>. These answer the questions of the type: if <span class="math inline">\(X\)</span> turns out to be <span class="math inline">\(0\)</span>, what are the probabilities for <span class="math inline">\(Y = 2\)</span> and <span class="math inline">\(Y = 3\)</span>.</p>
+<p>To get the conditional distributions of Y for each possible value of <span class="math inline">\(X\)</span> we divide the cells of the joint distribution table by the marginal probabilities of each <span class="math inline">\(x\)</span>.</p>
+<p><span class="math display">\[
+p_{Y|X}(x, y) = \frac{p_{XY}(x, y)}{p_X(x)}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_x =</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=2</span><span class="st">`</span> <span class="sc">/</span> p_x,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">y=3</span><span class="st">`</span> <span class="sc">/</span> p_x</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-xy-distr-ind-w" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2.6: Conditional distributions of <span class="math inline">\(Y\)</span>. Independence case.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y=2</th>
+<th style="text-align: right;">y=3</th>
+<th style="text-align: right;">p_x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.250</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.095</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.272</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.383</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>What you should see in <a href="#tbl-xy-distr-ind-w">Table&nbsp;<span>2.6</span></a> is that the conditional distributions of <span class="math inline">\(Y\)</span> are the same for every possible value of <span class="math inline">\(X\)</span>. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+</section>
+<section id="conditional-expectation" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="conditional-expectation"><span class="header-section-number">2.7</span> Conditional Expectation</h2>
 <p>We have seen how we derived the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> in the previous section. Now we can ask the question: what is the expected value of <span class="math inline">\(Y\)</span> given that <span class="math inline">\(X\)</span> has already turned out to be 0 (for example). We can take the conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X = 0\)</span> and compute the expected value of this distribution.</p>
 <p>For the joint distribution under independence:</p>
 <p><span class="math display">\[
 E(Y | X=0) = \sum_{y = 2}^{3} y p_{Y|X=0}(y) = 2 \times 0.76 + 3 \times 0.24 = 2.24
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fl">0.76</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fl">0.24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fl">0.76</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fl">0.24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.24</code></pre>
 </div>
 </div>
-<p>For the joint distribution in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.6</span></a> the conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X = 0\)</span> is</p>
+<p>For the joint distribution in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.4</span></a> the conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X = 0\)</span> is</p>
 <p><span class="math display">\[
 E(Y | X=0) = \sum_{y = 2}^{3} y p_{Y|X=0}(y) = 2 \times 0.964 + 3 \times 0.036 = 2.036
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fl">0.964</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fl">0.036</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fl">0.964</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fl">0.036</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.036</code></pre>
 </div>
@@ -879,15 +833,16 @@ E(Y | X = x) = \begin{cases}
 \end{cases}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>pxy <span class="sc">%&gt;%</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x) <span class="sc">%&gt;%</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> y,</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_y_x =</span> p <span class="sc">/</span> <span class="fu">sum</span>(p)</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">E_Y_X =</span> <span class="fu">sum</span>(y <span class="sc">*</span> p_y_x) </span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pxy <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x) <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> y,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_y_x =</span> p <span class="sc">/</span> <span class="fu">sum</span>(p)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">E_Y_given_X =</span> <span class="fu">sum</span>(y <span class="sc">*</span> p_y_x) </span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
 dplyr 1.1.0.
@@ -899,23 +854,92 @@ dplyr 1.1.0.
 <pre><code>`summarise()` has grouped output by 'x'. You can override using the `.groups`
 argument.</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 2
-      x E_Y_X
-  &lt;dbl&gt; &lt;dbl&gt;
-1     0  2.04
-2     1  2.06
-3     2  2.16
-4     3  2.48</code></pre>
+<div class="cell-output-display">
+<div id="tbl-cond-exp-y" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2.7: Conditional expectation of <span class="math inline">\(Y\)</span> for each possible value of <span class="math inline">\(X\)</span>.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">E_Y_given_X</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.036</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.063</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.158</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2.475</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>An important thing to see here is that the conditional expectation is different for each value of <span class="math inline">\(X\)</span>. As the value of <span class="math inline">\(X\)</span> is uncertain (it is a random variable), the conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> is also a random variable. Its distribution is given by the possible values and the probabilities of occurrence of <span class="math inline">\(X\)</span> (the marginal distribution of <span class="math inline">\(X\)</span>).</p>
 <div id="exr-cond-exp-ind" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.7 </strong></span>Calculate the expected value of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> for every possible value of <span class="math inline">\(X\)</span> in the case joint distribution under independence.</p>
+<p><span class="theorem-title"><strong>Exercise 2.6 </strong></span>Calculate the expected value of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> for every possible value of <span class="math inline">\(X\)</span> in the case joint distribution under independence.</p>
+</div>
+<div id="exm-sampling-joint" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.2 (Sampling from the Joint Distribution) </strong></span>&nbsp;</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>sample_joint <span class="ot">&lt;-</span> pxy <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">weight_by =</span> p, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample_joint)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+      x     y     p
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     1     2 0.089
+2     0     2 0.241
+3     3     2 0.201
+4     1     2 0.089
+5     0     2 0.241
+6     3     3 0.182</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>sample_joint <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x, y) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">first</span>(p),</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">f =</span> n <span class="sc">/</span> <span class="fu">nrow</span>(sample_joint)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'x'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 5
+# Groups:   x [4]
+      x     y     p     n     f
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+1     0     2 0.241   234 0.234
+2     0     3 0.009    11 0.011
+3     1     2 0.089    69 0.069
+4     1     3 0.006     4 0.004
+5     2     2 0.229   240 0.24 
+6     2     3 0.043    47 0.047
+7     3     2 0.201   197 0.197
+8     3     3 0.182   198 0.198</code></pre>
+</div>
+</div>
 </div>
 </section>
-<section id="covariance" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="covariance"><span class="header-section-number">2.7</span> Covariance</h2>
+<section id="covariance" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="covariance"><span class="header-section-number">2.8</span> Covariance</h2>
 <p>The <em>covariance</em> measures the (linear) dependency between two random variables.</p>
 <div id="def-covariance" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 2.1 (Covariance) </strong></span>The covariance of two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is given by</p>
@@ -943,10 +967,10 @@ Var(aX + bY) = a^2 Var(X) + b^2Var(Y) + 2abCov(X, Y)
 \]</span></p>
 </div>
 <div id="exr-covariance" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.8 (Covariance) </strong></span>Compute the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> under the joint distributions given in <a href="#tbl-distr-indep">Table&nbsp;<span>2.4</span></a> and <a href="#tbl-distr-dep">Table&nbsp;<span>2.3</span></a>.</p>
+<p><span class="theorem-title"><strong>Exercise 2.7 (Covariance) </strong></span>Compute the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> under the joint distributions given in <a href="#tbl-distr-indep">Table&nbsp;<span>2.5</span></a> and <a href="#tbl-distr-dep">Table&nbsp;<span>2.3</span></a>.</p>
 </div>
 <div id="exr-covariance-corr" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.9 (Variance of Correlated Variables) </strong></span>Compute the variance of <span class="math inline">\(2X - Y\)</span> using the same distributions as in <a href="#exr-covariance">Exercise&nbsp;<span>2.8</span></a></p>
+<p><span class="theorem-title"><strong>Exercise 2.8 (Variance of Correlated Variables) </strong></span>Compute the variance of <span class="math inline">\(2X - Y\)</span> using the same distributions as in <a href="#exr-covariance">Exercise&nbsp;<span>2.7</span></a></p>
 </div>
 
 

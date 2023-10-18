@@ -63,7 +63,7 @@ sum(px$p)
 ```
 
 :::{#exm-sampling-x}
-## Samling from the distribution of $X$
+## Sampling from a univariate distribution
 
 ```{r}
 # set.seed(12)
@@ -325,25 +325,40 @@ First we will construct a special joint distribution under the assumption of *in
 
 Now let us consider a case of *dependent* random variables. Let $X$ be the level of a river (at some measurement point) at time $t$ and $Y$ be the level of the same river five minutes later. It woule be safe to assume that if the level of the river was high at $t$ this would affect the distribution of the level of the river at $t$ plus five minutes.
 
+## Marginal Distributions
 
-## Sampling from the Joint Distribution
+The marginal distribution of $X$ is obtained by summing the joint distribution of $X$ and $Y$ over all possible values of $Y$.
+
+$$
+p_X(x) = \sum_{y=2}^{3}p_{XY}(x, y)
+$$
+
+## Conditional Distributions
 
 ```{r}
-sample_joint <- pxy %>%
-  slice_sample(n = 1000, weight_by = p, replace = TRUE)
+#| label: tbl-cond-distr-y-dep-x
+#| tbl-cap: "Conditional distributions of $Y$ given $X$"
 
-head(sample_joint)
-```
-
-```{r}
-sample_joint %>%
-  group_by(x, y) %>%
-  summarise(
-    p = first(p),
-    n = n(),
-    f = n / nrow(sample_joint)
+pxy_w <- pxy %>%
+  pivot_wider(
+    id_cols = x,
+    names_from = y,
+    values_from = p,
+    names_prefix = "y="
+  ) %>%
+  mutate(
+    p_x = `y=2` + `y=3`,
+    `y=2` = `y=2` / p_x,
+    `y=3` = `y=3` / p_x
   )
+
+pxy_w %>%
+  knitr::kable(digits = 3)
 ```
+
+Looking at the conditional distributions of $Y$ given $X$ in @tbl-cond-distr-y-dep-x, you should notice that these are not the same for each value of $X$. For example, $Y=2$ is much more likely when $X = 0$ compared to $X = 3$.
+
+
 
 ## Joint Distribution under Independence
 
@@ -381,20 +396,14 @@ pxy_ind_w <- pxy_ind %>%
 pxy_ind_w %>%
   knitr::kable(digits = 3)
 ```
-
 Let's look at the *conditional* distributions of $Y$ given $X$. These answer the questions of the type: if $X$ turns out to be $0$, what are the probabilities for $Y = 2$ and $Y = 3$.
-
 
 To get the conditional distributions of Y for each possible value of $X$ we divide the cells of the joint distribution table by the marginal probabilities of each $x$.
 
 $$
 p_{Y|X}(x, y) = \frac{p_{XY}(x, y)}{p_X(x)}
 $$
-The marginal distribution of $X$ is obtained by summing the joint distribution of $X$ and $Y$ over all possible values of $Y$.
 
-$$
-p_X(x) = \sum_{y=2}^{3}p_{XY}(x, y)
-$$
 
 ```{r}
 #| label: tbl-xy-distr-ind-w
@@ -411,42 +420,6 @@ pxy_ind_w %>%
 
 What you should see in @tbl-xy-distr-ind-w is that the conditional distributions of $Y$ are the same for every possible value of $X$. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that $X$ and $Y$ are independent.
 
-
-Next, we construct the conditional distributions of $Y$ given $X$ for the dependent case.
-
-
-```{r}
-#| label: tbl-cond-distr-y-dep-x
-#| tbl-cap: "Conditional distributions of"
-
-pxy_w <- pxy %>%
-  pivot_wider(
-    id_cols = x,
-    names_from = y,
-    values_from = p,
-    names_prefix = "y="
-  ) %>%
-  mutate(
-    p_x = `y=2` + `y=3`,
-    `y=2` = `y=2` / p_x,
-    `y=3` = `y=3` / p_x
-  )
-
-pxy_w %>%
-  knitr::kable(digits = 3)
-```
-
-Looking at the conditional distributions of $Y$ given $X$ in @tbl-cond-distr-y-dep-x, you should notice that these are not the same for each value of $X$. For example, $Y=2$ is much more likely when $X = 0$ compared to $X = 3$.
-
-:::{#exr-conditional-exp}
-## Conditional Expectation
-
-Compute the expectation of $Y$, given $X = 0$ using the distribution in @tbl-cond-distr-y-dep-x. For which value of $X$ is the condtitional expectation of $Y$ greatest?
-
-$$
-E(Y|X=0) = ?
-$$
-:::
 
 
 ## Conditional Expectation
@@ -485,6 +458,9 @@ E(Y | X = x) = \begin{cases}
 $$
 
 ```{r}
+#| label: tbl-cond-exp-y
+#| tbl-cap: "Conditional expectation of $Y$ for each possible value of $X$."
+#| 
 pxy %>%
   group_by(x) %>%
   summarise(
@@ -492,8 +468,9 @@ pxy %>%
     p_y_x = p / sum(p)
   ) %>%
   summarise(
-    E_Y_X = sum(y * p_y_x) 
-  )
+    E_Y_given_X = sum(y * p_y_x) 
+  ) %>%
+  knitr::kable(digits = 3)
 ```
 
 An important thing to see here is that the conditional expectation is different for each value of $X$. As the value of $X$ is uncertain (it is a random variable), the conditional expectation of $Y$ given $X$ is also a random variable. Its distribution is given by the possible values and the probabilities of occurrence of $X$ (the marginal distribution of $X$).
@@ -501,6 +478,28 @@ An important thing to see here is that the conditional expectation is different 
 
 :::{#exr-cond-exp-ind}
 Calculate the expected value of $Y$ given $X$ for every possible value of $X$ in the case joint distribution under independence.
+:::
+
+
+:::{#exm-sampling-joint}
+## Sampling from the Joint Distribution
+
+```{r}
+sample_joint <- pxy %>%
+  slice_sample(n = 1000, weight_by = p, replace = TRUE)
+
+head(sample_joint)
+```
+
+```{r}
+sample_joint %>%
+  group_by(x, y) %>%
+  summarise(
+    p = first(p),
+    n = n(),
+    f = n / nrow(sample_joint)
+  )
+```
 :::
 
 ## Covariance
