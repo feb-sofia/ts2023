@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Time Series Analysis 2023/2024 - 2&nbsp; Statistics Rerview</title>
+<title>Introduction to Time Series Analysis 2023/2024 - 2&nbsp; Statistics Review</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -110,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-Statistics-Review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Rerview</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-Statistics-Review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Review</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -150,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-Statistics-Review.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Rerview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Review</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -174,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#joint-distribution" id="toc-joint-distribution" class="nav-link" data-scroll-target="#joint-distribution"><span class="header-section-number">2.3</span> Joint Distribution</a></li>
   <li><a href="#sampling-from-the-joint-distribution" id="toc-sampling-from-the-joint-distribution" class="nav-link" data-scroll-target="#sampling-from-the-joint-distribution"><span class="header-section-number">2.4</span> Sampling from the Joint Distribution</a></li>
   <li><a href="#joint-distribution-under-independence" id="toc-joint-distribution-under-independence" class="nav-link" data-scroll-target="#joint-distribution-under-independence"><span class="header-section-number">2.5</span> Joint Distribution under Independence</a></li>
-  <li><a href="#conditional-expectation" id="toc-conditional-expectation" class="nav-link" data-scroll-target="#conditional-expectation"><span class="header-section-number">2.6</span> Conditional Expectation</a></li>
+  <li><a href="#conditional-expectation-1" id="toc-conditional-expectation-1" class="nav-link" data-scroll-target="#conditional-expectation-1"><span class="header-section-number">2.6</span> Conditional Expectation</a></li>
   <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance"><span class="header-section-number">2.7</span> Covariance</a></li>
   </ul>
 </nav>
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Rerview</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Review</span></h1>
 </div>
 
 
@@ -285,7 +285,7 @@ p_Y(y) = \begin{cases}
 </div>
 <p>The probability functions sum to one over all possible values by definition:</p>
 <p><span class="math display">\[
-\sum_{x = 0}^{3}p_X(x) = 0.250 + 0.095 + 0.272 + 0.383 = 1\\
+\sum_{x = 0}^{3}p_X(x) = 0.250 + 0.095 + 0.272 + 0.383 = 1
 \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(px<span class="sc">$</span>p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -296,41 +296,42 @@ p_Y(y) = \begin{cases}
 <div id="exm-sampling-x" class="theorem example">
 <p><span class="theorem-title"><strong>Example 2.1 (Samling from the distribution of <span class="math inline">\(X\)</span>) </strong></span>&nbsp;</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(12)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>smpl_x <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> <span class="fu">c</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.250</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.095</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.272</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.383</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  ), </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">10000</span>, </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(smpl_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>smpl_x <span class="ot">&lt;-</span> px <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">weight_by =</span> p, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(smpl_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3 0 1 3 3 3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(smpl_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 10000</code></pre>
+<pre><code># A tibble: 6 × 2
+      x     p
+  &lt;dbl&gt; &lt;dbl&gt;
+1     3 0.383
+2     0 0.25 
+3     0 0.25 
+4     3 0.383
+5     3 0.383
+6     3 0.383</code></pre>
 </div>
 </div>
 <p>It is useful to visualize the observed frequency of each outcome.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(smpl_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(smpl_x<span class="sc">$</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>smpl_x
-   0    1    2    3 
-2445 1012 2750 3793 </code></pre>
+<pre><code>
+0 2 3 
+4 1 5 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(smpl_x<span class="sc">$</span>x) <span class="sc">/</span> <span class="fu">nrow</span>(smpl_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   2   3 
+0.4 0.1 0.5 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(smpl_x) <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> smpl_x)) <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>smpl_x <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span> </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Outcome"</span>,</span>
@@ -399,8 +400,8 @@ L(x) = (x - 1)^2 =
 </section>
 <section id="variance" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="variance"><span class="header-section-number">2.2</span> Variance</h2>
-<p>The variance of a random variable measures how different are (XXX) the possible values that can occur. It is the expected value of the squared diviations from the expected value.</p>
-<p><span class="math display">\[
+<p>The variance of a random variable measures how different the possible values that can occur are. Values that occur more often (have higher probability) under <span class="math inline">\(p_X\)</span> receive a higher weight. Values that occur less frequently under <span class="math inline">\(p_X\)</span> are given a lower weight in the sum.</p>
+<p><span id="eq-variance"><span class="math display">\[
 \begin{align}
 Var(X) &amp; = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
        &amp; = (0 - 1.788)^2 \times 0.250 + (1 - 1.788)^2 \times 0.095 + (2 - 1.788)^2\times 0.272 + (3 - 1.788)^2 \times 0.383 \\
@@ -408,7 +409,7 @@ Var(X) &amp; = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
        &amp; = 3.196 \times 0.250 + 0.620^2 \times 0.095 + 0.044 \times 0.272 + 1.468 \times 0.383 \\
        &amp; \approx 1.433
 \end{align}
-\]</span></p>
+\tag{2.1}\]</span></span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(px<span class="sc">$</span>x <span class="sc">-</span> mu_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -427,6 +428,10 @@ Var(X) &amp; = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
 <pre><code>[1] 1.433056</code></pre>
 </div>
 </div>
+<p>You can see from <a href="#eq-variance">Equation&nbsp;<span>2.1</span></a> that it is the expected value of the squared diviations from the expected value.</p>
+<p><span class="math display">\[
+Var(X) = E(X - E(X))^2
+\]</span></p>
 <div id="exr-variance" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.4 (Variance) </strong></span>Compute the Variance of <span class="math inline">\(Y\)</span>.</p>
 </div>
@@ -435,9 +440,6 @@ Var(X) &amp; = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Type your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><span class="math display">\[
-Var(Y) = ?
-\]</span></p>
 </div>
 <div id="thm-exp-value-props" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 2.1 (Properties of the Expectation) </strong></span>Let <span class="math inline">\(X\)</span> be a random variable with expected value <span class="math inline">\(E(X)\)</span>, let <span class="math inline">\(Y\)</span> be a random variable with expected value <span class="math inline">\(E(Y)\)</span>, and let <span class="math inline">\(a\)</span> be a fixed constant (<span class="math inline">\(a \in \mathbb{R}\)</span>). The following properties are true:</p>
@@ -454,7 +456,7 @@ E(XY) = E(X)E(Y)
 \]</span></p>
 </div>
 <div id="thm-variance-short" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 2.2 (Variance Formula) </strong></span>Let <span class="math inline">\(X\)</span> be a random variable with expected value <span class="math inline">\(E(X)\)</span>, let <span class="math inline">\(Y\)</span> be a random variable with expected value <span class="math inline">\(E(Y)\)</span>, and let <span class="math inline">\(a\)</span> be a fixed constant (<span class="math inline">\(a \in \mathbb{R}\)</span>). The following properties are true:</p>
+<p><span class="theorem-title"><strong>Theorem 2.2 (Properties of the Variance) </strong></span>Let <span class="math inline">\(X\)</span> be a random variable with expected value <span class="math inline">\(E(X)\)</span>, let <span class="math inline">\(Y\)</span> be a random variable with expected value <span class="math inline">\(E(Y)\)</span>, and let <span class="math inline">\(a\)</span> be a fixed constant (<span class="math inline">\(a \in \mathbb{R}\)</span>). The following properties are true:</p>
 <p><span class="math display">\[
 Var(X) = E(X^2) - E(X)^2
 \]</span></p>
@@ -618,11 +620,11 @@ p_{XY}(x=2, y=3) = 0.043
       x     y     p
   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 1     2     2 0.229
-2     3     3 0.182
-3     0     2 0.241
-4     3     2 0.201
-5     3     2 0.201
-6     3     2 0.201</code></pre>
+2     0     2 0.241
+3     3     3 0.182
+4     3     3 0.182
+5     3     3 0.182
+6     3     3 0.182</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -642,14 +644,14 @@ argument.</code></pre>
 # Groups:   x [4]
       x     y     p     n     f
   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
-1     0     2 0.241   250 0.25 
+1     0     2 0.241   240 0.24 
 2     0     3 0.009     4 0.004
-3     1     2 0.089   100 0.1  
-4     1     3 0.006     6 0.006
-5     2     2 0.229   200 0.2  
-6     2     3 0.043    46 0.046
-7     3     2 0.201   209 0.209
-8     3     3 0.182   185 0.185</code></pre>
+3     1     2 0.089    83 0.083
+4     1     3 0.006     3 0.003
+5     2     2 0.229   229 0.229
+6     2     3 0.043    33 0.033
+7     3     2 0.201   210 0.21 
+8     3     3 0.182   198 0.198</code></pre>
 </div>
 </div>
 </section>
@@ -719,13 +721,13 @@ p_{XY}(x, y) = p_X(x)p_Y(y)
 </div>
 </div>
 <p>Let’s look at the <em>conditional</em> distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>. These answer the questions of the type: if <span class="math inline">\(X\)</span> turns out to be <span class="math inline">\(0\)</span>, what are the probabilities for <span class="math inline">\(Y = 2\)</span> and <span class="math inline">\(Y = 3\)</span>.</p>
-<div id="exr-conditional-y" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.6 (Conditional Distribution) </strong></span>Compute the conditional distribution of <span class="math inline">\(Y\)</span>, given <span class="math inline">\(X = 0\)</span>.</p>
-<p><span class="math display">\[
-p_{Y|X=0}(y) = ?
-\]</span></p>
-</div>
 <p>To get the conditional distributions of Y for each possible value of <span class="math inline">\(X\)</span> we divide the cells of the joint distribution table by the marginal probabilities of each <span class="math inline">\(x\)</span>.</p>
+<p><span class="math display">\[
+p_{Y|X}(x, y) = \frac{p_{XY}(x, y)}{p_X(x)}
+\]</span> The marginal distribution of <span class="math inline">\(X\)</span> is obtained by summing the joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> over all possible values of <span class="math inline">\(Y\)</span>.</p>
+<p><span class="math display">\[
+p_X(x) = \sum_{y=2}^{3}p_{XY}(x, y)
+\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pxy_ind_w <span class="sc">%&gt;%</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -776,7 +778,7 @@ p_{Y|X=0}(y) = ?
 </div>
 </div>
 </div>
-<p>What you should see in <span class="quarto-unresolved-ref">?tbl-xy-distr-ind</span> is that the conditional distributions of <span class="math inline">\(Y\)</span> are the same for every possible value of <span class="math inline">\(X\)</span>. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+<p>What you should see in <a href="#tbl-xy-distr-ind-w">Table&nbsp;<span>2.5</span></a> is that the conditional distributions of <span class="math inline">\(Y\)</span> are the same for every possible value of <span class="math inline">\(X\)</span>. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
 <p>Next, we construct the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> for the dependent case.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pxy_w <span class="ot">&lt;-</span> pxy <span class="sc">%&gt;%</span></span>
@@ -837,12 +839,15 @@ p_{Y|X=0}(y) = ?
 </div>
 </div>
 <p>Looking at the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.6</span></a>, you should notice that these are not the same for each value of <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y=2\)</span> is much more likely when <span class="math inline">\(X = 0\)</span> compared to <span class="math inline">\(X = 3\)</span>.</p>
-<div id="exr-conditional-y" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.7 </strong></span>What are the conditional distributions of <span class="math inline">\(X\)</span> given <span class="math inline">\(Y\)</span>?</p>
+<div id="exr-conditional-exp" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.6 (Conditional Expectation) </strong></span>Compute the expectation of <span class="math inline">\(Y\)</span>, given <span class="math inline">\(X = 0\)</span> using the distribution in <a href="#tbl-cond-distr-y-dep-x">Table&nbsp;<span>2.6</span></a>. For which value of <span class="math inline">\(X\)</span> is the condtitional expectation of <span class="math inline">\(Y\)</span> greatest?</p>
+<p><span class="math display">\[
+E(Y|X=0) = ?
+\]</span></p>
 </div>
 </section>
-<section id="conditional-expectation" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="conditional-expectation"><span class="header-section-number">2.6</span> Conditional Expectation</h2>
+<section id="conditional-expectation-1" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="conditional-expectation-1"><span class="header-section-number">2.6</span> Conditional Expectation</h2>
 <p>We have seen how we derived the conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> in the previous section. Now we can ask the question: what is the expected value of <span class="math inline">\(Y\)</span> given that <span class="math inline">\(X\)</span> has already turned out to be 0 (for example). We can take the conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X = 0\)</span> and compute the expected value of this distribution.</p>
 <p>For the joint distribution under independence:</p>
 <p><span class="math display">\[
@@ -906,7 +911,7 @@ argument.</code></pre>
 </div>
 <p>An important thing to see here is that the conditional expectation is different for each value of <span class="math inline">\(X\)</span>. As the value of <span class="math inline">\(X\)</span> is uncertain (it is a random variable), the conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> is also a random variable. Its distribution is given by the possible values and the probabilities of occurrence of <span class="math inline">\(X\)</span> (the marginal distribution of <span class="math inline">\(X\)</span>).</p>
 <div id="exr-cond-exp-ind" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.8 </strong></span>Calculate the expected value of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> for every possible value of <span class="math inline">\(X\)</span> in the case joint distribution under independence (XXX).</p>
+<p><span class="theorem-title"><strong>Exercise 2.7 </strong></span>Calculate the expected value of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> for every possible value of <span class="math inline">\(X\)</span> in the case joint distribution under independence.</p>
 </div>
 </section>
 <section id="covariance" class="level2" data-number="2.7">
@@ -938,10 +943,10 @@ Var(aX + bY) = a^2 Var(X) + b^2Var(Y) + 2abCov(X, Y)
 \]</span></p>
 </div>
 <div id="exr-covariance" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.9 (Covariance) </strong></span>Compute the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> under the joint distributions given in <a href="#tbl-distr-indep">Table&nbsp;<span>2.4</span></a> and <a href="#tbl-distr-dep">Table&nbsp;<span>2.3</span></a>.</p>
+<p><span class="theorem-title"><strong>Exercise 2.8 (Covariance) </strong></span>Compute the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> under the joint distributions given in <a href="#tbl-distr-indep">Table&nbsp;<span>2.4</span></a> and <a href="#tbl-distr-dep">Table&nbsp;<span>2.3</span></a>.</p>
 </div>
 <div id="exr-covariance-corr" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.10 (Variance of Correlated Variables) </strong></span>Compute the variance of <span class="math inline">\(2X - Y\)</span> using the same distributions as in <a href="#exr-covariance">Exercise&nbsp;<span>2.9</span></a></p>
+<p><span class="theorem-title"><strong>Exercise 2.9 (Variance of Correlated Variables) </strong></span>Compute the variance of <span class="math inline">\(2X - Y\)</span> using the same distributions as in <a href="#exr-covariance">Exercise&nbsp;<span>2.8</span></a></p>
 </div>
 
 

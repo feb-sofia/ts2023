@@ -3,7 +3,7 @@
 library(tidyverse)
 ```
 
-# Statistics Rerview
+# Statistics Review
 
 Let $X$ and $Y$ be two discrete random variables with possible values $0, 1, \ldots, K$. The probability mass functions $p_X(x)$ and $p_Y(y)$ assign occurrence probabilities to each possible outcome.
 
@@ -56,7 +56,7 @@ py %>%
 The probability functions sum to one over all possible values by definition:
 
 $$
-\sum_{x = 0}^{3}p_X(x) = 0.250 + 0.095 + 0.272 + 0.383 = 1\\
+\sum_{x = 0}^{3}p_X(x) = 0.250 + 0.095 + 0.272 + 0.383 = 1
 $$
 ```{r}
 sum(px$p)
@@ -66,34 +66,25 @@ sum(px$p)
 ## Samling from the distribution of $X$
 
 ```{r}
-set.seed(12)
+# set.seed(12)
 
-smpl_x <- sample(
-  c(0, 1, 2, 3), 
-  prob = c(
-    0.250,
-    0.095,
-    0.272,
-    0.383
-  ), 
-  size = 10000, 
-  replace = TRUE
-)
+smpl_x <- px %>%
+  slice_sample(n = 10, weight_by = p, replace = TRUE)
 
 head(smpl_x)
-length(smpl_x)
 ```
 
 It is useful to visualize the observed frequency of each outcome.
 
 ```{r}
-table(smpl_x)
+table(smpl_x$x)
+table(smpl_x$x) / nrow(smpl_x)
 ```
 
 
 ```{r}
-tibble(smpl_x) %>%
-  ggplot(aes(x = smpl_x)) + 
+smpl_x %>%
+  ggplot(aes(x = x)) + 
     geom_bar() + 
     labs(
       x = "Outcome",
@@ -109,6 +100,7 @@ tibble(smpl_x) %>%
 Show that the probability mass function of $Y$ in @tbl-distr-y sums to one.
 Sample 10000 values from its distribution and compute the sample frequency of each outcome. 
 :::
+
 ```{r}
 # Type your code here
 
@@ -180,7 +172,7 @@ Compute the expected quadratic loss for a prediction $\bar{x} = 1.5$.
 
 ## Variance
 
-The variance of a random variable measures how different are (XXX) the possible values that can occur. It is the expected value of the squared diviations from the expected value.
+The variance of a random variable measures how different the possible values that can occur are. Values that occur more often (have higher probability) under $p_X$ receive a higher weight. Values that occur less frequently under $p_X$ are given a lower weight in the sum.
 
 $$
 \begin{align}
@@ -190,7 +182,7 @@ Var(X) & = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
        & = 3.196 \times 0.250 + 0.620^2 \times 0.095 + 0.044 \times 0.272 + 1.468 \times 0.383 \\
        & \approx 1.433
 \end{align}
-$$
+$${#eq-variance}
 
 ```{r}
 (px$x - mu_x)
@@ -198,6 +190,13 @@ $$
 px$p * (px$x - mu_x)^2
 sum(px$p * (px$x - mu_x)^2)
 ```
+
+
+You can see from @eq-variance that it is  the expected value of the squared diviations from the expected value.
+
+$$
+Var(X) = E(X - E(X))^2
+$$
 
 :::{#exr-variance}
 ## Variance
@@ -211,10 +210,6 @@ Compute the Variance of $Y$.
 
 ```
 
-
-$$
-Var(Y) = ?
-$$
 :::
 
 
@@ -239,7 +234,7 @@ $$
 :::
 
 :::{#thm-variance-short}
-## Variance Formula
+## Properties of the Variance
 
 Let $X$ be a random variable with expected value $E(X)$, let $Y$ be a random variable with expected value $E(Y)$, and let $a$ be a fixed constant ($a \in \mathbb{R}$). The following properties are true:
 
@@ -389,18 +384,17 @@ pxy_ind_w %>%
 
 Let's look at the *conditional* distributions of $Y$ given $X$. These answer the questions of the type: if $X$ turns out to be $0$, what are the probabilities for $Y = 2$ and $Y = 3$.
 
-:::{#exr-conditional-y}
-## Conditional Distribution
-
-Compute the conditional distribution of $Y$, given $X = 0$.
-
-$$
-p_{Y|X=0}(y) = ?
-$$
-:::
 
 To get the conditional distributions of Y for each possible value of $X$ we divide the cells of the joint distribution table by the marginal probabilities of each $x$.
 
+$$
+p_{Y|X}(x, y) = \frac{p_{XY}(x, y)}{p_X(x)}
+$$
+The marginal distribution of $X$ is obtained by summing the joint distribution of $X$ and $Y$ over all possible values of $Y$.
+
+$$
+p_X(x) = \sum_{y=2}^{3}p_{XY}(x, y)
+$$
 
 ```{r}
 #| label: tbl-xy-distr-ind-w
@@ -415,7 +409,7 @@ pxy_ind_w %>%
   knitr::kable(digits = 3)
 ```
 
-What you should see in @tbl-xy-distr-ind is that the conditional distributions of $Y$ are the same for every possible value of $X$. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that $X$ and $Y$ are independent.
+What you should see in @tbl-xy-distr-ind-w is that the conditional distributions of $Y$ are the same for every possible value of $X$. This is of course a consequence of the way we constructed this joint distribution in the first place: namely, we assumed that $X$ and $Y$ are independent.
 
 
 Next, we construct the conditional distributions of $Y$ given $X$ for the dependent case.
@@ -444,8 +438,14 @@ pxy_w %>%
 
 Looking at the conditional distributions of $Y$ given $X$ in @tbl-cond-distr-y-dep-x, you should notice that these are not the same for each value of $X$. For example, $Y=2$ is much more likely when $X = 0$ compared to $X = 3$.
 
-::: {#exr-conditional-y}
-What are the conditional distributions of $X$ given $Y$?
+:::{#exr-conditional-exp}
+## Conditional Expectation
+
+Compute the expectation of $Y$, given $X = 0$ using the distribution in @tbl-cond-distr-y-dep-x. For which value of $X$ is the condtitional expectation of $Y$ greatest?
+
+$$
+E(Y|X=0) = ?
+$$
 :::
 
 
@@ -500,7 +500,7 @@ An important thing to see here is that the conditional expectation is different 
 
 
 :::{#exr-cond-exp-ind}
-Calculate the expected value of $Y$ given $X$ for every possible value of $X$ in the case joint distribution under independence (XXX).
+Calculate the expected value of $Y$ given $X$ for every possible value of $X$ in the case joint distribution under independence.
 :::
 
 ## Covariance
