@@ -1,6 +1,12 @@
 
 ```{r, output=FALSE, warning=FALSE}
 library(tidyverse)
+library(tsibble)
+library(tsbox)
+library(fable)
+library(feasts)
+library(eurostat)
+library(quantmod)
 ```
 
 # Statistics Review
@@ -40,7 +46,7 @@ For convenience, the probability mass functions of $X$ and $Y$ are stored in the
 ```{r}
 #| label: tbl-distr-x
 #| tbl-cap: "Probability mass function of $X$."
- 
+
 px %>%
   knitr::kable()
 ```
@@ -48,7 +54,7 @@ px %>%
 ```{r}
 #| label: tbl-distr-y
 #| tbl-cap: "Probability mass function of $Y$"
- 
+
 py %>%
   knitr::kable()
 ```
@@ -88,8 +94,8 @@ table(smpl_x$x) / nrow(smpl_x)
 
 ```{r}
 smpl_x %>%
-  ggplot(aes(x = x)) + 
-    geom_bar() + 
+  ggplot(aes(x = x)) +
+    geom_bar() +
     labs(
       x = "Outcome",
       y = "Frequency"
@@ -102,7 +108,7 @@ smpl_x %>%
 ## Probabilities
 
 Show that the probability mass function of $Y$ in @tbl-distr-y sums to one.
-Sample 10000 values from its distribution and compute the sample frequency of each outcome. 
+Sample 10000 values from its distribution and compute the sample frequency of each outcome.
 :::
 :::{.solution}
 ```{r}
@@ -151,10 +157,10 @@ Let us construct an example. You need to predict the result of $X$ and you think
 $$
 L(x) = (x - 1)^2 =
 \begin{cases}
-   (0 - 1)^2 = 1 & \text{x = 0}\\
-   (1 - 1)^2 = 0 & \text{x = 1}\\
-   (2 - 1)^2 = 1 & \text{x = 2}\\
-   (3 - 1)^2 = 4 & \text{x = 3}
+(0 - 1)^2 = 1 & \text{x = 0}\\
+(1 - 1)^2 = 0 & \text{x = 1}\\
+(2 - 1)^2 = 1 & \text{x = 2}\\
+(3 - 1)^2 = 4 & \text{x = 3}
 \end{cases}
 $$
 
@@ -184,10 +190,10 @@ The variance of a random variable measures how different the possible values tha
 $$
 \begin{align}
 Var(X) & = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
-       & = (0 - 1.788)^2 \times 0.250 + (1 - 1.788)^2 \times 0.095 + (2 - 1.788)^2\times 0.272 + (3 - 1.788)^2 \times 0.383 \\
-       & = (-1.788)^2 \times 0.250 + (-0.788)^2 \times 0.095 + (0.212)^2\times 0.272 + (1.212)^2 \times 0.383 \\
-       & = 3.196 \times 0.250 + 0.620^2 \times 0.095 + 0.044 \times 0.272 + 1.468 \times 0.383 \\
-       & \approx 1.433
+& = (0 - 1.788)^2 \times 0.250 + (1 - 1.788)^2 \times 0.095 + (2 - 1.788)^2\times 0.272 + (3 - 1.788)^2 \times 0.383 \\
+& = (-1.788)^2 \times 0.250 + (-0.788)^2 \times 0.095 + (0.212)^2\times 0.272 + (1.212)^2 \times 0.383 \\
+& = 3.196 \times 0.250 + 0.620^2 \times 0.095 + 0.044 \times 0.272 + 1.468 \times 0.383 \\
+& \approx 1.433
 \end{align}
 $${#eq-variance}
 
@@ -280,7 +286,7 @@ Assume that $X$ and $Y$ are independent.
 :::{.solution}
 $$
 E(2X + 3Y + 1) = \\
-Var(2X + 3Y + 1) = 
+Var(2X + 3Y + 1) =
 $$
 :::
 
@@ -379,7 +385,7 @@ $$
 
 ```{r}
 pxy_ind <- expand_grid(
-  px %>% rename(p_x = p), 
+  px %>% rename(p_x = p),
   py %>% rename(p_y = p)
 )
 pxy_ind <- pxy_ind %>%
@@ -457,17 +463,17 @@ Let us write the conditional expectation of $Y$ for each possible value of $X$ f
 
 $$
 E(Y | X = x) = \begin{cases}
-  2.036 & \text{for } x = 0 \\
-  2.060 & \text{for } x = 1 \\
-  2.158 & \text{for } x = 2 \\
-  2.475 & \text{for } x = 3
+2.036 & \text{for } x = 0 \\
+2.060 & \text{for } x = 1 \\
+2.158 & \text{for } x = 2 \\
+2.475 & \text{for } x = 3
 \end{cases}
 $$
 
 ```{r}
 #| label: tbl-cond-exp-y
 #| tbl-cap: "Conditional expectation of $Y$ for each possible value of $X$."
-#| 
+#|
 pxy %>%
   group_by(x) %>%
   summarise(
@@ -475,7 +481,7 @@ pxy %>%
     p_y_x = p / sum(p)
   ) %>%
   summarise(
-    E_Y_given_X = sum(y * p_y_x) 
+    E_Y_given_X = sum(y * p_y_x)
   ) %>%
   knitr::kable(digits = 3)
 ```
@@ -560,12 +566,302 @@ $$
 
 :::{#exr-covariance}
 ## Covariance
-Compute the covariance of $X$ and $Y$ under the joint distributions given in @tbl-distr-indep and @tbl-distr-dep.
+Compute the covariance of $X$ and $Y$ under the joint distributions given in @tbl-distr-indep and @tbl-distr-dep. Use the `pxy` and `pxy_ind` tables for these calculations.
+:::
+:::{.solution}
+```{r}
+# Type your code here
 
+```
 :::
 
 :::{#exr-covariance-corr}
 ## Variance of Correlated Variables
-Compute the variance of $2X - Y$ using the same distributions as in @exr-covariance
+Compute the variance of $2X - Y$ using the same distributions as in @exr-covariance.
 
 :::
+
+
+## Empirical Estimation of Moments
+
+
+Throughout this course we will focus on three summaries of the stochastic
+processes: the mean (expected value, level), the variance (fluctuation), and the
+covariances/correlations (dependency) between lags of the random process.
+
+In the the previous statistics-related courses we had a sample of (uncorrelated) observations
+$x_1, x_2,\ldots, x_n$. We assumed that these are samples (realizations) from
+some normal distribution $N(\mu, \sigma^2)$ with unknown mean and variance. We used the observed
+values to learn something about this distribution. We estimated its mean with
+
+$$
+\hat{\mu} = \frac{1}{n}\sum_{i = 1}^{n} x_i
+$$
+
+and its variance with:
+
+$$
+\hat{\sigma}^2 = \frac{1}{n  -1}\sum_{i = 1}^{n}(x_i - \hat{\mu})^2
+$${#eq-evar}
+
+In the case of time series, however, we have only _one_ observation for each time point.
+
+
+```{r, warning=FALSE}
+n <- 10
+B <- 5
+set.seed(21)
+
+dt_rw <- tibble(
+  r = rep(1:B, n),
+  e = rnorm(n = B*n)
+) %>%
+  group_by(r) %>%
+  mutate(
+    t = 1:n,
+    x = cumsum(e),
+    is_observed = (r == 1),
+  )
+
+dt_rw %>%
+  ggplot(
+    aes(
+      x = t,
+      y = x,
+      group = r,
+      alpha = factor(is_observed))
+    ) +
+  geom_line() +
+  geom_point() +
+  labs(
+    alpha = "Observed",
+    y = expression(x[t])
+  ) +
+  scale_x_continuous(breaks = 1:n)
+```
+
+In order to be able to apply our usual technique for moments estimation
+we have to _assume_ that the random process is ergodic, meaning that we can
+estimate its statistical properties (mean, variance, correlations) from the
+its time series (observed values). We will talk more extensively about (weak) _stationarity_,
+which is a necessary (though not sufficient) condition for ergodicity. For (weakly) stationary time series the
+mean, variance and covariances do not change over time.
+
+$$
+\begin{align}
+\mu & = E(X_1) = E(X_2) = \ldots = E(X_T) \\
+\gamma(0) & = Var(X_1) = Var(X_2) = \ldots = Var(X_T) \\
+\gamma(1) & = Cov(X_1, X_2) = Cov(X_2, X_3) = \ldots = Cov(X_{t}, X_{t + 1}) = Cov(X_{T - 1}, X_{T1}) \\
+\gamma(k) & = Cov(X_{t}, X_{t + k}) \\
+\rho(k) & = \frac{\gamma(k)}{\gamma(0)}
+\end{align}
+$$
+
+For a random process $X_1, X_2,\ldots, X_T$ and an observed time series $x_1, x_2, \ldots, x_T$, we will estimate the mean with the arithmetic average of the
+observed values.
+
+$$
+\hat{\mu} = \frac{1}{T}\sum_{t = 1}^{T} x_{t}
+$$
+
+We will estimate the variance of a stationary process with the _empirical_ variance:
+
+$$
+\hat{\gamma}(0) = \frac{1}{T}\sum_{t = 1}^{T}(x_t - \bar{x})^2
+$${#eq-ts-evar}
+
+And the covariances with the _empirical_ (auto-)covariances:
+
+$$
+\hat{\gamma}(k) = \frac{1}{T}\sum_{t = 1}^{T - k} (x_{t} - \hat{\mu})(x_{t + k} - \hat{\mu})
+$${#eq-ts-ecov}
+
+and empirical (auto-)correlations:
+
+$$
+\hat{\rho}(k) = \frac{\hat{\gamma}(k)}{\hat{\gamma}(0)}
+$$
+To see the meaning of the autocovariances, let us create two artificial time
+series and plot their lags. The time series will be generated from two processes.
+The first one will be called the _purely random_ or _white noise_ process.
+
+$$
+e_t \sim N(0, 1) \text{ for every } t\\
+E(e_t) = 0 \\
+Var(e_t) = 1 \\
+Cov(e_t, e_{t + k}) = 0, k \neq 0
+$$
+The second one is be called a _random walk_.
+
+$$
+y_t = \sum_{i = 1}^{t}e_i
+$$
+
+
+```{r}
+set.seed(432)
+
+# Create 20 observations from two time series. rnorm draws random numbers
+# from a normal distribution with zero expected value (mean) and standard
+# deviation (sd) equal to 1. We call this distribution the standard normal
+# distribution. In the mutate step we create the first two lags of the series
+
+dt_sim <- tibble(
+  x = rnorm(n = 20, mean = 0, sd = 1),
+  y = cumsum(x)
+) %>%
+  mutate(
+    x_l1 = lag(x, n = 1),
+    y_l1 = lag(y, n = 1)
+  )
+
+mean_x <- mean(dt_sim$x)
+mean_x
+
+mean_y <- mean(dt_sim$y)
+mean_y
+```
+
+
+```{r}
+dt_sim %>%
+  ggplot(aes(x = x, y = x_l1)) +
+  geom_point() +
+  geom_vline(xintercept=mean_x, lty=2, alpha = 0.5) +
+  geom_hline(yintercept=mean_x, lty=2, alpha = 0.5) +
+  labs(
+    x = "x",
+    y = "lag(x, 1)"
+  )
+```
+
+Looking at the plot, think about the signs of the cross-products that go into
+the formula for the covariance:
+
+$$
+(x_{t + 1} - \hat{\mu})(x_{t} - \hat{\mu})
+$$
+
+Where do you find positive and negative cross-products in the plot?
+
+```{r}
+dt_sim %>%
+  ggplot(aes(x = y, y = y_l1)) +
+  geom_point() +
+  geom_vline(xintercept=mean_y, lty=2, alpha = 0.5) +
+  geom_hline(yintercept=mean_y, lty=2, alpha = 0.5) +
+  labs(
+    x = "y",
+    y = "lag(y, 1)"
+  )
+```
+
+
+The following code computes the covariance
+```{r}
+# Compute the covariance
+cov_xy <- cov(dt_sim$x, dt_sim$y)
+cov_xy
+#
+cov_xy / (sd(dt_sim$x) * sd(dt_sim$y))
+cor(dt_sim$x, dt_sim$y)
+```
+
+Note that `cov` computes the covariance according to formula @eq-evar.
+
+
+## Exercises
+
+The following code downloads
+
+```{r download-bitcoin}
+bitcoin <- getSymbols(
+  "BTC-USD",
+  from="2015-01-01",
+  to="2023-01-01",
+  src="yahoo",
+  periodicity="daily",
+  env = NULL)
+
+names(bitcoin) <- c("Open", "High", "Low", "Close", "Volume", "Adjusted")
+
+bc <- bitcoin %>%
+  ts_tsibble() %>%
+  pivot_wider(
+    names_from = id,
+    values_from = value
+  )
+```
+
+
+```{r}
+# Plots the closing exchange rate against the time index
+
+bc %>%
+  autoplot(Close) +
+  labs(
+    x = "Date",
+    y = "USD/BTC"
+  )
+```
+
+1. Compute the average exchange rate (`Close`).
+```{r}
+# Type your code here
+
+```
+
+2. Compute the empirical variance using the `var` function
+
+```{r}
+# Type your code here
+
+```
+
+
+3. Construct a two new variables that contain the first and the second lags of `Close`. Leave only `Close` and its lags in the resulting tsibble. Hint: Use the `mutate` and `lag` functions and select the columns using `select`.
+
+```{r}
+# Type your code here
+# Select the code below and press Ctrl-Shift-c in order to remove the comments
+
+
+```
+
+4. Create a scatterplot for `Close` and its first lag. Hint: Use the code
+   generating the scatterplot in the simulation above and adapt it.
+
+```{r}
+# Type your code here
+
+```
+
+5. Compute the covariance between `Close` and its first lag. Compute the autocorrelation coefficient (empirical autocorrelation) between `Close` and its first lag. Hint: Look into the documentation of `cov` and `cor` to find out how to handle missing values.
+
+```{r}
+# Type your code here
+
+```
+
+6. Use the `gg_lag` function to create scatterplots for the between the time series
+   and its first six lags. What patterns can you see in these scatterplots?
+
+```{r}
+bc %>%
+  gg_lag(
+    Close,
+    lags = 1:6,
+    geom="point",
+    size = 0.5
+  )
+```
+
+7. Use the `acf` function to plot the autocorrelation function of the `Close` time series.
+
+```{r}
+# Type your code here
+
+```
+
+
+

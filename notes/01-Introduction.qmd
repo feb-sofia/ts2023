@@ -1,5 +1,5 @@
 
-# Introduction
+# Introduction {#introduction}
 
 For a very quick introduction to R, you can refer to the 
 [Introduction to Econometrics 2023 course](https://feb-sofia.github.io/econometrics-2023/01-Introduction-to-R.html). @WICKHAM2016DataScienceImport offer a more thorough introduction to the tidyverse packages in their [R for data science book](https://r4ds.had.co.nz/).
@@ -189,7 +189,7 @@ ts(dt$x, start = 1960, frequency = 4)
 ts(dt$x, start = 1960, frequency = 1)
 ```
 
-### Creating xts Objects
+### Creating xts Objects {#intro-ts-objects}
 
 Unlike `ts`, `xts` requires an explicit time index in the form of
 date-like objects:
@@ -430,39 +430,8 @@ electr %>%
 
 ## Bitcoin Exchange Rate Example
 
-```{r}
-bitcoin <- getSymbols(
-  "BTC-USD", 
-  from="2015-01-01",
-  src="yahoo", 
-  periodicity="daily", 
-  env = NULL)
 
-names(bitcoin) <- c("Open", "High", "Low", "Close", "Volume", "Adjusted")
-```
 
-```{r}
-bc <- bitcoin %>%
-  ts_tsibble() %>%
-  pivot_wider(
-    names_from = id,
-    values_from = value
-  )
-```
-
-```{r}
-bc %>%
-  autoplot(Close) + 
-  labs(
-    x = "Date",
-    y = "USD/BTC"
-  )
-```
-
-```{r}
-bc %>%
-  gg_season(period = "month")
-```
 
 :::{#exr-data-prep}
 
@@ -477,8 +446,8 @@ gdp_q <- get_eurostat(
   "namq_10_gdp",
   filters = list(
     geo="BG",
-    na_item = "B1GQ",
     unit = "CLV_I15",
+    na_item = "B1GQ",
     s_adj = "NSA"
   ),
   cache = FALSE,
@@ -492,7 +461,8 @@ gdp_q <- get_eurostat(
 ```
 
 1. Create a `tsibble` object to hold the time series. Hint: Use the
-    `as_tsibble` and `yearquarter` functions from the `tsibble` package.
+    `as_tsibble` and `yearquarter` functions from the `tsibble` package. Use the 
+    code from the introduction
 2. What is the unit of measurement: EUR or BGN? Take a look at the
     values and make a guess.
 3. What are the dates of the first and the last observations?

@@ -595,14 +595,14 @@ some normal distribution $N(\mu, \sigma^2)$ with unknown mean and variance. We u
 values to learn something about this distribution. We estimated its mean with
 
 $$
-\hat{\mu} = \frac{1}{n}\sum_{i = 1}^{n} x_i: = \bar{x}
+\hat{\mu} = \frac{1}{n}\sum_{i = 1}^{n} x_i
 $$
 
 and its variance with:
 
 $$
-\hat{\sigma}^2 = \frac{1}{N  -1}\sum_{i = 1}^{n}(x_i - \bar{x})^2
-$$
+\hat{\sigma}^2 = \frac{1}{n  -1}\sum_{i = 1}^{n}(x_i - \hat{\mu})^2
+$${#eq-evar}
 
 In the case of time series, however, we have only _one_ observation for each time point.
 
@@ -644,7 +644,7 @@ In order to be able to apply our usual technique for moments estimation
 we have to _assume_ that the random process is ergodic, meaning that we can
 estimate its statistical properties (mean, variance, correlations) from the
 its time series (observed values). We will talk more extensively about (weak) _stationarity_, 
-which is a necessary condition for ergodicity. For (weakly) stationary time series the 
+which is a necessary (though not sufficient) condition for ergodicity. For (weakly) stationary time series the 
 mean, variance and covariances do not change over time.
 
 $$
@@ -661,52 +661,113 @@ For a random process $X_1, X_2,\ldots, X_T$ and an observed time series $x_1, x_
 observed values.
 
 $$
-\hat{\mu} = \frac{1}{T}\sum_{t = 1}^{T} =: \bar{x}
+\hat{\mu} = \frac{1}{T}\sum_{t = 1}^{T} x_{t}
 $$
-
 
 We will estimate the variance of a stationary process with the _empirical_ variance:
 
 $$
 \hat{\gamma}(0) = \frac{1}{T}\sum_{t = 1}^{T}(x_t - \bar{x})^2
-$$
+$${#eq-ts-evar}
 
-And the covariances with the _empirical_ covariances:
+And the covariances with the _empirical_ (auto-)covariances:
 
 $$
 \hat{\gamma}(k) = \frac{1}{T}\sum_{t = 1}^{T - k} (x_{t} - \hat{\mu})(x_{t + k} - \hat{\mu})
+$${#eq-ts-ecov}
+
+and empirical (auto-)correlations:
+
+$$
+\hat{\rho}(k) = \frac{\hat{\gamma}(k)}{\hat{\gamma}(0)}
+$$
+To see the meaning of the autocovariances, let us create two artificial time
+series and plot their lags. The time series will be generated from two processes.
+The first one will be called the _purely random_ or _white noise_ process.
+
+$$
+e_t \sim N(0, 1) \text{ for every } t\\
+E(e_t) = 0 \\
+Var(e_t) = 1 \\
+Cov(e_t, e_{t + k}) = 0, k \neq 0
+$$
+The second one is be called a _random walk_.
+
+$$
+y_t = \sum_{i = 1}^{t}e_i
 $$
 
 
 ```{r}
 set.seed(432)
 
+# Create 20 observations from two time series. rnorm draws random numbers
+# from a normal distribution with zero expected value (mean) and standard
+# deviation (sd) equal to 1. We call this distribution the standard normal
+# distribution. In the mutate step we create the first two lags of the series
+
 dt_sim <- tibble(
-  x = 20 + rnorm(n = 20),
-  y = 2 * x + rnorm(n = 20)
+  x = rnorm(n = 20, mean = 0, sd = 1),
+  y = cumsum(x)
 ) %>%
   mutate(
-    x_below_avg = x < mean(x),
-    y_below_avg = y < mean(y),
-    xy_gr = x_below_avg == y_below_avg
+    x_l1 = lag(x, n = 1),
+    y_l1 = lag(y, n = 1)
   )
-mean(dt_sim$x)
-mean(dt_sim$y)
+
+mean_x <- mean(dt_sim$x)
+mean_x
+
+mean_y <- mean(dt_sim$y)
+mean_y
 ```
+
 
 ```{r}
 dt_sim %>%
-  ggplot(aes(x = x, y = y)) +
-  geom_point(aes(color = x_below_avg, shape=y_below_avg)) + 
-  geom_vline(xintercept=mean(dt_sim$x), lty=2, alpha = 0.5) + 
-  geom_hline(yintercept=mean(dt_sim$y), lty=2, alpha = 0.5)
+  ggplot(aes(x = x, y = x_l1)) +
+  geom_point() + 
+  geom_vline(xintercept=mean_x, lty=2, alpha = 0.5) + 
+  geom_hline(yintercept=mean_x, lty=2, alpha = 0.5) + 
+  labs(
+    x = "x",
+    y = "lag(x, 1)"
+  )
 ```
 
+Looking at the plot, think about the signs of the cross-products that go into
+the formula for the covariance:
+
+$$
+(x_{t + 1} - \hat{\mu})(x_{t} - \hat{\mu})
+$$
+
+Where do you find positive and negative cross-products in the plot?
+
 ```{r}
-cov(dt_sim$x, dt_sim$y)
+dt_sim %>%
+  ggplot(aes(x = y, y = y_l1)) +
+  geom_point() + 
+  geom_vline(xintercept=mean_y, lty=2, alpha = 0.5) + 
+  geom_hline(yintercept=mean_y, lty=2, alpha = 0.5) + 
+  labs(
+    x = "y",
+    y = "lag(y, 1)"
+  )
+```
+
+
+The following code computes the covariance 
+```{r}
+# Compute the covariance
+cov_xy <- cov(dt_sim$x, dt_sim$y)
+cov_xy
+#
+cov_xy / (sd(dt_sim$x) * sd(dt_sim$y))
 cor(dt_sim$x, dt_sim$y)
 ```
 
+Note that `cov` computes the covariance according to formula @eq-evar.
 
 
 ## Exercises
@@ -750,22 +811,21 @@ bc %>%
 
 ```
 
-2. Compute the empirical variance.
+2. Compute the empirical variance using the `var` function
+
 ```{r}
 # Type your code here
 
 ```
 
-3. Construct a two new variables that contain the first and the second lags of `Close`. Hint: Use the `mutate` and `lag` functions.
+
+3. Construct a two new variables that contain the first and the second lags of `Close`. Leave only `Close` and its lags in the resulting tsibble. Hint: Use the `mutate` and `lag` functions and select the columns using `select`.
 
 ```{r}
 # Type your code here
 # Select the code below and press Ctrl-Shift-c in order to remove the comments
 
-# bc <- bc %>%
-#   mutate(
-#     
-#   )
+
 ```
 
 4. Create a scatterplot for `Close` and its first lag. Hint: Use the code
@@ -783,10 +843,25 @@ generating the scatterplot in the simulation above and adapt it.
 
 ```
 
-6. Use the `acf` function to plot the autocorrelation function of the `Close` time series.
+6. Use the `gg_lag` function to create scatterplots for the between the time series
+and its first six lags. What patterns can you see in these scatterplots?
+
+```{r}
+bc %>%
+  gg_lag(
+    Close, 
+    lags = 1:6, 
+    geom="point", 
+    size = 0.5
+  )
+```
+
+7. Use the `acf` function to plot the autocorrelation function of the `Close` time series.
 
 ```{r}
 # Type your code here
 
 ```
+
+
 
