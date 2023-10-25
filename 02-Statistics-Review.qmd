@@ -46,7 +46,7 @@ For convenience, the probability mass functions of $X$ and $Y$ are stored in the
 ```{r}
 #| label: tbl-distr-x
 #| tbl-cap: "Probability mass function of $X$."
-
+ 
 px %>%
   knitr::kable()
 ```
@@ -54,7 +54,7 @@ px %>%
 ```{r}
 #| label: tbl-distr-y
 #| tbl-cap: "Probability mass function of $Y$"
-
+ 
 py %>%
   knitr::kable()
 ```
@@ -94,8 +94,8 @@ table(smpl_x$x) / nrow(smpl_x)
 
 ```{r}
 smpl_x %>%
-  ggplot(aes(x = x)) +
-    geom_bar() +
+  ggplot(aes(x = x)) + 
+    geom_bar() + 
     labs(
       x = "Outcome",
       y = "Frequency"
@@ -108,7 +108,7 @@ smpl_x %>%
 ## Probabilities
 
 Show that the probability mass function of $Y$ in @tbl-distr-y sums to one.
-Sample 10000 values from its distribution and compute the sample frequency of each outcome.
+Sample 10000 values from its distribution and compute the sample frequency of each outcome. 
 :::
 :::{.solution}
 ```{r}
@@ -157,10 +157,10 @@ Let us construct an example. You need to predict the result of $X$ and you think
 $$
 L(x) = (x - 1)^2 =
 \begin{cases}
-(0 - 1)^2 = 1 & \text{x = 0}\\
-(1 - 1)^2 = 0 & \text{x = 1}\\
-(2 - 1)^2 = 1 & \text{x = 2}\\
-(3 - 1)^2 = 4 & \text{x = 3}
+   (0 - 1)^2 = 1 & \text{x = 0}\\
+   (1 - 1)^2 = 0 & \text{x = 1}\\
+   (2 - 1)^2 = 1 & \text{x = 2}\\
+   (3 - 1)^2 = 4 & \text{x = 3}
 \end{cases}
 $$
 
@@ -190,10 +190,10 @@ The variance of a random variable measures how different the possible values tha
 $$
 \begin{align}
 Var(X) & = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
-& = (0 - 1.788)^2 \times 0.250 + (1 - 1.788)^2 \times 0.095 + (2 - 1.788)^2\times 0.272 + (3 - 1.788)^2 \times 0.383 \\
-& = (-1.788)^2 \times 0.250 + (-0.788)^2 \times 0.095 + (0.212)^2\times 0.272 + (1.212)^2 \times 0.383 \\
-& = 3.196 \times 0.250 + 0.620^2 \times 0.095 + 0.044 \times 0.272 + 1.468 \times 0.383 \\
-& \approx 1.433
+       & = (0 - 1.788)^2 \times 0.250 + (1 - 1.788)^2 \times 0.095 + (2 - 1.788)^2\times 0.272 + (3 - 1.788)^2 \times 0.383 \\
+       & = (-1.788)^2 \times 0.250 + (-0.788)^2 \times 0.095 + (0.212)^2\times 0.272 + (1.212)^2 \times 0.383 \\
+       & = 3.196 \times 0.250 + 0.620^2 \times 0.095 + 0.044 \times 0.272 + 1.468 \times 0.383 \\
+       & \approx 1.433
 \end{align}
 $${#eq-variance}
 
@@ -286,7 +286,7 @@ Assume that $X$ and $Y$ are independent.
 :::{.solution}
 $$
 E(2X + 3Y + 1) = \\
-Var(2X + 3Y + 1) =
+Var(2X + 3Y + 1) = 
 $$
 :::
 
@@ -385,7 +385,7 @@ $$
 
 ```{r}
 pxy_ind <- expand_grid(
-  px %>% rename(p_x = p),
+  px %>% rename(p_x = p), 
   py %>% rename(p_y = p)
 )
 pxy_ind <- pxy_ind %>%
@@ -463,17 +463,17 @@ Let us write the conditional expectation of $Y$ for each possible value of $X$ f
 
 $$
 E(Y | X = x) = \begin{cases}
-2.036 & \text{for } x = 0 \\
-2.060 & \text{for } x = 1 \\
-2.158 & \text{for } x = 2 \\
-2.475 & \text{for } x = 3
+  2.036 & \text{for } x = 0 \\
+  2.060 & \text{for } x = 1 \\
+  2.158 & \text{for } x = 2 \\
+  2.475 & \text{for } x = 3
 \end{cases}
 $$
 
 ```{r}
 #| label: tbl-cond-exp-y
 #| tbl-cap: "Conditional expectation of $Y$ for each possible value of $X$."
-#|
+#| 
 pxy %>%
   group_by(x) %>%
   summarise(
@@ -481,7 +481,7 @@ pxy %>%
     p_y_x = p / sum(p)
   ) %>%
   summarise(
-    E_Y_given_X = sum(y * p_y_x)
+    E_Y_given_X = sum(y * p_y_x) 
   ) %>%
   knitr::kable(digits = 3)
 ```
@@ -549,6 +549,19 @@ Closely related to the covariance is the correlation between $X$ and $Y$.
 $$
 \rho(X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X)Var(Y)}}
 $$
+It is easy to show that the correlation is bounded between -1 and 1.
+
+$$
+-1 \leq \rho(X, Y) \leq 1
+$$
+
+:::
+
+:::{#exr-corr-proof}
+## Correlation
+
+Let X be a random variable with, and $Y = a + bX$. Show that the correlation between $X$ and $Y$ equals one or minus one depending on the sign of $b$. For simplicity, assume that $E(X) = 0$.
+
 
 :::
 
@@ -590,7 +603,7 @@ processes: the mean (expected value, level), the variance (fluctuation), and the
 covariances/correlations (dependency) between lags of the random process.
 
 In the the previous statistics-related courses we had a sample of (uncorrelated) observations
-$x_1, x_2,\ldots, x_n$. We assumed that these are samples (realizations) from
+$x_1, x_2,\ldots, x_n$. We assumed that these are samples (realizations) from 
 some normal distribution $N(\mu, \sigma^2)$ with unknown mean and variance. We used the observed
 values to learn something about this distribution. We estimated its mean with
 
@@ -627,24 +640,24 @@ dt_rw %>%
   ggplot(
     aes(
       x = t,
-      y = x,
-      group = r,
+      y = x, 
+      group = r, 
       alpha = factor(is_observed))
     ) +
-  geom_line() +
-  geom_point() +
+  geom_line() + 
+  geom_point() + 
   labs(
     alpha = "Observed",
     y = expression(x[t])
-  ) +
+  ) + 
   scale_x_continuous(breaks = 1:n)
 ```
 
 In order to be able to apply our usual technique for moments estimation
 we have to _assume_ that the random process is ergodic, meaning that we can
 estimate its statistical properties (mean, variance, correlations) from the
-its time series (observed values). We will talk more extensively about (weak) _stationarity_,
-which is a necessary (though not sufficient) condition for ergodicity. For (weakly) stationary time series the
+its time series (observed values). We will talk more extensively about (weak) _stationarity_, 
+which is a necessary (though not sufficient) condition for ergodicity. For (weakly) stationary time series the 
 mean, variance and covariances do not change over time.
 
 $$
@@ -653,7 +666,7 @@ $$
 \gamma(0) & = Var(X_1) = Var(X_2) = \ldots = Var(X_T) \\
 \gamma(1) & = Cov(X_1, X_2) = Cov(X_2, X_3) = \ldots = Cov(X_{t}, X_{t + 1}) = Cov(X_{T - 1}, X_{T1}) \\
 \gamma(k) & = Cov(X_{t}, X_{t + k}) \\
-\rho(k) & = \frac{\gamma(k)}{\gamma(0)}
+\rho(k) & = \frac{\gamma(k)}{\gamma(0)} 
 \end{align}
 $$
 
@@ -726,9 +739,9 @@ mean_y
 ```{r}
 dt_sim %>%
   ggplot(aes(x = x, y = x_l1)) +
-  geom_point() +
-  geom_vline(xintercept=mean_x, lty=2, alpha = 0.5) +
-  geom_hline(yintercept=mean_x, lty=2, alpha = 0.5) +
+  geom_point() + 
+  geom_vline(xintercept=mean_x, lty=2, alpha = 0.5) + 
+  geom_hline(yintercept=mean_x, lty=2, alpha = 0.5) + 
   labs(
     x = "x",
     y = "lag(x, 1)"
@@ -746,25 +759,24 @@ Where do you find positive and negative cross-products in the plot?
 
 ```{r}
 dt_sim %>%
-  ggplot(aes(x = y, y = y_l1)) +
-  geom_point() +
-  geom_vline(xintercept=mean_y, lty=2, alpha = 0.5) +
-  geom_hline(yintercept=mean_y, lty=2, alpha = 0.5) +
+  ggplot(aes(x = y_l1, y = y)) +
+  geom_point() + 
+  geom_vline(xintercept=mean_y, lty=2, alpha = 0.5) + 
+  geom_hline(yintercept=mean_y, lty=2, alpha = 0.5) + 
   labs(
-    x = "y",
-    y = "lag(y, 1)"
+    x = "lag(y, 1)",
+    y = "y"
   )
 ```
 
 
-The following code computes the covariance
+The following code computes the covariance 
 ```{r}
 # Compute the covariance
-cov_xy <- cov(dt_sim$x, dt_sim$y)
-cov_xy
-#
-cov_xy / (sd(dt_sim$x) * sd(dt_sim$y))
-cor(dt_sim$x, dt_sim$y)
+cov(dt_sim$x, dt_sim$x_l1, use = "complete.obs")
+
+# COmpute the correlation
+cor(dt_sim$x, dt_sim$x_l1, use = "complete.obs")
 ```
 
 Note that `cov` computes the covariance according to formula @eq-evar.
@@ -772,15 +784,15 @@ Note that `cov` computes the covariance according to formula @eq-evar.
 
 ## Exercises
 
-The following code downloads
+The following code downloads 
 
 ```{r download-bitcoin}
 bitcoin <- getSymbols(
-  "BTC-USD",
+  "BTC-USD", 
   from="2015-01-01",
   to="2023-01-01",
-  src="yahoo",
-  periodicity="daily",
+  src="yahoo", 
+  periodicity="daily", 
   env = NULL)
 
 names(bitcoin) <- c("Open", "High", "Low", "Close", "Volume", "Adjusted")
@@ -798,7 +810,7 @@ bc <- bitcoin %>%
 # Plots the closing exchange rate against the time index
 
 bc %>%
-  autoplot(Close) +
+  autoplot(Close) + 
   labs(
     x = "Date",
     y = "USD/BTC"
@@ -829,7 +841,7 @@ bc %>%
 ```
 
 4. Create a scatterplot for `Close` and its first lag. Hint: Use the code
-   generating the scatterplot in the simulation above and adapt it.
+generating the scatterplot in the simulation above and adapt it.
 
 ```{r}
 # Type your code here
@@ -844,14 +856,14 @@ bc %>%
 ```
 
 6. Use the `gg_lag` function to create scatterplots for the between the time series
-   and its first six lags. What patterns can you see in these scatterplots?
+and its first six lags. What patterns can you see in these scatterplots?
 
 ```{r}
 bc %>%
   gg_lag(
-    Close,
-    lags = 1:6,
-    geom="point",
+    Close, 
+    lags = 1:6, 
+    geom="point", 
     size = 0.5
   )
 ```
@@ -862,6 +874,3 @@ bc %>%
 # Type your code here
 
 ```
-
-
-

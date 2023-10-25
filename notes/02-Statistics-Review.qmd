@@ -549,6 +549,19 @@ Closely related to the covariance is the correlation between $X$ and $Y$.
 $$
 \rho(X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X)Var(Y)}}
 $$
+It is easy to show that the correlation is bounded between -1 and 1.
+
+$$
+-1 \leq \rho(X, Y) \leq 1
+$$
+
+:::
+
+:::{#exr-corr-proof}
+## Correlation
+
+Let X be a random variable with, and $Y = a + bX$. Show that the correlation between $X$ and $Y$ equals one or minus one depending on the sign of $b$. For simplicity, assume that $E(X) = 0$.
+
 
 :::
 
@@ -746,13 +759,13 @@ Where do you find positive and negative cross-products in the plot?
 
 ```{r}
 dt_sim %>%
-  ggplot(aes(x = y, y = y_l1)) +
+  ggplot(aes(x = y_l1, y = y)) +
   geom_point() + 
   geom_vline(xintercept=mean_y, lty=2, alpha = 0.5) + 
   geom_hline(yintercept=mean_y, lty=2, alpha = 0.5) + 
   labs(
-    x = "y",
-    y = "lag(y, 1)"
+    x = "lag(y, 1)",
+    y = "y"
   )
 ```
 
@@ -760,11 +773,10 @@ dt_sim %>%
 The following code computes the covariance 
 ```{r}
 # Compute the covariance
-cov_xy <- cov(dt_sim$x, dt_sim$y)
-cov_xy
-#
-cov_xy / (sd(dt_sim$x) * sd(dt_sim$y))
-cor(dt_sim$x, dt_sim$y)
+cov(dt_sim$x, dt_sim$x_l1, use = "complete.obs")
+
+# COmpute the correlation
+cor(dt_sim$x, dt_sim$x_l1, use = "complete.obs")
 ```
 
 Note that `cov` computes the covariance according to formula @eq-evar.
