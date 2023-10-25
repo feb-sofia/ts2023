@@ -1079,7 +1079,7 @@ Var(aX + bY) = a^2 Var(X) + b^2Var(Y) + 2abCov(X, Y)
 \begin{align}
 \mu &amp; = E(X_1) = E(X_2) = \ldots = E(X_T) \\
 \gamma(0) &amp; = Var(X_1) = Var(X_2) = \ldots = Var(X_T) \\
-\gamma(1) &amp; = Cov(X_1, X_2) = Cov(X_2, X_3) = \ldots = Cov(X_{t}, X_{t + 1}) = Cov(X_{T - 1}, X_{T1}) \\
+\gamma(1) &amp; = Cov(X_1, X_2) = Cov(X_2, X_3) = \ldots = Cov(X_{t - 1}, X_{t}) = Cov(X_{T - 1}, X_{T}) \\
 \gamma(k) &amp; = Cov(X_{t}, X_{t + k}) \\
 \rho(k) &amp; = \frac{\gamma(k)}{\gamma(0)}
 \end{align}
@@ -1101,13 +1101,13 @@ Var(aX + bY) = a^2 Var(X) + b^2Var(Y) + 2abCov(X, Y)
 \hat{\rho}(k) = \frac{\hat{\gamma}(k)}{\hat{\gamma}(0)}
 \]</span> To see the meaning of the autocovariances, let us create two artificial time series and plot their lags. The time series will be generated from two processes. The first one will be called the <em>purely random</em> or <em>white noise</em> process.</p>
 <p><span class="math display">\[
-e_t \sim N(0, 1) \text{ for every } t\\
+e_t \sim N(0, 1) \text{ for every } t \\
 E(e_t) = 0 \\
 Var(e_t) = 1 \\
 Cov(e_t, e_{t + k}) = 0, k \neq 0
 \]</span> The second one is be called a <em>random walk</em>.</p>
 <p><span class="math display">\[
-y_t = \sum_{i = 1}^{t}e_i
+y_t = \sum_{i = 1}^{t} e_i
 \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">432</span>)</span>
@@ -1218,9 +1218,10 @@ y_t = \sum_{i = 1}^{t}e_i
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>bc <span class="sc">%&gt;%</span></span>
 <span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(Close) <span class="sc">+</span> </span>
 <span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"USD/BTC"</span></span>
-<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the labels for the x and y axis</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"USD/BTC"</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="02-Statistics-Review_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
 </div>

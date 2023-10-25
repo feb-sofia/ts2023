@@ -664,7 +664,7 @@ $$
 \begin{align}
 \mu & = E(X_1) = E(X_2) = \ldots = E(X_T) \\
 \gamma(0) & = Var(X_1) = Var(X_2) = \ldots = Var(X_T) \\
-\gamma(1) & = Cov(X_1, X_2) = Cov(X_2, X_3) = \ldots = Cov(X_{t}, X_{t + 1}) = Cov(X_{T - 1}, X_{T1}) \\
+\gamma(1) & = Cov(X_1, X_2) = Cov(X_2, X_3) = \ldots = Cov(X_{t - 1}, X_{t}) = Cov(X_{T - 1}, X_{T}) \\
 \gamma(k) & = Cov(X_{t}, X_{t + k}) \\
 \rho(k) & = \frac{\gamma(k)}{\gamma(0)} 
 \end{align}
@@ -699,7 +699,7 @@ series and plot their lags. The time series will be generated from two processes
 The first one will be called the _purely random_ or _white noise_ process.
 
 $$
-e_t \sim N(0, 1) \text{ for every } t\\
+e_t \sim N(0, 1) \text{ for every } t \\
 E(e_t) = 0 \\
 Var(e_t) = 1 \\
 Cov(e_t, e_{t + k}) = 0, k \neq 0
@@ -707,7 +707,7 @@ $$
 The second one is be called a _random walk_.
 
 $$
-y_t = \sum_{i = 1}^{t}e_i
+y_t = \sum_{i = 1}^{t} e_i
 $$
 
 
@@ -812,6 +812,7 @@ bc <- bitcoin %>%
 bc %>%
   autoplot(Close) + 
   labs(
+    # Set the labels for the x and y axis
     x = "Date",
     y = "USD/BTC"
   )
