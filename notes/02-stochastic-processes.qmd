@@ -1,48 +1,255 @@
 # Stochastic Processes
 
-## Why is Time Series Analysis Different
 
-```{r, warning=FALSE}
-n <- 10
-B <- 5
-set.seed(21)
-
-dt_rw <- tibble(
-  r = rep(1:B, n),
-  e = rnorm(n = B*n)
-) %>%
-  group_by(r) %>%
-  mutate(
-    t = 1:n,
-    x = cumsum(e),
-    is_observed = (r == 1),
-  )
-
-dt_rw %>%
-  ggplot(
-    aes(
-      x = t,
-      y = x, 
-      group = r, 
-      alpha = factor(is_observed))
-    ) +
-  geom_line() + 
-  geom_point() + 
-  labs(
-    alpha = "Observed"
-  ) + 
-  scale_x_continuous(breaks = 1:n)
-```
-
-
-
-We view the observed time series of length $T$ as a realization of $T$ random
-variables. The observed values of the process is what we call a time series (XXX, w).
+We view the observed time series of length $T$ $x_1, x_2, \ldots, x_T$ as a realization of $T$ random
+variables $X_1,X_2,\ldots, X_T$. The observed values of the process is what we call a time series. Most
+of the time series literature uses one and the same notation for both the random variables in the process
+and for the *observed values* of the time series. In this course we will follow this tradition, so you need
+to be aware of the context.
 
 :::{#def-stochastic-process}
 ## Stocahstic Process
 
-A stochastic process in the context of time series analysis is a sequence of random variables $\{x_t\}$ indexed by some notion of time (XXX, w!) (second, minute, hour, day, week, month, quarter, year, etc.).
+A stochastic process in the context of time series analysis is a sequence of random variables $\{x_t\}$ indexed by some time index (second, minute, hour, day, week, month, quarter, year, etc.).
 :::
+
+## First Order Autoregressive Processes: AR(1)
+
+Let us start with a simple process defined by:
+
+$$
+y_{t} = \psi_i y_{t - 1} + e_t
+$$
+
+where $e_t$ is a _purely random process_ satisfying:
+
+$$
+E(e_t) = 0 \\
+Var(e_t) = \sigma^2 \\
+Cov(e_t, e_{t + k}) = 0, k \neq 0
+
+$$
+
+
+:::{#exr-autonomous-solution}
+Given a first order autoregressive process with $\psi_1 = 0.8$, find the 
+value of the process in $t = 3$, knowing that it started with $y_0 = 5$.
+Assume that $e_t = 0$ for all $t$.
+
+:::
+:::{.solution}
+
+```{r}
+# Type your code here
+
+```
+
+:::
+
+
+
+
+
+## Stationarity of AR(1)
+
+The first order autoregressive process is stationary if $|\psi_1| < 1$.
+
+
+$$
+
+$$
+
+
+
+
+
+## Second Order Autoregressive Processes
+
+Before we consider AR(1), it is convenient to see the case of a vector
+autoregressive process. Let's start with two variables, $x_t$ and $y_t$.
+
+$$
+x_{t} = \psi_{x,1}x_{t - 1} + \psi_{y,1}y_{t - 1} + e_{x,t} \\
+y_{t} = \psi_{x_2}x_{t - 1} + \psi_{y, 2}y_{t - 1} + e_{y,t}
+$$
+
+
+It is convenient to write this equation in matrix form
+
+$$
+\mathbf{z}_{t} = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t}
+$$
+
+where 
+
+$$
+\mathbf{A} = 
+\begin{pmatrix}
+\psi_{x,1} & \psi_{x,2} \\
+\psi_{x, 2} & \psi_{y, 2}
+\end{pmatrix} \\
+\mathbf{z}_{t} = \begin{pmatrix}
+x_{t - 1} \\
+y_{t - 1}
+\end{pmatrix} \\
+\mathbf{e}_{t} = \begin{pmatrix}
+e_{x,t} \\
+e_{y,t}
+\end{pmatrix}
+$$
+
+If $\mathbf{A}$ were a diagonal matrix, then we already known the solution. We can solve each equation separately.
+However, $\mathbf{A}$ depends on the subject matter at hand and we need to be able to handle general case (not diagonal).
+Luckily, $\mathbf{A}$ is a square matrix and we known that we can diagonalize it using its eigen decomposition.
+
+$$
+\mathbf{A} = \mathbf{V}
+\begin{pmatrix}
+\lambda_1 & 0 \\
+0 & \lambda_2
+\end{pmatrix}
+\mathbf{V}^T
+$$
+
+where $\mathbf{V}$ is a matrix holding the (orthogonal) eigenvectors of $\mathbf{A}$.
+So we can transform the complicated problem of interrelated autoregressive processes
+into a problem with diagonal matrices.
+
+$$
+\begin{align}
+\mathbf{z}_{t} & = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{z}_{t} & = \mathbf{V} \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{V}^T \mathbf{z}_{t} & = \mathbf{V}^T \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^T\mathbf{e}_{t} \\
+\mathbf{V}^T \mathbf{z}_{t} & = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^T\mathbf{e}_{t} \\
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
+\end{align}
+$$
+
+Now we can solve th difference equation in the simple case. Once we have found the
+solutions, we can transform it back to the original variables $x_t$ and $y_t$.
+
+For the purposes of this course, however, our focus lies on the behavior 
+of the solutions: does it converge to a stable path?
+
+The answer is contained in the matrix $\mathbf{A}$. When we start doing the
+recursive substitution that we did in the scalar case, the transformed eqations
+will look like this:
+
+$$
+\begin{align}
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}} \\
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}) + \tilde{\mathbf{e}_{t}} \\
+\implies \tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}_{t}} + \tilde{\mathbf{e}_{t}} \\
+
+\end{align}
+$$
+
+You can continue the recursive substitution just like we did it in @exr-autonomous-solution. At this
+point you should realize that the behavior of the system depends on the matrix $\mathbf{\Lambda}$. This
+leads us to the following problem: how do we find the values of the diagonal matrix? We will make
+use of a result from linear algebra.
+
+:::{#thm-eigenvalues}
+## Eigenvalues
+
+
+The eigenvalues of a square matrix $\mathbf{A}$ are given by the following equation
+
+$$
+\det(\mathbf{A} - \lambda\mathbf{I}) = 0
+$$
+:::
+
+
+## Second Order Autoregressive Processes AR(2)
+
+In a second order autoregressive process the current value $x_t$ depends (directly)
+on the values up to two periods before it: $x_{t - 1}$ and $x_{t - 2}$.
+
+$$
+x_{t} = \psi_{1}x_{t - 1} + \psi_{2}x_{t - 2} + e_{t}
+$$
+
+What we want to determine is when this process is stationary. It helps to 
+express this equation as a first order VAR process.
+
+$$
+\begin{align}
+x_{t} & = \psi_{1}x_{t - 1} + \psi_{2}x_{t - 2} + e_{t} \\
+x_{t - 1} & = x_{t - 1}
+\end{align}
+
+$$
+The matrix for the VAR process is very simple in this case
+
+$$
+\mathbf{A} = 
+\begin{pmatrix}
+\psi_1 & \psi_2 \\
+1 & 0
+\end{pmatrix}
+$$
+
+The eigenvalues of the matrix are given by:
+
+$$
+\det(\mathbf{A} - \lambda\mathbf{I}) = 0
+$$
+
+In the AR(2) case this simplifies to:
+
+$$
+\det\begin{pmatrix} 
+\psi_1 - \lambda & \psi_2 \\
+1 & 0 - \lambda
+\end{pmatrix} = 0
+$$
+
+This is called the characteristic equation of $\mathbf{A}$ and we will call
+it the characteristic equation of the AR process.
+
+$$
+(\psi_1 - \lambda)(-\lambda) - \psi_2 \cdot 1 = 0 \\
+\lambda^2 - \lambda \psi_1 - \psi_2 = 0
+$$
+
+Most of the time we derive this equation using the lag operator:
+
+$$
+x_{t} = \psi_1 x_{t - 1} + \psi_2 x_{t - 2} + e_t \\
+x_{t} = \psi_1 L x_{t} + \psi_2 L^2 x_{t} + e_{t} \\
+(1 - \psi_1 L - \psi_2 L^2) x_{t} = e_{t}
+$$
+
+For AR(2) you will need the formula for the solution of quadratic equations
+
+:::{#thm-quadratic-eq}
+## Solutions of a Quadratic Equation
+
+Given 
+
+$$
+a \lambda^2 + b \lambda + c = 0
+$$
+
+the solutions are given by:
+
+$$
+\lambda_{1,2} = \frac{-b \pm\sqrt{b^2 - 4ac}}{2a}
+$$
+:::
+
+In the more general case you can rely on the Fundamental Theorem of Algebra
+
+:::{#thm-fundamental-theorem-algebra}
+
+Every polynomial of n-th order has n (not necessarily distinct) real or complex roots.
+
+:::
+
+
+
+
+
 
 
