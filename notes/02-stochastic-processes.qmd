@@ -1,0 +1,48 @@
+# Stochastic Processes
+
+## Why is Time Series Analysis Different
+
+```{r, warning=FALSE}
+n <- 10
+B <- 5
+set.seed(21)
+
+dt_rw <- tibble(
+  r = rep(1:B, n),
+  e = rnorm(n = B*n)
+) %>%
+  group_by(r) %>%
+  mutate(
+    t = 1:n,
+    x = cumsum(e),
+    is_observed = (r == 1),
+  )
+
+dt_rw %>%
+  ggplot(
+    aes(
+      x = t,
+      y = x, 
+      group = r, 
+      alpha = factor(is_observed))
+    ) +
+  geom_line() + 
+  geom_point() + 
+  labs(
+    alpha = "Observed"
+  ) + 
+  scale_x_continuous(breaks = 1:n)
+```
+
+
+
+We view the observed time series of length $T$ as a realization of $T$ random
+variables. The observed values of the process is what we call a time series (XXX, w).
+
+:::{#def-stochastic-process}
+## Stocahstic Process
+
+A stochastic process in the context of time series analysis is a sequence of random variables $\{x_t\}$ indexed by some notion of time (XXX, w!) (second, minute, hour, day, week, month, quarter, year, etc.).
+:::
+
+
