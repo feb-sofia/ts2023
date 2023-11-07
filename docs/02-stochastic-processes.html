@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Boyko Amarov">
-<meta name="dcterms.date" content="2023-10-01">
 
-<title>Introduction to Time Series Analysis 2023/2024</title>
+<title>Introduction to Time Series Analysis 2023/2024 - 3&nbsp; Stochastic Processes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,26 +54,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -85,7 +64,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01-Introduction.html" rel="next">
+<link href="./references.html" rel="next">
+<link href="./02-Statistics-Review.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -116,6 +96,8 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -128,7 +110,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">General Information</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-stochastic-processes.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stochastic Processes</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -155,7 +137,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">General Information</span></a>
   </div>
 </li>
@@ -173,7 +155,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-stochastic-processes.html" class="sidebar-item-text sidebar-link">
+  <a href="./02-stochastic-processes.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stochastic Processes</span></span></a>
   </div>
 </li>
@@ -193,14 +175,10 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#general-information" id="toc-general-information" class="nav-link active" data-scroll-target="#general-information">General Information</a>
-  <ul class="collapse">
-  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
-  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading">Grading</a></li>
-  <li><a href="#github-repository" id="toc-github-repository" class="nav-link" data-scroll-target="#github-repository">GitHub Repository</a></li>
-  <li><a href="#software-setup" id="toc-software-setup" class="nav-link" data-scroll-target="#software-setup">Software Setup</a></li>
-  <li><a href="#recommended-reading" id="toc-recommended-reading" class="nav-link" data-scroll-target="#recommended-reading">Recommended Reading</a></li>
-  </ul></li>
+  <li><a href="#first-order-autoregressive-processes-ar1" id="toc-first-order-autoregressive-processes-ar1" class="nav-link active" data-scroll-target="#first-order-autoregressive-processes-ar1"><span class="header-section-number">3.1</span> First Order Autoregressive Processes: AR(1)</a></li>
+  <li><a href="#stationarity-of-ar1" id="toc-stationarity-of-ar1" class="nav-link" data-scroll-target="#stationarity-of-ar1"><span class="header-section-number">3.2</span> Stationarity of AR(1)</a></li>
+  <li><a href="#second-order-autoregressive-processes" id="toc-second-order-autoregressive-processes" class="nav-link" data-scroll-target="#second-order-autoregressive-processes"><span class="header-section-number">3.3</span> Second Order Autoregressive Processes</a></li>
+  <li><a href="#second-order-autoregressive-processes-ar2" id="toc-second-order-autoregressive-processes-ar2" class="nav-link" data-scroll-target="#second-order-autoregressive-processes-ar2"><span class="header-section-number">3.4</span> Second Order Autoregressive Processes AR(2)</a></li>
   </ul>
 </nav>
     </div>
@@ -209,26 +187,14 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introduction to Time Series Analysis 2023/2024</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stochastic Processes</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Boyko Amarov </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 1, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -236,108 +202,183 @@ div.csl-indent {
 
 </header>
 
-<section id="general-information" class="level1 unnumbered">
-<h1 class="unnumbered">General Information</h1>
-<section id="schedule" class="level2">
-<h2 class="anchored" data-anchor-id="schedule">Schedule</h2>
-<ol type="1">
-<li>Tu 12:15-13:45 in room 302</li>
-<li>We 12:15-13:45 in room 302</li>
-<li>We 14:15-15:45 in room 308</li>
-</ol>
-</section>
-<section id="grading" class="level2">
-<h2 class="anchored" data-anchor-id="grading">Grading</h2>
-<p>The course consists of two parts: lectures and exercise classes. Your final grade will be the average of the grades of these two parts. To obtain a grade for the exercise classes, you need to complete a homework project at the end of the semester—details to be announced.</p>
-</section>
-<section id="github-repository" class="level2">
-<h2 class="anchored" data-anchor-id="github-repository">GitHub Repository</h2>
-<p>All course materials for the exercise classes will be available in the GitHub repository:</p>
-<p><a href="https://github.com/feb-sofia/ts2023">https://github.com/feb-sofia/ts2023</a></p>
-</section>
-<section id="software-setup" class="level2">
-<h2 class="anchored" data-anchor-id="software-setup">Software Setup</h2>
-<p>The exercise classes require a minimal software setup:</p>
-<ol type="1">
-<li><p>Open <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>, and you will find links to R builds for different operating systems. Click on the link matching your operating system and choose the latest version of R. When using the Windows operating system, you will see a link “Install R for the first time .” Click on this link and then download the R installer. Run the installer and accept the default settings.</p></li>
-<li><p>After installing R, open <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a>. If the web page recognizes your operating system, you will see a download button (right side of the page) for R studio. If the button does not appear, scroll down the page and find the installer appropriate for your operating system.</p></li>
-<li><p>Should you encounter difficulties installing R and R Studio, you can watch these video guides:</p></li>
-</ol>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=YrEe2TLr3MI">Windows</a></li>
-<li><a href="https://www.youtube.com/watch?v=n8kP7c_QbLA">Mac</a></li>
-<li><a href="https://www.youtube.com/watch?v=NFEDEXWomI4">Ubuntu 22.04</a></li>
-</ul>
-<ol start="4" type="1">
-<li>Optionally, you can also download and install git. In case of difficulties, these videos may help.</li>
-</ol>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=AdzKzlp66sQ">Windows</a></li>
-<li><a href="https://www.youtube.com/watch?v=hMEyBtsuAJE">Mac</a></li>
-<li><a href="https://www.youtube.com/watch?v=bc3_FL9zWWs">Linux</a></li>
-</ul>
-<ol start="5" type="1">
-<li><strong>The following steps depend on git being installed</strong>. Open R Studio and open a new project dialog: File -&gt; New Project. In the dialog, click on the third option: version control. From the next menu, select git.</li>
-</ol>
-<p><img src="figures/RStudio_new_project_1.png" class="img-fluid" alt="Open a new project."> <img src="figures/RStudio_new_project_2.png" class="img-fluid" alt="Select version control"> <img src="figures/RStudio_new_project_3.png" class="img-fluid" alt="Select git"></p>
-<p>In the Repository URL field, paste the address of the course repository:</p>
-<pre><code>https://github.com/feb-sofia/ts2023.git</code></pre>
-<p><img src="figures/RStudio_new_project_4.png" class="img-fluid" alt="Paste the git repository address"> Click on the Create Project button and wait for git R studio to clone the repository and open the project.</p>
-<p><img src="figures/RStudio_new_project_5.png" class="img-fluid" alt="Step 5"> 6. The content of the GitHub repository will be updated continuously throughout the semester. In order to download the new files or updated versions of already existing files, you can use git pull. Open the git window in the upper right pane of R studio and click the pull button. This will download all changes from the GitHub repository to your local copy.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/RStudio_new_project_7.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Step 7</figcaption>
-</figure>
+<p>We view the observed time series of length <span class="math inline">\(T\)</span> <span class="math inline">\(x_1, x_2, \ldots, x_T\)</span> as a realization of <span class="math inline">\(T\)</span> random variables <span class="math inline">\(X_1,X_2,\ldots, X_T\)</span>. The observed values of the process is what we call a time series. Most of the time series literature uses one and the same notation for both the random variables in the process and for the <em>observed values</em> of the time series. In this course we will follow this tradition, so you need to be aware of the context.</p>
+<div id="def-stochastic-process" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.1 (Stocahstic Process) </strong></span>A stochastic process in the context of time series analysis is a sequence of random variables <span class="math inline">\(\{x_t\}\)</span> indexed by some time index (second, minute, hour, day, week, month, quarter, year, etc.).</p>
 </div>
-<ol start="8" type="1">
-<li>Note that if you have modified the files tracked by git that have changed in the repository, git pull will fail with an error similar to this one:</li>
-</ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/RStudio_new_project_8.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Pull error</figcaption>
-</figure>
+<section id="first-order-autoregressive-processes-ar1" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="first-order-autoregressive-processes-ar1"><span class="header-section-number">3.1</span> First Order Autoregressive Processes: AR(1)</h2>
+<p>Let us start with a simple process defined by:</p>
+<p><span class="math display">\[
+y_{t} = \psi y_{t - 1} + e_t
+\]</span></p>
+<div id="exr-autonomous-solution" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.1 </strong></span>Given a first order autoregressive process with <span class="math inline">\(\psi = 0.8\)</span>, find the value of the process in <span class="math inline">\(t = 3\)</span>, knowing that it started with <span class="math inline">\(y_0 = 5\)</span>. Assume that <span class="math inline">\(e_t = 0\)</span> for all <span class="math inline">\(t\)</span>.</p>
 </div>
-<p>To avoid this, you can roll back the file to its original state. Right-click on the file in the git window and choose “revert.”</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/RStudio_new_project_revert.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Revert</figcaption>
-</figure>
-</div>
-<ol start="9" type="1">
-<li>In the exercise classes, we will use many functions from the <code>tidyverse</code> system and several other packages. Before accessing these packages’ functionality, you need to install them first. Find the R console in R studio and paste the following line on the command line. Press enter to run it and wait for the installation to complete.</li>
-</ol>
+<div class="solution proof">
+<p><span class="proof-title"><em>Solution</em>. </span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"tidyverts"</span>, <span class="st">"xts"</span>, <span class="st">"quantmod"</span>, <span class="st">"urca"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Type your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/RStudio_new_project_install_packages.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Install packages</figcaption>
-</figure>
 </div>
-<p>Optional: more on Quarto: <a href="https://quarto.org/docs/guide/" class="uri">https://quarto.org/docs/guide/</a></p>
-<p>Optional: a base R cheatsheet: <a href="https://www.datacamp.com/cheat-sheet/getting-started-r" class="uri">https://www.datacamp.com/cheat-sheet/getting-started-r</a></p>
+<div id="exr-homog-solution" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.2 </strong></span>Assume that the process started at some point <span class="math inline">\(t_0\)</span> and that the value at <span class="math inline">\(t\)</span> is determined by</p>
+<p><span class="math display">\[
+x_{t} = \psi x_{t - 1} + e_t
+\]</span></p>
+<p>Write down the equation for <span class="math inline">\(t = t_0\)</span>. Express <span class="math inline">\(x_{t_0 + 3}\)</span> in terms of <span class="math inline">\(x_{t_0}\)</span>, <span class="math inline">\(\psi\)</span> and <span class="math inline">\(e_t, e_{t + 1}, e_{t + 2}\)</span>, etc.</p>
+</div>
+<div class="solution proof">
+<p><span class="proof-title"><em>Solution</em>. </span></p>
+</div>
+<p>How does the process behave for different values of <span class="math inline">\(\psi\)</span>? To answer this, focus on the series:</p>
+<p><span class="math display">\[
+S_n = 1 + \psi + \psi^2 + \psi^3 + \ldots, \psi^n
+\]</span></p>
+<p>Show that</p>
+<p><span class="math display">\[
+S_n = \frac{1 - \psi^{n + 1}}{1 - \psi}
+\]</span></p>
+<p>What is the limit of this series depending on the value of <span class="math inline">\(\psi\)</span>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>psi <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>psi<span class="sc">^</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1.0000000 0.8000000 0.6400000 0.5120000 0.4096000 0.3276800 0.2621440
+ [8] 0.2097152 0.1677722 0.1342177 0.1073742</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cumsum</span>(psi<span class="sc">^</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1.000000 1.800000 2.440000 2.952000 3.361600 3.689280 3.951424 4.161139
+ [9] 4.328911 4.463129 4.570503</code></pre>
+</div>
+</div>
 </section>
-<section id="recommended-reading" class="level2">
-<h2 class="anchored" data-anchor-id="recommended-reading">Recommended Reading</h2>
-<ol type="1">
-<li><span class="citation" data-cites="KIRCHGASSNER2013IntroductionModernTime">Kirchgässner, Wolters, and Hassler (<a href="references.html#ref-KIRCHGASSNER2013IntroductionModernTime" role="doc-biblioref">2013</a>)</span></li>
-<li><span class="citation" data-cites="COWPERTWAIT2009IntroductoryTimeSeries">Cowpertwait and Metcalfe (<a href="references.html#ref-COWPERTWAIT2009IntroductoryTimeSeries" role="doc-biblioref">2009</a>)</span></li>
-</ol>
+<section id="stationarity-of-ar1" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="stationarity-of-ar1"><span class="header-section-number">3.2</span> Stationarity of AR(1)</h2>
+<p>The first order autoregressive process is stationary if <span class="math inline">\(|\psi_1| &lt; 1\)</span>.</p>
+</section>
+<section id="second-order-autoregressive-processes" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="second-order-autoregressive-processes"><span class="header-section-number">3.3</span> Second Order Autoregressive Processes</h2>
+<p>Before we consider AR(1), it is convenient to see the case of a vector autoregressive process. Let’s start with two variables, <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
+<p><span class="math display">\[
+x_{t} = \psi_{x,1}x_{t - 1} + \psi_{y,1}y_{t - 1} + e_{x,t} \\
+y_{t} = \psi_{x_2}x_{t - 1} + \psi_{y, 2}y_{t - 1} + e_{y,t}
+\]</span></p>
+<p>It is convenient to write this equation in matrix form</p>
+<p><span class="math display">\[
+\mathbf{z}_{t} = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbf{A} =
+\begin{pmatrix}
+\psi_{x,1} &amp; \psi_{x,2} \\
+\psi_{x, 2} &amp; \psi_{y, 2}
+\end{pmatrix} \\
+\mathbf{z}_{t} = \begin{pmatrix}
+x_{t - 1} \\
+y_{t - 1}
+\end{pmatrix} \\
+\mathbf{e}_{t} = \begin{pmatrix}
+e_{x,t} \\
+e_{y,t}
+\end{pmatrix}
+\]</span></p>
+<p>If <span class="math inline">\(\mathbf{A}\)</span> were a diagonal matrix, then we already known the solution. We can solve each equation separately. However, <span class="math inline">\(\mathbf{A}\)</span> depends on the subject matter at hand and we need to be able to handle general case (not diagonal). Luckily, <span class="math inline">\(\mathbf{A}\)</span> is a square matrix and we known that we can diagonalize it using its eigen decomposition.</p>
+<p><span class="math display">\[
+\mathbf{A} = \mathbf{V}
+\begin{pmatrix}
+\lambda_1 &amp; 0 \\
+0 &amp; \lambda_2
+\end{pmatrix}
+\mathbf{V}^T
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{V}\)</span> is a matrix holding the (orthogonal) eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. So we can transform the complicated problem of interrelated autoregressive processes into a problem with diagonal matrices.</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbf{z}_{t} &amp; = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{z}_{t} &amp; = \mathbf{V} \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{V}^T \mathbf{z}_{t} &amp; = \mathbf{V}^T \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^T\mathbf{e}_{t} \\
+\mathbf{V}^T \mathbf{z}_{t} &amp; = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^T\mathbf{e}_{t} \\
+\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
+\end{align}
+\]</span></p>
+<p>Now we can solve th difference equation in the simple case. Once we have found the solutions, we can transform it back to the original variables <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
+<p>For the purposes of this course, however, our focus lies on the behavior of the solutions: does it converge to a stable path?</p>
+<p>The answer is contained in the matrix <span class="math inline">\(\mathbf{A}\)</span>. When we start doing the recursive substitution that we did in the scalar case, the transformed eqations will look like this:</p>
+<p>$$ <span class="math display">\[\begin{align}
+\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}} \\
+\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}) + \tilde{\mathbf{e}_{t}} \\
+\implies \tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}_{t}} + \tilde{\mathbf{e}_{t}} \\
+
+\end{align}\]</span> $$</p>
+<p>You can continue the recursive substitution just like we did it in <a href="#exr-autonomous-solution">Exercise&nbsp;<span>3.1</span></a>. At this point you should realize that the behavior of the system depends on the matrix <span class="math inline">\(\mathbf{\Lambda}\)</span>. This leads us to the following problem: how do we find the values of the diagonal matrix? We will make use of a result from linear algebra.</p>
+<div id="thm-eigenvalues" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.1 (Eigenvalues) </strong></span>The eigenvalues of a square matrix <span class="math inline">\(\mathbf{A}\)</span> are given by the following equation</p>
+<p><span class="math display">\[
+\det(\mathbf{A} - \lambda\mathbf{I}) = 0
+\]</span></p>
+</div>
+</section>
+<section id="second-order-autoregressive-processes-ar2" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="second-order-autoregressive-processes-ar2"><span class="header-section-number">3.4</span> Second Order Autoregressive Processes AR(2)</h2>
+<p>In a second order autoregressive process the current value <span class="math inline">\(x_t\)</span> depends (directly) on the values up to two periods before it: <span class="math inline">\(x_{t - 1}\)</span> and <span class="math inline">\(x_{t - 2}\)</span>.</p>
+<p><span class="math display">\[
+x_{t} = \psi_{1}x_{t - 1} + \psi_{2}x_{t - 2} + e_{t}
+\]</span></p>
+<p>What we want to determine is when this process is stationary. It helps to express this equation as a first order VAR process.</p>
+<p>$$ <span class="math display">\[\begin{align}
+x_{t} &amp; = \psi_{1}x_{t - 1} + \psi_{2}x_{t - 2} + e_{t} \\
+x_{t - 1} &amp; = x_{t - 1}
+\end{align}\]</span></p>
+<p>$$ The matrix for the VAR process is very simple in this case</p>
+<p><span class="math display">\[
+\mathbf{A} =
+\begin{pmatrix}
+\psi_1 &amp; \psi_2 \\
+1 &amp; 0
+\end{pmatrix}
+\]</span></p>
+<p>The eigenvalues of the matrix are given by:</p>
+<p><span class="math display">\[
+\det(\mathbf{A} - \lambda\mathbf{I}) = 0
+\]</span></p>
+<p>In the AR(2) case this simplifies to:</p>
+<p><span class="math display">\[
+\det\begin{pmatrix}
+\psi_1 - \lambda &amp; \psi_2 \\
+1 &amp; 0 - \lambda
+\end{pmatrix} = 0
+\]</span></p>
+<p>This is called the characteristic equation of <span class="math inline">\(\mathbf{A}\)</span> and we will call it the characteristic equation of the AR process.</p>
+<p><span class="math display">\[
+(\psi_1 - \lambda)(-\lambda) - \psi_2 \cdot 1 = 0 \\
+\lambda^2 - \lambda \psi_1 - \psi_2 = 0
+\]</span></p>
+<p>Most of the time we derive this equation using the lag operator:</p>
+<p><span class="math display">\[
+x_{t} = \psi_1 x_{t - 1} + \psi_2 x_{t - 2} + e_t \\
+x_{t} = \psi_1 L x_{t} + \psi_2 L^2 x_{t} + e_{t} \\
+(1 - \psi_1 L - \psi_2 L^2) x_{t} = e_{t}
+\]</span></p>
+<p>For AR(2) you will need the formula for the solution of quadratic equations</p>
+<div id="thm-quadratic-eq" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.2 (Solutions of a Quadratic Equation) </strong></span>Given</p>
+<p><span class="math display">\[
+a \lambda^2 + b \lambda + c = 0
+\]</span></p>
+<p>the solutions are given by:</p>
+<p><span class="math display">\[
+\lambda_{1,2} = \frac{-b \pm\sqrt{b^2 - 4ac}}{2a}
+\]</span></p>
+</div>
+<p>In the more general case you can rely on the Fundamental Theorem of Algebra</p>
+<div id="thm-fundamental-theorem-algebra" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.3 </strong></span>Every polynomial of n-th order has n (not necessarily distinct) real or complex roots.</p>
+</div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-COWPERTWAIT2009IntroductoryTimeSeries" class="csl-entry" role="listitem">
-Cowpertwait, Paul S. P., and Andrew V. Metcalfe. 2009. <em>Introductory Time Series with <span>R</span></em>. Use <span>R</span>! <span>Dordrecht Heidelberg</span>: <span>Springer</span>. <a href="https://doi.org/10.1007/978-0-387-88698-5">https://doi.org/10.1007/978-0-387-88698-5</a>.
-</div>
-<div id="ref-KIRCHGASSNER2013IntroductionModernTime" class="csl-entry" role="listitem">
-Kirchgässner, Gebhard, Jürgen Wolters, and Uwe Hassler. 2013. <em>Introduction to Modern Time Series Analysis</em>. 2. ed. Springer Texts in Business and Economics. <span>Berlin Heidelberg</span>: <span>Springer</span>.
-</div>
-</div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -576,10 +617,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./02-Statistics-Review.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Statistics Review</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-Introduction.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -9,6 +9,7 @@ book:
     - index.qmd
     - 01-Introduction.qmd
     - 02-Statistics-Review.qmd
+    - 02-stochastic-processes.qmd
     - references.qmd
 
 bibliography: ../refs.bib
