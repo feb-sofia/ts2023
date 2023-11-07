@@ -50,3 +50,5 @@ rsconnect/
 /_book/
 /_site/
 /docs/
+/.Rprofile
+/renv/
