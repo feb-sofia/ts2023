@@ -486,8 +486,9 @@ $$
 In the more general case you can rely on the Fundamental Theorem of Algebra
 
 :::{#thm-fundamental-theorem-algebra}
+## The Fundamental Theorem of Algebra
 
-Any n-th order polynomial with complex coefficients has exactly n complex roots.
+Any n-th order polynomial with complex coefficients has exactly n (possibly repeating) complex roots.
 
 :::
 

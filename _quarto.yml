@@ -18,5 +18,3 @@ bibliography: refs.bib
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
