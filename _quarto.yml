@@ -1,0 +1,22 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Introduction to Time Series Analysis 2023/2024"
+  author: "Boyko Amarov"
+  date: "10/1/2023"
+  chapters:
+    - index.qmd
+    - 01-Introduction.qmd
+    - 02-Statistics-Review.qmd
+    - 03-linear-difference-equations.qmd
+    - references.qmd
+
+bibliography: refs.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
