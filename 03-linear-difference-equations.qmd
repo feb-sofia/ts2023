@@ -491,10 +491,3 @@ In the more general case you can rely on the Fundamental Theorem of Algebra
 Any n-th order polynomial with complex coefficients has exactly n (possibly repeating) complex roots.
 
 :::
-
-
-
-
-
-
-
