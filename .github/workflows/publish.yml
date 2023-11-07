@@ -11,6 +11,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Install ubuntu dependencies
+        run:  apt-get install libcgal-dev libglu1-mesa-dev libglu1-mesa-dev
+
       - name: Check out repository
         uses: actions/checkout@v4
 
