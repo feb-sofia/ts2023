@@ -1,0 +1,499 @@
+# Linear Difference Equations
+
+```{r}
+library(tidyverse)
+library(matlib)
+```
+
+
+
+We view the observed time series of length $T$ $x_1, x_2, \ldots, x_T$ as a realization of $T$ random
+variables $X_1,X_2,\ldots, X_T$. The observed values of the process is what we call a time series. Most
+of the time series literature uses one and the same notation for both the random variables in the process
+and for the *observed values* of the time series. In this course we will follow this tradition, so you need
+to be aware of the context.
+
+:::{#def-stochastic-process}
+## Stocahstic Process
+
+A stochastic process in the context of time series analysis is a sequence of random variables $\{x_t\}$ indexed by some time index (second, minute, hour, day, week, month, quarter, year, etc.).
+:::
+
+## First Order Difference Equations
+
+Difference equations describe the dynamic behaviour of a sequence by relating
+the current value of a variable to its previous values.
+
+Let us start with a simple difference equation defined by:
+
+$$
+y_{t} = \phi y_{t - 1} + e_t
+$$
+
+For example, imagine that it describes the value of your bank deposit. If you receive an interest of 2 percent annually, then the value of your account this year ($y_t$) is equal to the value of the account the previous year plus the interest earned ($\phi = 1 + 0.02$). You can think about $e_t$ as withdrawals or additional
+deposits to your account.
+
+We would like to achieve two goals. The first goal is to solve this equation by
+expressing $y_t$ as a function of some initial value $y_0$, the time index $t$, the parameter $\phi$ and the sequence of $e_t$.
+
+
+It helps if we write the equation for a couple of periods
+
+$$
+\begin{align}
+1 & \quad y_1 = \phi y_{0} + e_{1} \\
+2 & \quad y_2 = \phi y_{1} + e_{2} \\
+& \vdots \\
+t & \quad y_{t} = \phi y_{t - 1} + e_{t} \\
+t + 1 &  \quad y_{t + 1} = \phi y_{t} + e_{t + 1}\\
+t + 2 & \quad y_{t + 2} = \phi y_{t + 1} + e_{t + 2}
+\end{align}
+$$
+
+Try substituting the first equation into the second, then the second into the third equation.
+
+
+::: {.callout-note collapse="true"}
+## Click here to see the solution
+
+$$
+y_3 = \phi^3 + \phi^2 e_{1} + \phi e_{2} + e_{3}
+$$
+:::
+
+
+You can generalize this for $y_t$:
+
+$$
+y_{t + j} = \phi^{j + 1} y_{t - 1} + \phi^{j}e_{t} + \phi^{j - 1} e_{t + 1} + \ldots \phi^1 e_{t + j - 1} + \phi^0 e_{t + j}
+$$
+We can write this more compactly as:
+
+$$
+y_{t + j} = \phi^{j + 1} y_{t - 1} + \sum_{k = 0}^{j} \phi^{k} e_{t + j - k}
+$$
+
+You should check that the above formula is correct. Let's write it down for 
+$j = 2$.
+
+::: {.callout-note collapse="true"}
+## Click here to see the result
+
+$$
+\begin{align}
+y_{t + 2} = \phi^{2 + 1}y_{t - 1} & + \phi^0 e_{t + 2 - 0} \\
+& + \phi^{1} e_{t + 2 - 1} \\
+& + \phi^{2} e_{t + 2 - 2} \\
+\end{align}
+
+$$
+:::
+
+
+Now that we know how to solve the equation we can analyse the behavior of the
+dynamic system that it describes. It turns out that this behavior is determined
+by the parameter $\phi$.
+
+Let's investigate the effect of a unit change in $e_t$ on $y_{t + j}$, assuming
+that all other values of $e$ remain unchanged.
+
+$$
+\frac{\partial y_{t + j}}{\partial e_{t}} = \phi^j
+$$
+Note that the effect on $y_{t}$ only depends on the distance in time between the shock $e_t$ and 
+the reponse $y_{t + j}$, not on the time index itself. This is a property of _linear_ difference equations.
+
+Now, obviously, a unit shock in time $t$ will have a different effect on $y_{t + j}$ depending
+on the value of $\phi$.
+
+Another effect that we would like to analyse is the effect of a permanent unit change in the autonomous process $e_t$. What will happen to $y_t$ if all $e_t$ increase by one unit?
+
+::: {.callout-note collapse="true"}
+## Click here to see the result
+
+$$
+y_{t + j} = \phi^{j + 1}y_{t - 1} + \sum_{k = 0}^{j}\phi^k e_{t + j - k}
+$$
+
+$$
+\begin{align}
+y^{*}_{t + j} & = \phi^{j + 1}y_{t - 1} & + \sum_{k = 0}^{j}\phi^k (e_{t + j - k} + 1) \\
+              & = \phi^{j + 1}y_{t - 1} & + \sum_{k = 0}^{j}\phi^k e_{t + j - k} + \sum_{k = 0}^{j}\phi^k
+\end{align}
+
+$$
+From this it should be easy to see that
+
+$$
+y^{*}_{t + j} - y_{t + j} = \sum_{k = 0}^{j}\phi^k
+$$
+:::
+
+The effect of a permanent unit change in $e_t$ is thus a power series in the 
+parameter $\phi$. At this point it is useful to remember a theorem from school
+about the limit of this series.
+
+:::{#thm-geometric-series}
+## Convergence of a Geometric Series
+
+$$
+S_{n} = 1 + \phi + \phi^2 + \phi^3 + \ldots + \phi^n
+$$
+
+Assuming that $\phi \neq 1$, this series can be expressed more compactly as 
+
+$$
+S_{n} = \frac{1 - \phi^{n + 1}}{1 - \phi}
+$$
+
+To see this, compute the difference between $S_n$ and $\phi S_n$ and rearrange.
+
+If $|\phi| < 1 \iff -1 < \phi < 1$ the series has a limit for $n \to \infty$:
+
+$$
+\lim_{n \to \infty} S_{n} = \frac{1}{1 - \phi}
+$$
+:::
+
+:::{#exr-geometric-series}
+## Geometric Series 
+
+To see how this series behaves, give it a try in R
+
+```{r}
+phi <- 0.5
+# This will give you a vector of the first 11 elements
+
+dt_gseries <- tibble(
+  n = 0:10,
+  el = phi^n,
+# The geometric series is simply the cumulative sum of these elements
+  series = cumsum(el)
+)
+
+dt_gseries %>%
+  ggplot(aes(x = n, y = series)) + 
+  geom_line()
+```
+:::
+
+
+```{r}
+set.seed(321)
+
+phi <- 0.5
+y_init <- 1
+B <- 1
+
+dt <- tibble(
+  j = 0:B,
+  e = rnorm(n = B + 1),
+  e_trans = e + c(1, rep(0, B)),
+  e_perm = e + 1,
+  phi_powers = phi^(B - j)
+)
+
+dt %>%
+  summarise(
+    y = phi^(B + 1) * y_init + sum(e * phi_powers),
+    y_trans = phi^(B + 1) * y_init + sum(e_trans * phi_powers),
+    y_perm = phi^(B + 1) * y_init + sum(e_perm * phi_powers),
+    y_diff_trans = y - y_trans,
+    y_diff_perm = y - y_perm
+  ) %>%
+  knitr::kable(digits = 2)
+```
+
+
+:::{#exr-autonomous-solution}
+Given a first order autoregressive process with $\phi = 0.8$, find the
+value of the process in $t = 3$, knowing that it started with $y_0 = 5$.
+Assume that $e_t = 0$ for all $t$.
+
+:::
+:::{.solution}
+
+```{r}
+# Type your code here
+
+```
+
+:::
+
+:::{#exr-homog-solution}
+Assume that the process started at some point $t_0$ and that the value
+at $t$ is determined by
+
+$$
+x_{t} = \phi x_{t - 1} + e_t
+$$
+
+Write down the equation for $t = t_0$. Express $x_{t_0 + 3}$ in terms of
+$x_{t_0}$, $\phi$ and $e_t, e_{t + 1}, e_{t + 2}$, etc.
+
+:::
+:::{.solution}
+
+:::
+
+
+How does the process behave for different values of $\phi$? To answer this, focus on the
+series:
+
+$$
+S_n = 1 + \phi + \phi^2 + \phi^3 + \ldots, \phi^n
+$$
+
+Show that
+
+$$
+S_n = \frac{1 - \phi^{n + 1}}{1 - \phi}
+$$
+
+What is the limit of this series depending on the value of $\phi$?
+
+
+## Second Order Difference Equations
+
+
+A second order difference equation relates the current value of a sequence ($y_t$) to its previous
+values up to and including two periods before $y_{t - 2}$.
+
+$$
+y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t
+$$
+
+Before we get to solve this equation, it is convenient to consider a vector difference
+equation of first order involving two sequences, $y_t$ and $x_t$.
+
+Before we consider AR(1), it is convenient to see the case of a vector
+autoregressive process. Let's start with two variables, $x_t$ and $y_t$.
+
+$$
+x_{t} = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
+y_{t} = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+$$
+
+
+It is convenient to write this equation in matrix form
+
+$$
+\underbrace{\begin{pmatrix}
+x_{t - 1} \\
+y_{t - 1}
+\end{pmatrix}}_{\mathbf{z}_t}
+= \underbrace{\begin{pmatrix}
+\phi_{x,1} & \phi_{x,2} \\
+\phi_{x, 2} & \phi_{y, 2}
+\end{pmatrix} }_{\mathbf{A}}
+\underbrace{\begin{pmatrix}
+x_{t - 1} \\
+y_{t - 1}
+\end{pmatrix}}_{\mathbf{z}_{t - 1}} + 
+\underbrace{\begin{pmatrix}
+e_{x,t} \\
+e_{y,t}
+\end{pmatrix}}_{\mathbf{e}_t}
+$$
+
+$$
+\mathbf{z}_{t} = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t}
+$$
+
+If $\mathbf{A}$ were a diagonal matrix, then we already known the solution. We can solve each equation separately.
+
+
+$$
+\underbrace{\begin{pmatrix}
+x_{t - 1} \\
+y_{t - 1}
+\end{pmatrix}}_{\mathbf{z}_t}
+= \underbrace{\begin{pmatrix}
+\phi_{x,1} & 0 \\
+0 & \phi_{y, 2}
+\end{pmatrix} }_{\mathbf{A}}
+\underbrace{\begin{pmatrix}
+x_{t - 1} \\
+y_{t - 1}
+\end{pmatrix}}_{\mathbf{z}_{t - 1}} + 
+\underbrace{\begin{pmatrix}
+e_{x,t} \\
+e_{y,t}
+\end{pmatrix}}_{\mathbf{e}_t}
+$$
+
+
+
+However, $\mathbf{A}$ depends on the subject matter at hand and we need to be able to handle general case (not diagonal).
+Luckily, $\mathbf{A}$ is a square matrix and we known that we can diagonalize it using its eigen decomposition.
+
+$$
+\mathbf{A} = \mathbf{V}
+\begin{pmatrix}
+\lambda_1 & 0 \\
+0 & \lambda_2
+\end{pmatrix}
+\mathbf{V}^{-1}
+$$
+```{r}
+B <- matrix(c(1, 9, 4, 1), ncol = 2)
+ed <- eigen(B)
+ed
+```
+
+```{r}
+ed$vectors %*% diag(ed$values) %*% solve(ed$vectors)
+```
+
+Using this decomposition, we can transform the complicated problem to a simple one with only a diagonal entries in the matrix before $\mathbf{z}_{t - 1}$.
+
+$$
+\begin{align}
+\mathbf{z}_{t} & = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{z}_{t} & = \mathbf{V} \mathbf{\Lambda}\mathbf{V^{-1}} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{V}^{-1} \mathbf{z}_{t} & = \mathbf{V}^{-1} \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
+\mathbf{V}^{-1} \mathbf{z}_{t} & = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
+\end{align}
+$$
+
+Now we can solve th difference equation in the simple case. Once we have found the
+solutions, we can transform it back to the original variables $x_t$ and $y_t$.
+
+For the purposes of this course, however, our focus lies on the behavior 
+of the solutions: does it converge to a stable path?
+
+The answer is contained in the matrix $\mathbf{A}$. When we start doing the
+recursive substitution that we did in the scalar case, the transformed eqations
+will look like this:
+
+$$
+\begin{align}
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}} \\
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}) + \tilde{\mathbf{e}_{t}} \\
+\implies \tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}_{t}} + \tilde{\mathbf{e}_{t}} \\
+
+\end{align}
+$$
+
+You can continue the recursive substitution just like we did it in @exr-autonomous-solution. At this
+point you should realize that the behavior of the system depends on the matrix $\mathbf{\Lambda}$. This
+leads us to the following problem: how do we find the values of the diagonal matrix? We will make
+use of a result from linear algebra.
+
+:::{#thm-eigenvalues}
+## Eigenvalues
+
+
+The eigenvalues of a square matrix $\mathbf{A}$ are the solutions of the following equation
+
+$$
+\det(\mathbf{A} - \lambda\mathbf{I}) = 0
+$$
+:::
+
+
+
+In a second order difference equation the current value $y_t$ depends (directly)
+on the values up to two periods before it: $y_{t - 1}$ and $y_{t - 2}$.
+
+$$
+x_{t} = \phi_{1}x_{t - 1} + \phi_{2}x_{t - 2} + e_{t}
+$$
+
+What we want to determine is when this process is stationary. It helps to 
+express this equation as a first order VAR process.
+
+$$
+\begin{align}
+x_{t} & = \phi_{1}x_{t - 1} + \phi_{2}x_{t - 2} + e_{t} \\
+x_{t - 1} & = x_{t - 1}
+\end{align}
+
+$$
+The matrix for the VAR process is very simple in this case
+
+$$
+\begin{pmatrix}
+x_t \\
+x_{t - 1}
+\end{pmatrix} = 
+\begin{pmatrix}
+\phi_1 & \phi_2 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+x_{t - 1} \\
+x_{t - 2}
+\end{pmatrix}
++ 
+\begin{pmatrix}
+e_{t} \\
+0
+\end{pmatrix}
+$$
+
+The general equation for the eigenvalues of the matrix are given by:
+
+$$
+\det(\mathbf{A} - \lambda\mathbf{I}) = 0
+$$
+In our case of a second order difference equation it simplifies to
+
+$$
+\det\begin{pmatrix} 
+\phi_1 - \lambda & \phi_2 \\
+1 & 0 - \lambda
+\end{pmatrix} = 0
+$$
+
+This is called the characteristic equation of $\mathbf{A}$ and we will call
+it the characteristic equation of the AR process.
+
+$$
+(\phi_1 - \lambda)(-\lambda) - \phi_2 \cdot 1 = 0 \\
+\lambda^2 - \lambda \phi_1 - \phi_2 = 0
+$$
+The left hand side of this equation is called the characteristic
+polynomial of the difference equation. The whole equation is called the _characteristic_ equation.
+
+Most of the time we derive this equation using the lag operator:
+
+$$
+x_{t} = \phi_1 x_{t - 1} + \phi_2 x_{t - 2} + e_t \\
+x_{t} = \phi_1 L x_{t} + \phi_2 L^2 x_{t} + e_{t} \\
+(1 - \phi_1 L - \phi_2 L^2) x_{t} = e_{t}
+$$
+
+
+
+:::{#thm-quadratic-eq}
+## Solutions of a Quadratic Equation
+
+Given 
+
+$$
+a \lambda^2 + b \lambda + c = 0
+$$
+
+the solutions are given by:
+
+$$
+\lambda_{1,2} = \frac{-b \pm\sqrt{b^2 - 4ac}}{2a}
+$$
+:::
+
+In the more general case you can rely on the Fundamental Theorem of Algebra
+
+:::{#thm-fundamental-theorem-algebra}
+
+Any n-th order polynomial with complex coefficients has exactly n complex roots.
+
+:::
+
+
+
+
+
+
+

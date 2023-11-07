@@ -9,7 +9,7 @@ book:
     - index.qmd
     - 01-Introduction.qmd
     - 02-Statistics-Review.qmd
-    - 02-stochastic-processes.qmd
+    - 03-linear-difference-equations.qmd
     - references.qmd
 
 bibliography: ../refs.bib
