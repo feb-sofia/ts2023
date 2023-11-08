@@ -414,8 +414,10 @@ S_{n} = \frac{1 - \phi^{n + 1}}{1 - \phi}
 <h2 data-number="3.2" class="anchored" data-anchor-id="first-order-vector-difference-equations"><span class="header-section-number">3.2</span> First-Order Vector Difference Equations</h2>
 <p>In this course, we will focus exclusively on univariate time series analysis. Still, for the sake of motivating the study of higher-order linear difference equations, it is convenient to introduce vector linear difference equations. Let’s start with two variables, <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
 <p><span class="math display">\[
-x_{t} = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
-y_{t} = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+\begin{align}
+x_{t} &amp; = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
+y_{t} &amp; = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+\end{align}
 \]</span></p>
 <p>It is convenient to write this equation in matrix form.</p>
 <p><span class="math display">\[
@@ -467,6 +469,17 @@ e_{y,t}
 \end{pmatrix}
 \mathbf{V}^{-1}
 \]</span></p>
+<p>Using this decomposition, we can transform the complicated problem to a simple one with only diagonal entries in the matrix before <span class="math inline">\(\mathbf{z}_{t - 1}\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbf{z}_{t} &amp; = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{z}_{t} &amp; = \mathbf{V} \mathbf{\Lambda}\mathbf{V^{-1}} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{V}^{-1} \mathbf{z}_{t} &amp; = \mathbf{V}^{-1} \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
+\mathbf{V}^{-1} \mathbf{z}_{t} &amp; = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
+\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
+\end{align}
+\]</span></p>
+<p>Lets see an example.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ed <span class="ot">&lt;-</span> <span class="fu">eigen</span>(B)</span>
@@ -527,15 +540,26 @@ y_{t}
 -0.9x_t + 0.6 y_t
 \end{pmatrix}
 \]</span></p>
-<p>Using this decomposition, we can transform the complicated problem to a simple one with only diagonal entries in the matrix before <span class="math inline">\(\mathbf{z}_{t - 1}\)</span>.</p>
+<p>The whole system looks like:</p>
 <p><span class="math display">\[
-\begin{align}
-\mathbf{z}_{t} &amp; = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
-\mathbf{z}_{t} &amp; = \mathbf{V} \mathbf{\Lambda}\mathbf{V^{-1}} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
-\mathbf{V}^{-1} \mathbf{z}_{t} &amp; = \mathbf{V}^{-1} \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
-\mathbf{V}^{-1} \mathbf{z}_{t} &amp; = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
-\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
-\end{align}
+\begin{pmatrix}
+0.9x_t + 0.6y_t \\
+-0.9x_t + 0.6 y_t
+\end{pmatrix}
+=
+\begin{pmatrix}
+7 &amp; 0 \\
+0 &amp; -5
+\end{pmatrix}
+\begin{pmatrix}
+0.9x_{t - 1} + 0.6y_{t - 1} \\
+-0.9x_{t - 1} + 0.6 y_{t - 1}
+\end{pmatrix}
++
+\begin{pmatrix}
+0.9e_{x,t} + 0.6e_{y,t} \\
+-0.9e_{x,t} + 0.6 e_{y,t}
+\end{pmatrix}
 \]</span></p>
 <p>Now, we can solve the difference equation in the simple case. Once we have found the solutions, we can transform it back to the original variables <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
 <p>For the purposes of this course, however, our focus lies on the behavior of the system: Does it converge to a stable path?</p>
