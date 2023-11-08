@@ -529,7 +529,7 @@ $$
 Alternatively, it can be computed using the decomposition formula:
 
 $$
-Cov(X, Y) = E(XY) + E(X)E(Y)
+Cov(X, Y) = E(XY) - E(X)E(Y)
 $$
 
 :::
