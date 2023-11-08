@@ -305,9 +305,14 @@ Lets see an example.
 
 ```{r}
 B <- matrix(c(1, 9, 4, 1), ncol = 2)
+B
+```
+
+```{r}
 ed <- eigen(B)
 ed
 ```
+
 
 ```{r}
 solve(ed$vectors)
