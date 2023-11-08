@@ -223,8 +223,10 @@ In this course, we will focus exclusively on univariate time series analysis. St
 Let's start with two variables, $x_t$ and $y_t$.
 
 $$
-x_{t} = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
-y_{t} = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+\begin{align}
+x_{t} & = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
+y_{t} & = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+\end{align}
 $$
 
 It is convenient to write this equation in matrix form.
@@ -287,6 +289,19 @@ $$
 \mathbf{V}^{-1}
 $$
 
+Using this decomposition, we can transform the complicated problem to a simple one with only diagonal entries in the matrix before $\mathbf{z}_{t - 1}$.
+
+$$
+\begin{align}
+\mathbf{z}_{t} & = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{z}_{t} & = \mathbf{V} \mathbf{\Lambda}\mathbf{V^{-1}} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
+\mathbf{V}^{-1} \mathbf{z}_{t} & = \mathbf{V}^{-1} \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
+\mathbf{V}^{-1} \mathbf{z}_{t} & = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
+\end{align}
+$$
+
+Lets see an example.
 
 ```{r}
 B <- matrix(c(1, 9, 4, 1), ncol = 2)
@@ -301,6 +316,8 @@ solve(ed$vectors)
 ```{r}
 ed$vectors %*% diag(ed$values) %*% solve(ed$vectors)
 ```
+
+
 
 In this example the diagonal matrix $\mathbf{\Lambda}$
 is equal to
@@ -338,17 +355,29 @@ y_{t}
 \end{pmatrix}
 $$
 
-Using this decomposition, we can transform the complicated problem to a simple one with only diagonal entries in the matrix before $\mathbf{z}_{t - 1}$.
+The whole system looks like:
 
 $$
-\begin{align}
-\mathbf{z}_{t} & = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
-\mathbf{z}_{t} & = \mathbf{V} \mathbf{\Lambda}\mathbf{V^{-1}} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
-\mathbf{V}^{-1} \mathbf{z}_{t} & = \mathbf{V}^{-1} \mathbf{V}\mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
-\mathbf{V}^{-1} \mathbf{z}_{t} & = \mathbf{\Lambda}\mathbf{V^T} \mathbf{z}_{t - 1} + \mathbf{V}^{-1}\mathbf{e}_{t} \\
-\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
-\end{align}
+\begin{pmatrix}
+0.9x_t + 0.6y_t \\
+-0.9x_t + 0.6 y_t
+\end{pmatrix}
+=
+\begin{pmatrix}
+7 & 0 \\
+0 & -5
+\end{pmatrix}
+\begin{pmatrix}
+0.9x_{t - 1} + 0.6y_{t - 1} \\
+-0.9x_{t - 1} + 0.6 y_{t - 1}
+\end{pmatrix}
++ 
+\begin{pmatrix}
+0.9e_{x,t} + 0.6e_{y,t} \\
+-0.9e_{x,t} + 0.6 e_{y,t}
+\end{pmatrix}
 $$
+
 
 Now, we can solve the difference equation in the simple case. Once we have found the
 solutions, we can transform it back to the original variables $x_t$ and $y_t$.
