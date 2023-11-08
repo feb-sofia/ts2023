@@ -176,7 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#first-order-difference-equations" id="toc-first-order-difference-equations" class="nav-link active" data-scroll-target="#first-order-difference-equations"><span class="header-section-number">3.1</span> First Order Difference Equations</a></li>
-  <li><a href="#second-order-difference-equations" id="toc-second-order-difference-equations" class="nav-link" data-scroll-target="#second-order-difference-equations"><span class="header-section-number">3.2</span> Second Order Difference Equations</a></li>
+  <li><a href="#first-order-vector-difference-equations" id="toc-first-order-vector-difference-equations" class="nav-link" data-scroll-target="#first-order-vector-difference-equations"><span class="header-section-number">3.2</span> First-Order Vector Difference Equations</a></li>
+  <li><a href="#second-order-linear-difference-equations" id="toc-second-order-linear-difference-equations" class="nav-link" data-scroll-target="#second-order-linear-difference-equations"><span class="header-section-number">3.3</span> Second-Order Linear Difference Equations</a></li>
   </ul>
 </nav>
     </div>
@@ -202,40 +203,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.3     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(matlib)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in rgl.init(initValue, onlyNULL): RGL: unable to open X11 display</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.</code></pre>
-</div>
-</div>
-<p>We view the observed time series of length <span class="math inline">\(T\)</span> <span class="math inline">\(x_1, x_2, \ldots, x_T\)</span> as a realization of <span class="math inline">\(T\)</span> random variables <span class="math inline">\(X_1,X_2,\ldots, X_T\)</span>. The observed values of the process is what we call a time series. Most of the time series literature uses one and the same notation for both the random variables in the process and for the <em>observed values</em> of the time series. In this course we will follow this tradition, so you need to be aware of the context.</p>
-<div id="def-stochastic-process" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 3.1 (Stocahstic Process) </strong></span>A stochastic process in the context of time series analysis is a sequence of random variables <span class="math inline">\(\{x_t\}\)</span> indexed by some time index (second, minute, hour, day, week, month, quarter, year, etc.).</p>
 </div>
 <section id="first-order-difference-equations" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="first-order-difference-equations"><span class="header-section-number">3.1</span> First Order Difference Equations</h2>
-<p>Difference equations describe the dynamic behaviour of a sequence by relating the current value of a variable to its previous values.</p>
+<p>Difference equations describe the dynamic behavior of a sequence by relating the current value of a variable to its previous values.</p>
 <p>Let us start with a simple difference equation defined by:</p>
 <p><span class="math display">\[
 y_{t} = \phi y_{t - 1} + e_t
 \]</span></p>
-<p>For example, imagine that it describes the value of your bank deposit. If you receive an interest of 2 percent annually, then the value of your account this year (<span class="math inline">\(y_t\)</span>) is equal to the value of the account the previous year plus the interest earned (<span class="math inline">\(\phi = 1 + 0.02\)</span>). You can think about <span class="math inline">\(e_t\)</span> as withdrawals or additional deposits to your account.</p>
-<p>We would like to achieve two goals. The first goal is to solve this equation by expressing <span class="math inline">\(y_t\)</span> as a function of some initial value <span class="math inline">\(y_0\)</span>, the time index <span class="math inline">\(t\)</span>, the parameter <span class="math inline">\(\phi\)</span> and the sequence of <span class="math inline">\(e_t\)</span>.</p>
-<p>It helps if we write the equation for a couple of periods</p>
+<p>For example, imagine that it describes the value of your bank deposit. Suppose you receive an interest of 2 percent annually. In that case, the value of your account this year (<span class="math inline">\(y_t\)</span>) is equal to the value of the account the previous year plus the interest earned (<span class="math inline">\(\phi = 1 + 0.02\)</span>). You can think about <span class="math inline">\(e_t\)</span> as withdrawals or additional deposits to your account.</p>
+<p>We want to achieve two goals. The first goal is to solve this equation by expressing <span class="math inline">\(y_t\)</span> as a function of some initial value <span class="math inline">\(y_0\)</span>, the time index <span class="math inline">\(t\)</span>, the parameter <span class="math inline">\(\phi\)</span> and the sequence of <span class="math inline">\(e_t\)</span>.</p>
+<p>It helps if we write the equation for a couple of periods.</p>
 <p><span class="math display">\[
 \begin{align}
 1 &amp; \quad y_1 = \phi y_{0} + e_{1} \\
@@ -285,22 +263,23 @@ Click here to see the result
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>$$ <span class="math display">\[\begin{align}
+<p><span class="math display">\[
+\begin{align}
 y_{t + 2} = \phi^{2 + 1}y_{t - 1} &amp; + \phi^0 e_{t + 2 - 0} \\
 &amp; + \phi^{1} e_{t + 2 - 1} \\
 &amp; + \phi^{2} e_{t + 2 - 2} \\
-\end{align}\]</span></p>
-<p>$$</p>
+\end{align}
+\]</span></p>
 </div>
 </div>
 </div>
-<p>Now that we know how to solve the equation we can analyse the behavior of the dynamic system that it describes. It turns out that this behavior is determined by the parameter <span class="math inline">\(\phi\)</span>.</p>
+<p>Now that we know how to solve the equation, we can analyze the behavior of the dynamic system that it describes. It turns out that this behavior is determined by the parameter <span class="math inline">\(\phi\)</span>.</p>
 <p>Let’s investigate the effect of a unit change in <span class="math inline">\(e_t\)</span> on <span class="math inline">\(y_{t + j}\)</span>, assuming that all other values of <span class="math inline">\(e\)</span> remain unchanged.</p>
 <p><span class="math display">\[
 \frac{\partial y_{t + j}}{\partial e_{t}} = \phi^j
-\]</span> Note that the effect on <span class="math inline">\(y_{t}\)</span> only depends on the distance in time between the shock <span class="math inline">\(e_t\)</span> and the reponse <span class="math inline">\(y_{t + j}\)</span>, not on the time index itself. This is a property of <em>linear</em> difference equations.</p>
+\]</span> Note that the effect on <span class="math inline">\(y_{t}\)</span> only depends on the distance in time between the shock <span class="math inline">\(e_t\)</span> and the response <span class="math inline">\(y_{t + j}\)</span>, not on the time index itself. This is a property of <em>linear</em> difference equations.</p>
 <p>Now, obviously, a unit shock in time <span class="math inline">\(t\)</span> will have a different effect on <span class="math inline">\(y_{t + j}\)</span> depending on the value of <span class="math inline">\(\phi\)</span>.</p>
-<p>Another effect that we would like to analyse is the effect of a permanent unit change in the autonomous process <span class="math inline">\(e_t\)</span>. What will happen to <span class="math inline">\(y_t\)</span> if all <span class="math inline">\(e_t\)</span> increase by one unit?</p>
+<p>Another effect that we would like to analyze is the effect of a permanent unit change in the autonomous process <span class="math inline">\(e_t\)</span>. What will happen to <span class="math inline">\(y_t\)</span> if all <span class="math inline">\(e_t\)</span> increase by one unit?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -316,18 +295,20 @@ Click here to see the result
 <p><span class="math display">\[
 y_{t + j} = \phi^{j + 1}y_{t - 1} + \sum_{k = 0}^{j}\phi^k e_{t + j - k}
 \]</span></p>
-<p>$$ <span class="math display">\[\begin{align}
+<p><span class="math display">\[
+\begin{align}
 y^{*}_{t + j} &amp; = \phi^{j + 1}y_{t - 1} &amp; + \sum_{k = 0}^{j}\phi^k (e_{t + j - k} + 1) \\
               &amp; = \phi^{j + 1}y_{t - 1} &amp; + \sum_{k = 0}^{j}\phi^k e_{t + j - k} + \sum_{k = 0}^{j}\phi^k
-\end{align}\]</span></p>
-<p>$$ From this it should be easy to see that</p>
+\end{align}
+\]</span></p>
+<p>From this, it should be easy to see that</p>
 <p><span class="math display">\[
-y^{*}_{t + j} - y_{t + j} = \sum_{k = 0}^{j}\phi^k
+y^{*}_{t + j} - y_{t + j} = \sum_{k = 0}^{j}\phi^k.
 \]</span></p>
 </div>
 </div>
 </div>
-<p>The effect of a permanent unit change in <span class="math inline">\(e_t\)</span> is thus a power series in the parameter <span class="math inline">\(\phi\)</span>. At this point it is useful to remember a theorem from school about the limit of this series.</p>
+<p>The effect of a permanent unit change in <span class="math inline">\(e_t\)</span> is thus a power series in the parameter <span class="math inline">\(\phi\)</span>. At this point, it is helpful to remember a theorem from school about the limit of this series.</p>
 <div id="thm-geometric-series" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 3.1 (Convergence of a Geometric Series) </strong></span><span class="math display">\[
 S_{n} = 1 + \phi + \phi^2 + \phi^3 + \ldots + \phi^n
@@ -343,50 +324,59 @@ S_{n} = \frac{1 - \phi^{n + 1}}{1 - \phi}
 \]</span></p>
 </div>
 <div id="exr-geometric-series" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.1 (Geometric Series) </strong></span>To see how this series behaves, give it a try in R</p>
+<p><span class="theorem-title"><strong>Exercise 3.1 (Geometric Series) </strong></span>To see how this series behaves, give it a try in R.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This will give you a vector of the first 11 elements</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>dt_gseries <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">el =</span> phi<span class="sc">^</span>n,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The geometric series is simply the cumulative sum of these elements</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">series =</span> <span class="fu">cumsum</span>(el)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>dt_gseries <span class="sc">%&gt;%</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> series)) <span class="sc">+</span> </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This will give you a vector of the first 11 elements</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dt_gseries <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">el =</span> phi<span class="sc">^</span>n,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The geometric series is simply the cumulative sum of these elements</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">series =</span> <span class="fu">cumsum</span>(el)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>dt_gseries <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> series)) <span class="sc">+</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03-linear-difference-equations_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
+<p>Let us check</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>y_init <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">j =</span> <span class="dv">0</span><span class="sc">:</span>B,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">e =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> B <span class="sc">+</span> <span class="dv">1</span>),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_trans =</span> e <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, B)),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_perm =</span> e <span class="sc">+</span> <span class="dv">1</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi_powers =</span> phi<span class="sc">^</span>(B <span class="sc">-</span> j)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>dt <span class="sc">%&gt;%</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> phi<span class="sc">^</span>(B <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> y_init <span class="sc">+</span> <span class="fu">sum</span>(e <span class="sc">*</span> phi_powers),</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_trans =</span> phi<span class="sc">^</span>(B <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> y_init <span class="sc">+</span> <span class="fu">sum</span>(e_trans <span class="sc">*</span> phi_powers),</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_perm =</span> phi<span class="sc">^</span>(B <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> y_init <span class="sc">+</span> <span class="fu">sum</span>(e_perm <span class="sc">*</span> phi_powers),</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_diff_trans =</span> y <span class="sc">-</span> y_trans,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_diff_perm =</span> y <span class="sc">-</span> y_perm</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the parameter phi</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the initial value (y_{t - 1}) in the above notation</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>y_init <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the number of periods j</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">j =</span> <span class="dv">0</span><span class="sc">:</span>B,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate random values for e</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">e =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> B <span class="sc">+</span> <span class="dv">1</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add one to the first row of e</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_trans =</span> e <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, B)),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add one to all values of e</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_perm =</span> e <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute the powers of phi used to weight e/e_trans/e_perm</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi_powers =</span> phi<span class="sc">^</span>(B <span class="sc">-</span> j)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>dt <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The following simply implements the formula for y</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> phi<span class="sc">^</span>(B <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> y_init <span class="sc">+</span> <span class="fu">sum</span>(e <span class="sc">*</span> phi_powers),</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_trans =</span> phi<span class="sc">^</span>(B <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> y_init <span class="sc">+</span> <span class="fu">sum</span>(e_trans <span class="sc">*</span> phi_powers),</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_perm =</span> phi<span class="sc">^</span>(B <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> y_init <span class="sc">+</span> <span class="fu">sum</span>(e_perm <span class="sc">*</span> phi_powers),</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_diff_trans =</span> y <span class="sc">-</span> y_trans,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_diff_perm =</span> y <span class="sc">-</span> y_perm</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -411,54 +401,30 @@ S_{n} = \frac{1 - \phi^{n + 1}}{1 - \phi}
 </div>
 </div>
 <div id="exr-autonomous-solution" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.2 </strong></span>Given a first order autoregressive process with <span class="math inline">\(\phi = 0.8\)</span>, find the value of the process in <span class="math inline">\(t = 3\)</span>, knowing that it started with <span class="math inline">\(y_0 = 5\)</span>. Assume that <span class="math inline">\(e_t = 0\)</span> for all <span class="math inline">\(t\)</span>.</p>
+<p><span class="theorem-title"><strong>Exercise 3.2 </strong></span>Given a first order difference equation with <span class="math inline">\(\phi = 0.8\)</span>, find the value of the process in <span class="math inline">\(t = 3\)</span>, knowing that it started with <span class="math inline">\(y_0 = 5\)</span>. Assume that <span class="math inline">\(e_t = 0\)</span> for all <span class="math inline">\(t\)</span>.</p>
 </div>
 <div class="solution proof">
 <p><span class="proof-title"><em>Solution</em>. </span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Type your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Type your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<div id="exr-homog-solution" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.3 </strong></span>Assume that the process started at some point <span class="math inline">\(t_0\)</span> and that the value at <span class="math inline">\(t\)</span> is determined by</p>
-<p><span class="math display">\[
-x_{t} = \phi x_{t - 1} + e_t
-\]</span></p>
-<p>Write down the equation for <span class="math inline">\(t = t_0\)</span>. Express <span class="math inline">\(x_{t_0 + 3}\)</span> in terms of <span class="math inline">\(x_{t_0}\)</span>, <span class="math inline">\(\phi\)</span> and <span class="math inline">\(e_t, e_{t + 1}, e_{t + 2}\)</span>, etc.</p>
-</div>
-<div class="solution proof">
-<p><span class="proof-title"><em>Solution</em>. </span></p>
-</div>
-<p>How does the process behave for different values of <span class="math inline">\(\phi\)</span>? To answer this, focus on the series:</p>
-<p><span class="math display">\[
-S_n = 1 + \phi + \phi^2 + \phi^3 + \ldots, \phi^n
-\]</span></p>
-<p>Show that</p>
-<p><span class="math display">\[
-S_n = \frac{1 - \phi^{n + 1}}{1 - \phi}
-\]</span></p>
-<p>What is the limit of this series depending on the value of <span class="math inline">\(\phi\)</span>?</p>
 </section>
-<section id="second-order-difference-equations" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="second-order-difference-equations"><span class="header-section-number">3.2</span> Second Order Difference Equations</h2>
-<p>A second order difference equation relates the current value of a sequence (<span class="math inline">\(y_t\)</span>) to its previous values up to and including two periods before <span class="math inline">\(y_{t - 2}\)</span>.</p>
-<p><span class="math display">\[
-y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t
-\]</span></p>
-<p>Before we get to solve this equation, it is convenient to consider a vector difference equation of first order involving two sequences, <span class="math inline">\(y_t\)</span> and <span class="math inline">\(x_t\)</span>.</p>
-<p>Before we consider AR(1), it is convenient to see the case of a vector autoregressive process. Let’s start with two variables, <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
+<section id="first-order-vector-difference-equations" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="first-order-vector-difference-equations"><span class="header-section-number">3.2</span> First-Order Vector Difference Equations</h2>
+<p>In this course, we will focus exclusively on univariate time series analysis. Still, for the sake of motivating the study of higher-order linear difference equations, it is convenient to introduce vector linear difference equations. Let’s start with two variables, <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
 <p><span class="math display">\[
 x_{t} = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
 y_{t} = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
 \]</span></p>
-<p>It is convenient to write this equation in matrix form</p>
+<p>It is convenient to write this equation in matrix form.</p>
 <p><span class="math display">\[
 \underbrace{\begin{pmatrix}
-x_{t - 1} \\
-y_{t - 1}
+x_{t} \\
+y_{t}
 \end{pmatrix}}_{\mathbf{z}_t}
 = \underbrace{\begin{pmatrix}
-\phi_{x,1} &amp; \phi_{x,2} \\
+\phi_{x, 1} &amp; \phi_{y, 1} \\
 \phi_{x, 2} &amp; \phi_{y, 2}
 \end{pmatrix} }_{\mathbf{A}}
 \underbrace{\begin{pmatrix}
@@ -473,11 +439,11 @@ e_{y,t}
 <p><span class="math display">\[
 \mathbf{z}_{t} = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t}
 \]</span></p>
-<p>If <span class="math inline">\(\mathbf{A}\)</span> were a diagonal matrix, then we already known the solution. We can solve each equation separately.</p>
+<p>If <span class="math inline">\(\mathbf{A}\)</span> were a diagonal matrix, then we already know the solution because we can solve each equation separately.</p>
 <p><span class="math display">\[
 \underbrace{\begin{pmatrix}
-x_{t - 1} \\
-y_{t - 1}
+x_{t} \\
+y_{t}
 \end{pmatrix}}_{\mathbf{z}_t}
 = \underbrace{\begin{pmatrix}
 \phi_{x,1} &amp; 0 \\
@@ -492,7 +458,7 @@ e_{x,t} \\
 e_{y,t}
 \end{pmatrix}}_{\mathbf{e}_t}
 \]</span></p>
-<p>However, <span class="math inline">\(\mathbf{A}\)</span> depends on the subject matter at hand and we need to be able to handle general case (not diagonal). Luckily, <span class="math inline">\(\mathbf{A}\)</span> is a square matrix and we known that we can diagonalize it using its eigen decomposition.</p>
+<p>However, <span class="math inline">\(\mathbf{A}\)</span> depends on the subject matter at hand, and we need to be able to handle the general case (not diagonal). Linear algebra provides an elegant solution to our problem. The eigendecomposition of the matrix <span class="math inline">\(\mathbf{A}\)</span> allows us to transform the system of equations into a form where we can apply the simple solution. After solving the equations, we can back-transform to the original variables.</p>
 <p><span class="math display">\[
 \mathbf{A} = \mathbf{V}
 \begin{pmatrix}
@@ -502,9 +468,9 @@ e_{y,t}
 \mathbf{V}^{-1}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ed <span class="ot">&lt;-</span> <span class="fu">eigen</span>(B)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ed <span class="ot">&lt;-</span> <span class="fu">eigen</span>(B)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>eigen() decomposition
 $values
@@ -517,14 +483,51 @@ $vectors
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ed<span class="sc">$</span>vectors <span class="sc">%*%</span> <span class="fu">diag</span>(ed<span class="sc">$</span>values) <span class="sc">%*%</span> <span class="fu">solve</span>(ed<span class="sc">$</span>vectors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(ed<span class="sc">$</span>vectors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]      [,2]
+[1,]  0.9013878 0.6009252
+[2,] -0.9013878 0.6009252</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ed<span class="sc">$</span>vectors <span class="sc">%*%</span> <span class="fu">diag</span>(ed<span class="sc">$</span>values) <span class="sc">%*%</span> <span class="fu">solve</span>(ed<span class="sc">$</span>vectors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    1    4
 [2,]    9    1</code></pre>
 </div>
 </div>
-<p>Using this decomposition, we can transform the complicated problem to a simple one with only a diagonal entries in the matrix before <span class="math inline">\(\mathbf{z}_{t - 1}\)</span>.</p>
+<p>In this example the diagonal matrix <span class="math inline">\(\mathbf{\Lambda}\)</span> is equal to</p>
+<p><span class="math display">\[
+\mathbf{\Lambda} = \begin{pmatrix}
+7 &amp; 0 \\
+0 &amp; -5
+\end{pmatrix}
+\]</span> The inverse of the eigenvectors matrix is</p>
+<p><span class="math display">\[
+\mathbf{V}^{-1} = \begin{pmatrix}
+0.9 &amp; 0.6 \\
+-0.9 &amp; 0.6
+\end{pmatrix}
+\]</span></p>
+<p>The transformed vectors <span class="math inline">\(\tilde{\mathbf{z}_{t}}\)</span> will look like:</p>
+<p><span class="math display">\[
+\tilde{\mathbf{z}_{t}} = \mathbf{V}^{-1}\mathbf{z}_t = \begin{pmatrix}
+0.9 &amp; 0.6 \\
+-0.9 &amp; 0.6
+\end{pmatrix}
+\begin{pmatrix}
+x_{t} \\
+y_{t}
+\end{pmatrix}
+=
+\begin{pmatrix}
+0.9x_t + 0.6y_t \\
+-0.9x_t + 0.6 y_t
+\end{pmatrix}
+\]</span></p>
+<p>Using this decomposition, we can transform the complicated problem to a simple one with only diagonal entries in the matrix before <span class="math inline">\(\mathbf{z}_{t - 1}\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
 \mathbf{z}_{t} &amp; = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t} \\
@@ -534,32 +537,37 @@ $vectors
 \tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}
 \end{align}
 \]</span></p>
-<p>Now we can solve th difference equation in the simple case. Once we have found the solutions, we can transform it back to the original variables <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
-<p>For the purposes of this course, however, our focus lies on the behavior of the solutions: does it converge to a stable path?</p>
-<p>The answer is contained in the matrix <span class="math inline">\(\mathbf{A}\)</span>. When we start doing the recursive substitution that we did in the scalar case, the transformed eqations will look like this:</p>
+<p>Now, we can solve the difference equation in the simple case. Once we have found the solutions, we can transform it back to the original variables <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
+<p>For the purposes of this course, however, our focus lies on the behavior of the system: Does it converge to a stable path?</p>
+<p>The answer is in the matrix <span class="math inline">\(\mathbf{A}\)</span>. When we start doing the the recursive substitution that we did in the scalar case, the transformed equations will look like this:</p>
 <p>$$ <span class="math display">\[\begin{align}
 \tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}} \\
 \tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}) + \tilde{\mathbf{e}_{t}} \\
 \implies \tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}_{t}} + \tilde{\mathbf{e}_{t}} \\
 
 \end{align}\]</span> $$</p>
-<p>You can continue the recursive substitution just like we did it in <a href="#exr-autonomous-solution">Exercise&nbsp;<span>3.2</span></a>. At this point you should realize that the behavior of the system depends on the matrix <span class="math inline">\(\mathbf{\Lambda}\)</span>. This leads us to the following problem: how do we find the values of the diagonal matrix? We will make use of a result from linear algebra.</p>
+<p>You can continue the substitution just like we did in <a href="#exr-autonomous-solution">Exercise&nbsp;<span>3.2</span></a>. At this point, you should realize that the system’s behavior depends on the matrix <span class="math inline">\(\mathbf{\Lambda}\)</span>. If the elements of <span class="math inline">\(\mathbf{\Lambda|\)</span> are less than one in absolute value, the system will return to equilibrium after a shock. Otherwise, it will show explosive behavior. This leads us to the following problem: How do we find the values of the diagonal matrix? We will make use of a result from linear algebra.</p>
 <div id="thm-eigenvalues" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.2 (Eigenvalues) </strong></span>The eigenvalues of a square matrix <span class="math inline">\(\mathbf{A}\)</span> are the solutions of the following equation</p>
+<p><span class="theorem-title"><strong>Theorem 3.2 (Eigenvalues) </strong></span>The eigenvalues of a square matrix <span class="math inline">\(\mathbf{A}\)</span> are the solutions of the following equation.</p>
 <p><span class="math display">\[
 \det(\mathbf{A} - \lambda\mathbf{I}) = 0
 \]</span></p>
 </div>
-<p>In a second order difference equation the current value <span class="math inline">\(y_t\)</span> depends (directly) on the values up to two periods before it: <span class="math inline">\(y_{t - 1}\)</span> and <span class="math inline">\(y_{t - 2}\)</span>.</p>
+</section>
+<section id="second-order-linear-difference-equations" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="second-order-linear-difference-equations"><span class="header-section-number">3.3</span> Second-Order Linear Difference Equations</h2>
+<p>In a second-order difference equation, the current value <span class="math inline">\(y_t\)</span> depends (directly) on the values up to two periods before it: <span class="math inline">\(y_{t - 1}\)</span> and <span class="math inline">\(y_{t - 2}\)</span>.</p>
 <p><span class="math display">\[
-x_{t} = \phi_{1}x_{t - 1} + \phi_{2}x_{t - 2} + e_{t}
+y_{t} = \phi_{1}y_{t - 1} + \phi_{2}y_{t - 2} + e_{t}
 \]</span></p>
-<p>What we want to determine is when this process is stationary. It helps to express this equation as a first order VAR process.</p>
-<p>$$ <span class="math display">\[\begin{align}
+<p>As in the first-order case, we want to investigate the stability property of this process: How does <span class="math inline">\(y_{t + j}\)</span> change in response to variations in the shocks (<span class="math inline">\(e_t\)</span>). It helps to express this equation as a first-order VAR process.</p>
+<p><span class="math display">\[
+\begin{align}
 x_{t} &amp; = \phi_{1}x_{t - 1} + \phi_{2}x_{t - 2} + e_{t} \\
 x_{t - 1} &amp; = x_{t - 1}
-\end{align}\]</span></p>
-<p>$$ The matrix for the VAR process is very simple in this case</p>
+\end{align}
+\]</span></p>
+<p>The matrix for the VAR process is simple in this case.</p>
 <p><span class="math display">\[
 \begin{pmatrix}
 x_t \\
@@ -578,41 +586,61 @@ x_{t - 2}
 e_{t} \\
 0
 \end{pmatrix}
-\]</span></p>
-<p>The general equation for the eigenvalues of the matrix are given by:</p>
+\]</span> We can use <a href="#thm-eigenvalues">Theorem&nbsp;<span>3.2</span></a> to find the eigenvalues of the matrix:</p>
 <p><span class="math display">\[
 \det(\mathbf{A} - \lambda\mathbf{I}) = 0
-\]</span> In our case of a second order difference equation it simplifies to</p>
+\]</span> In our case of a second-order difference equation, it is simply</p>
 <p><span class="math display">\[
 \det\begin{pmatrix}
 \phi_1 - \lambda &amp; \phi_2 \\
 1 &amp; 0 - \lambda
-\end{pmatrix} = 0
+\end{pmatrix} = 0.
 \]</span></p>
-<p>This is called the characteristic equation of <span class="math inline">\(\mathbf{A}\)</span> and we will call it the characteristic equation of the AR process.</p>
 <p><span class="math display">\[
 (\phi_1 - \lambda)(-\lambda) - \phi_2 \cdot 1 = 0 \\
 \lambda^2 - \lambda \phi_1 - \phi_2 = 0
-\]</span> The left hand side of this equation is called the characteristic polynomial of the difference equation. The whole equation is called the <em>characteristic</em> equation.</p>
-<p>Most of the time we derive this equation using the lag operator:</p>
+\]</span></p>
+<p>The left-hand side of this equation is called the characteristic polynomial of the difference equation. The whole equation is called the <em>characteristic</em> equation.</p>
+<p>Most of the time, we derive this equation using the lag operator:</p>
 <p><span class="math display">\[
 x_{t} = \phi_1 x_{t - 1} + \phi_2 x_{t - 2} + e_t \\
 x_{t} = \phi_1 L x_{t} + \phi_2 L^2 x_{t} + e_{t} \\
 (1 - \phi_1 L - \phi_2 L^2) x_{t} = e_{t}
 \]</span></p>
 <div id="thm-quadratic-eq" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.3 (Solutions of a Quadratic Equation) </strong></span>Given</p>
+<p><span class="theorem-title"><strong>Theorem 3.3 (Solutions of a Quadratic Equation) </strong></span>The solutions of a quadratic equation</p>
 <p><span class="math display">\[
 a \lambda^2 + b \lambda + c = 0
 \]</span></p>
-<p>the solutions are given by:</p>
+<p>are given by:</p>
 <p><span class="math display">\[
 \lambda_{1,2} = \frac{-b \pm\sqrt{b^2 - 4ac}}{2a}
 \]</span></p>
+<p><span class="math display">\[
+(\lambda - \lambda_1)(\lambda - \lambda_2) = 0
+\]</span></p>
 </div>
-<p>In the more general case you can rely on the Fundamental Theorem of Algebra</p>
+<p>In the more general case, you can rely on the Fundamental Theorem of Algebra.</p>
 <div id="thm-fundamental-theorem-algebra" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 3.4 (The Fundamental Theorem of Algebra) </strong></span>Any n-th order polynomial with complex coefficients has exactly n (possibly repeating) complex roots.</p>
+<p><span class="math display">\[
+a_0 + a_1 \lambda + a_2 \lambda^2 + \ldots a_n\lambda^n = 0
+\]</span></p>
+<p><span class="math display">\[
+(\lambda - \lambda_1)(\lambda - \lambda_2)\cdot \ldots\cdot(\lambda - \lambda_n) = 0
+\]</span></p>
+</div>
+<div id="exr-second-order-roots" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.3 (Characteristic roots) </strong></span>Find the characteristic roots of the following difference equation:</p>
+<p><span class="math display">\[
+y_t = y_{t - 1} + 0.2 y_{t - 2} + e_t
+\]</span> Use <a href="#thm-quadratic-eq">Theorem&nbsp;<span>3.3</span></a> to compute the roots by hand. First, find the characteristic equation using matrix notation, then use the lag polynomial to derive it. Confirm your solution using the <code>polyroot</code> function in R. Is the equation stable?</p>
+</div>
+<div class="solution proof">
+<p><span class="proof-title"><em>Solution</em>. </span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Type your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 
 
