@@ -631,15 +631,17 @@ e_{t} \\
 \end{pmatrix} = 0.
 \]</span></p>
 <p><span class="math display">\[
+\begin{align}
 (\phi_1 - \lambda)(-\lambda) - \phi_2 \cdot 1 = 0 \\
 \lambda^2 - \lambda \phi_1 - \phi_2 = 0
+\end{align}
 \]</span></p>
 <p>The left-hand side of this equation is called the characteristic polynomial of the difference equation. The whole equation is called the <em>characteristic</em> equation.</p>
 <p>Most of the time, we derive this equation using the lag operator:</p>
 <p><span class="math display">\[
-x_{t} = \phi_1 x_{t - 1} + \phi_2 x_{t - 2} + e_t \\
-x_{t} = \phi_1 L x_{t} + \phi_2 L^2 x_{t} + e_{t} \\
-(1 - \phi_1 L - \phi_2 L^2) x_{t} = e_{t}
+y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t \\
+y_{t} = \phi_1 L y_{t} + \phi_2 L^2 y_{t} + e_{t} \\
+(1 - \phi_1 L - \phi_2 L^2) y_{t} = e_{t}
 \]</span></p>
 <div id="thm-quadratic-eq" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 3.3 (Solutions of a Quadratic Equation) </strong></span>The solutions of a quadratic equation</p>
