@@ -475,8 +475,10 @@ $$
 $$
 
 $$
+\begin{align}
 (\phi_1 - \lambda)(-\lambda) - \phi_2 \cdot 1 = 0 \\
 \lambda^2 - \lambda \phi_1 - \phi_2 = 0
+\end{align}
 $$
 
 The left-hand side of this equation is called the characteristic
@@ -485,9 +487,9 @@ polynomial of the difference equation. The whole equation is called the _charact
 Most of the time, we derive this equation using the lag operator:
 
 $$
-x_{t} = \phi_1 x_{t - 1} + \phi_2 x_{t - 2} + e_t \\
-x_{t} = \phi_1 L x_{t} + \phi_2 L^2 x_{t} + e_{t} \\
-(1 - \phi_1 L - \phi_2 L^2) x_{t} = e_{t}
+y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t \\
+y_{t} = \phi_1 L y_{t} + \phi_2 L^2 y_{t} + e_{t} \\
+(1 - \phi_1 L - \phi_2 L^2) y_{t} = e_{t}
 $$
 
 
