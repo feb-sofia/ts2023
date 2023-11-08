@@ -218,7 +218,7 @@ y_{t} = \phi y_{t - 1} + e_t
 \begin{align}
 1 &amp; \quad y_1 = \phi y_{0} + e_{1} \\
 2 &amp; \quad y_2 = \phi y_{1} + e_{2} \\
-2 &amp; \quad y_3 = \phi y_{2} + e_{3} \\
+3 &amp; \quad y_3 = \phi y_{2} + e_{3} \\
 &amp; \vdots \\
 t &amp; \quad y_{t} = \phi y_{t - 1} + e_{t} \\
 t + 1 &amp;  \quad y_{t + 1} = \phi y_{t} + e_{t + 1}\\
@@ -417,7 +417,7 @@ S_{n} = \frac{1 - \phi^{n + 1}}{1 - \phi}
 <p><span class="math display">\[
 \begin{align}
 x_{t} &amp; = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
-y_{t} &amp; = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+y_{t} &amp; = \phi_{x,2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
 \end{align}
 \]</span></p>
 <p>It is convenient to write this equation in matrix form.</p>
@@ -442,7 +442,7 @@ e_{y,t}
 <p><span class="math display">\[
 \mathbf{z}_{t} = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t}
 \]</span></p>
-<p>If <span class="math inline">\(\mathbf{A}\)</span> were a diagonal matrix, then we already know the solution because we can solve each equation separately.</p>
+<p>If <span class="math inline">\(\mathbf{A}\)</span> is a diagonal matrix, then we already know the solution because we can solve each equation separately.</p>
 <p><span class="math display">\[
 \underbrace{\begin{pmatrix}
 x_{t} \\
@@ -570,14 +570,15 @@ y_{t}
 -0.9e_{x,t} + 0.6 e_{y,t}
 \end{pmatrix}
 \]</span></p>
-<p>Now, we can solve the difference equation in the simple case. Once we have found the solutions, we can transform it back to the original variables <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
+<p>Now, we can solve the difference equation in the simple case. Once we have found the solutions, we can transform them back to the original variables <span class="math inline">\(x_t\)</span> and <span class="math inline">\(y_t\)</span>.</p>
 <p>For the purposes of this course, however, our focus lies on the behavior of the system: Does it converge to a stable path?</p>
 <p>The answer is in the matrix <span class="math inline">\(\mathbf{A}\)</span>. When we start doing the the recursive substitution that we did in the scalar case, the transformed equations will look like this:</p>
 <p><span class="math display">\[
 \begin{align}
-\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}} \\
-\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}) + \tilde{\mathbf{e}_{t}} \\
-\implies \tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}_{t}} + \tilde{\mathbf{e}_{t}}
+\tilde{\mathbf{z}}_{t} &amp; = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}}_{t} \\
+\tilde{\mathbf{z}}_{t + 1} &amp; = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}}_{t}) + \tilde{\mathbf{e}}_{t + 1} \\
+\implies \tilde{\mathbf{z}}_{t + 1} &amp; = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}}_{t} + \tilde{\mathbf{e}}_{t + 1}\\
+\tilde{\mathbf{z}}_{t + j} &amp; = \mathbf{\Lambda}^{j + 1} \tilde{\mathbf{z}}_{t - 1} + \sum_{k = 0}^{j} \mathbf{\Lambda}^{k} \tilde{\mathbf{e}}_{t + j - k}
 \end{align}
 \]</span></p>
 <p>You can continue the substitution just like we did in <a href="#exr-autonomous-solution">Exercise&nbsp;<span>3.2</span></a>. At this point, you should realize that the system’s behavior depends on the matrix <span class="math inline">\(\mathbf{\Lambda}\)</span>. If the elements of <span class="math inline">\(\mathbf{\Lambda|\)</span> are less than one in absolute value, the system will return to equilibrium after a shock. Otherwise, it will show explosive behavior. This leads us to the following problem: How do we find the values of the diagonal matrix? We will make use of a result from linear algebra.</p>
@@ -638,10 +639,32 @@ e_{t} \\
 \]</span></p>
 <p>The left-hand side of this equation is called the characteristic polynomial of the difference equation. The whole equation is called the <em>characteristic</em> equation.</p>
 <p>Most of the time, we derive this equation using the lag operator:</p>
+<div id="def-lag-operator" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.1 (Lag Operator) </strong></span>The lag operator returns the previous (shifted) value of a series.</p>
 <p><span class="math display">\[
+\begin{align}
+&amp; L y_{t} = y_{t - 1}\\
+&amp; L^2 y_{t} = L(Ly_t) = L(y_{t - 1}) = y_{t - 2} \\
+&amp; L^k y_{t} = y_{t - k}
+\end{align}
+\]</span></p>
+</div>
+<p>We can rewrite the difference equation in terms of a polynomial of the lag operator.</p>
+<p><span class="math display">\[
+\begin{align}
 y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t \\
 y_{t} = \phi_1 L y_{t} + \phi_2 L^2 y_{t} + e_{t} \\
-(1 - \phi_1 L - \phi_2 L^2) y_{t} = e_{t}
+y_{t}(\underbrace{(1 - \phi_1 L - \phi_2 L^2)}_{\text{Lag Polynomial}}) = e_{t}
+\end{align}
+\]</span></p>
+<p>The lag polynomial and the characteristic polynomial are related.</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; 1 L^0 - \phi_1 L^1 - \phi_2 L^2 \\
+&amp; 1 \lambda^{2 - 0} - \phi_1 \lambda^{2 - 1} - \phi_2 \lambda^{2 - 2} \\
+&amp; 1 \lambda^{2} - \phi_1 \lambda^{1} - \phi_2 \lambda^{0} \\
+&amp; \lambda^{2} - \phi_1 \lambda - \phi_2 \\
+\end{align}
 \]</span></p>
 <div id="thm-quadratic-eq" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 3.3 (Solutions of a Quadratic Equation) </strong></span>The solutions of a quadratic equation</p>
