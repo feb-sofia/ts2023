@@ -30,7 +30,7 @@ $$
 \begin{align}
 1 & \quad y_1 = \phi y_{0} + e_{1} \\
 2 & \quad y_2 = \phi y_{1} + e_{2} \\
-2 & \quad y_3 = \phi y_{2} + e_{3} \\
+3 & \quad y_3 = \phi y_{2} + e_{3} \\
 & \vdots \\
 t & \quad y_{t} = \phi y_{t - 1} + e_{t} \\
 t + 1 &  \quad y_{t + 1} = \phi y_{t} + e_{t + 1}\\
@@ -226,7 +226,7 @@ Let's start with two variables, $x_t$ and $y_t$.
 $$
 \begin{align}
 x_{t} & = \phi_{x,1}x_{t - 1} + \phi_{y, 1}y_{t - 1} + e_{x,t} \\
-y_{t} & = \phi_{x_2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
+y_{t} & = \phi_{x,2}x_{t - 1} + \phi_{y, 2}y_{t - 1} + e_{y,t}
 \end{align}
 $$
 
@@ -255,7 +255,7 @@ $$
 \mathbf{z}_{t} = \mathbf{A} \mathbf{z}_{t - 1} + \mathbf{e}_{t}
 $$
 
-If $\mathbf{A}$ were a diagonal matrix, then we already know the solution because we can solve each equation separately.
+If $\mathbf{A}$ is a diagonal matrix, then we already know the solution because we can solve each equation separately.
 
 $$
 \underbrace{\begin{pmatrix}
@@ -386,7 +386,7 @@ $$
 
 
 Now, we can solve the difference equation in the simple case. Once we have found the
-solutions, we can transform it back to the original variables $x_t$ and $y_t$.
+solutions, we can transform them back to the original variables $x_t$ and $y_t$.
 
 For the purposes of this course, however, our focus lies on the behavior 
 of the system: Does it converge to a stable path?
@@ -397,9 +397,10 @@ will look like this:
 
 $$
 \begin{align}
-\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}} \\
-\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}_{t}}) + \tilde{\mathbf{e}_{t}} \\
-\implies \tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}_{t}} + \tilde{\mathbf{e}_{t}}
+\tilde{\mathbf{z}}_{t} & = \mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}}_{t} \\
+\tilde{\mathbf{z}}_{t + 1} & = \mathbf{\Lambda} (\mathbf{\Lambda} \tilde{\mathbf{z}}_{t - 1} + \tilde{\mathbf{e}}_{t}) + \tilde{\mathbf{e}}_{t + 1} \\
+\implies \tilde{\mathbf{z}}_{t + 1} & = \mathbf{\Lambda}^2 \tilde{\mathbf{z}}_{t - 1} +\mathbf{\Lambda} \tilde{\mathbf{e}}_{t} + \tilde{\mathbf{e}}_{t + 1}\\
+\tilde{\mathbf{z}}_{t + j} & = \mathbf{\Lambda}^{j + 1} \tilde{\mathbf{z}}_{t - 1} + \sum_{k = 0}^{j} \mathbf{\Lambda}^{k} \tilde{\mathbf{e}}_{t + j - k}
 \end{align}
 $$
 
@@ -486,13 +487,41 @@ polynomial of the difference equation. The whole equation is called the _charact
 
 Most of the time, we derive this equation using the lag operator:
 
+:::{#def-lag-operator}
+## Lag Operator
+
+The lag operator returns the previous (shifted) value of a series.
+
 $$
+\begin{align}
+& L y_{t} = y_{t - 1}\\
+& L^2 y_{t} = L(Ly_t) = L(y_{t - 1}) = y_{t - 2} \\
+& L^k y_{t} = y_{t - k}
+\end{align}
+$$
+:::
+
+We can rewrite the difference equation in terms of a polynomial of the lag operator.
+
+$$
+\begin{align}
 y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t \\
 y_{t} = \phi_1 L y_{t} + \phi_2 L^2 y_{t} + e_{t} \\
-(1 - \phi_1 L - \phi_2 L^2) y_{t} = e_{t}
+y_{t}(\underbrace{(1 - \phi_1 L - \phi_2 L^2)}_{\text{Lag Polynomial}}) = e_{t}
+\end{align}
 $$
 
 
+The lag polynomial and the characteristic polynomial are related.
+
+$$
+\begin{align}
+& 1 L^0 - \phi_1 L^1 - \phi_2 L^2 \\
+& 1 \lambda^{2 - 0} - \phi_1 \lambda^{2 - 1} - \phi_2 \lambda^{2 - 2} \\
+& 1 \lambda^{2} - \phi_1 \lambda^{1} - \phi_2 \lambda^{0} \\
+& \lambda^{2} - \phi_1 \lambda - \phi_2 \\
+\end{align}
+$$
 
 :::{#thm-quadratic-eq}
 ## Solutions of a Quadratic Equation
