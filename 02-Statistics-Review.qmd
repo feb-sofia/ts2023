@@ -205,11 +205,20 @@ sum(px$p * (px$x - mu_x)^2)
 ```
 
 
-You can see from @eq-variance that it is  the expected value of the squared diviations from the expected value.
+You can see from @eq-variance that it is the expected value of the squared diviations from the expected value.
 
 $$
 Var(X) = E(X - E(X))^2
 $$
+:::{#def-variance}
+## Variance
+The variance of a random variable (distribution) is a summary of the distribution and 
+describes its spread: how different are the values that this distribution will generate.
+
+$$
+Var(X) = E[(X - E(X))^2] = E(X^2) - E(X)^2
+$$
+:::
 
 :::{#exr-variance}
 ## Variance
@@ -258,7 +267,6 @@ $$
 $$
 \begin{align}
 Var(a) & = 0 \\
-
 Var(aX) & = a^2 Var(X)
 \end{align}
 $$
