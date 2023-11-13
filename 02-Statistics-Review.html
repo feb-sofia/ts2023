@@ -480,7 +480,10 @@ Var(X) &amp; = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
 <p>You can see from <a href="#eq-variance">Equation&nbsp;<span>2.1</span></a> that it is the expected value of the squared diviations from the expected value.</p>
 <p><span class="math display">\[
 Var(X) = E(X - E(X))^2
-\]</span></p>
+\]</span> :::{#def-variance} ## Variance The variance of a random variable (distribution) is a summary of the distribution and describes its spread: how different are the values that this distribution will generate.</p>
+<p><span class="math display">\[
+Var(X) = E[(X - E(X))^2] = E(X^2) - E(X)^2
+\]</span> :::</p>
 <div id="exr-variance" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.4 (Variance) </strong></span>Compute the Variance of <span class="math inline">\(Y\)</span>.</p>
 </div>
@@ -509,11 +512,12 @@ E(XY) = E(X)E(Y)
 <p><span class="math display">\[
 Var(X) = E(X^2) - E(X)^2
 \]</span></p>
-<p>$$ <span class="math display">\[\begin{align}
+<p><span class="math display">\[
+\begin{align}
 Var(a) &amp; = 0 \\
-
 Var(aX) &amp; = a^2 Var(X)
-\end{align}\]</span> $$ Furthermore, if <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <em>uncorrelated</em>, then the variance of their sum equals the sum of their variances:</p>
+\end{align}
+\]</span> Furthermore, if <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <em>uncorrelated</em>, then the variance of their sum equals the sum of their variances:</p>
 <p><span class="math display">\[
 Var(X + Y) = Var(X) + Var(Y)
 \]</span></p>
