@@ -11,6 +11,7 @@ book:
     - 01-Introduction.qmd
     - 02-Statistics-Review.qmd
     - 03-linear-difference-equations.qmd
+    - 04-AR.qmd
     - references.qmd
 
 bibliography: refs.bib
