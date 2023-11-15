@@ -325,23 +325,23 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 # Groups:   mu_lab [2]
   mu_lab  sigma_lab Average StdDev
   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-1 mu = 0  sigma = 1 -0.0963  0.918
-2 mu = 0  sigma = 3 -0.0820  3.12 
-3 mu = 10 sigma = 1 10.1     1.05 
-4 mu = 10 sigma = 3  9.68    3.09 </code></pre>
+1 mu = 0  sigma = 1  0.0156  0.981
+2 mu = 0  sigma = 3 -0.0502  3.11 
+3 mu = 10 sigma = 1  9.94    1.10 
+4 mu = 10 sigma = 3  9.84    3.01 </code></pre>
 </div>
 </div>
 <p>Now that we have seen some realizations of a couple of purely random processes, let’s look at the empirical summaries of the time series.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.3199437</code></pre>
+<pre><code>[1] 0.01436201</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.880394</code></pre>
+<pre><code>[1] 2.006292</code></pre>
 </div>
 </div>
 <p>Let’s also compute is (empirical) auto-correlation coefficients applying the formula</p>
@@ -361,15 +361,15 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l1, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1514757</code></pre>
+<pre><code>[1] -0.06224758</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l2, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1228228</code></pre>
+<pre><code>[1] 0.077822</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l3, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1211357</code></pre>
+<pre><code>[1] -0.01392417</code></pre>
 </div>
 </div>
 <p>You can obtain these auto-correlation coefficients using the <code>acf</code> function:</p>
@@ -380,9 +380,9 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 Autocorrelations of series 'dt$e', by lag
 
      0      1      2      3      4      5      6      7      8      9     10 
- 1.000  0.151  0.122  0.119  0.036 -0.023 -0.004  0.001 -0.015 -0.001 -0.041 
+ 1.000 -0.062  0.076 -0.014 -0.116 -0.099  0.080 -0.253  0.092  0.068  0.115 
     11     12     13     14     15     16     17     18     19     20 
- 0.086 -0.077 -0.160 -0.059 -0.203 -0.108  0.147 -0.029 -0.039  0.135 </code></pre>
+-0.076 -0.084 -0.151  0.131  0.043  0.033 -0.069  0.093  0.042  0.023 </code></pre>
 </div>
 </div>
 <p>and you can visualize the auto-correlation coefficients</p>
@@ -411,7 +411,7 @@ Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
     Box-Pierce test
 
 data:  dt$e
-X-squared = 5.1717, df = 3, p-value = 0.1596</code></pre>
+X-squared = 0.97798, df = 3, p-value = 0.8066</code></pre>
 </div>
 </div>
 </section>
@@ -437,10 +437,12 @@ E(y_t) = E(y_{t - 1}) = \mu
 \]</span></p>
 <p>then the equation is very easy to solve:</p>
 <p><span class="math display">\[
-\underbrace{E(y_{t})}_{\mu} = \phi_0 + \phi_1 \underbrace{E(y_{t - 1})}_{\mu} \\
-\mu = \phi_0 + \phi_1 \mu \\
-(1 - \phi_1)\mu = \phi_0 \\
-\mu = \frac{\phi_0}{1 - \phi_1}
+\begin{align}
+\underbrace{E(y_{t})}_{\mu} &amp; = \phi_0 + \phi_1 \underbrace{E(y_{t - 1})}_{\mu} \\
+\mu &amp; = \phi_0 + \phi_1 \mu \\
+(1 - \phi_1)\mu &amp; = \phi_0 \\
+\mu &amp; = \frac{\phi_0}{1 - \phi_1}
+\end{align}
 \]</span></p>
 <p>In other words</p>
 <p><span class="math display">\[
@@ -468,12 +470,12 @@ Var(y_{t}) = ?
 <h2 data-number="4.3" class="anchored" data-anchor-id="exercise"><span class="header-section-number">4.3</span> Exercise</h2>
 <p>A solution to one of the problems from the lecture slides.</p>
 <p><span class="math display">\[
-y_{t} = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim WN(\sigma^2)
-\]</span> Roots of the lag-polynomial: 0.8, 0.2, -0.5. Roots of what?</p>
+y_{t} = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim N(0, \sigma^2)
+\]</span> Roots of the lag-polynomial: 0.8, 0.2, -0.5. Roots of what? Remember that the lag operator shifts a series:</p>
 <p><span class="math display">\[
 Ly_{t} = y_{t - 1}\\
 Ly_{t - 1} = y_{t - 2}\\
-L\cdot Ly_{t} = y_{t - 2}\\
+L(L_{t}) = y_{t - 2}\\
 L^2y_{t} = y_{t - 2}\\
 L^3y_{t} = y_{t - 3}
 \]</span></p>
@@ -485,8 +487,10 @@ y_{t}(\underbrace{L^0 - \phi_1 L - \phi_2 L^2 - \phi_3 L^3}_{\text{lag polynomia
 \end{align}
 \]</span> Characteristic equation:</p>
 <p><span class="math display">\[
-\lambda^{3 - 0} - \phi_1\lambda^{3 - 1} - \phi_2 \lambda^{3 - 2} - \phi_3 \lambda ^ {3 - 3} = 0\\
-\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 = 0
+\begin{align}
+\lambda^{3 - 0} - \phi_1\lambda^{3 - 1} - \phi_2 \lambda^{3 - 2} - \phi_3 \lambda ^ {3 - 3} &amp; = 0\\
+\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 &amp; = 0
+\end{align}
 \]</span> The roots of the characteristic polynomial determine whether the process is stationary or not. If the roots of this equation are less than 1 in absolute value then the process is stationary.</p>
 <p>If we know that the roots of this equation are</p>
 <p><span class="math display">\[
