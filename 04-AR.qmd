@@ -227,10 +227,12 @@ $$
 then the equation is very easy to solve:
 
 $$
-\underbrace{E(y_{t})}_{\mu} = \phi_0 + \phi_1 \underbrace{E(y_{t - 1})}_{\mu} \\
-\mu = \phi_0 + \phi_1 \mu \\
-(1 - \phi_1)\mu = \phi_0 \\
-\mu = \frac{\phi_0}{1 - \phi_1}
+\begin{align}
+\underbrace{E(y_{t})}_{\mu} & = \phi_0 + \phi_1 \underbrace{E(y_{t - 1})}_{\mu} \\
+\mu & = \phi_0 + \phi_1 \mu \\
+(1 - \phi_1)\mu & = \phi_0 \\
+\mu & = \frac{\phi_0}{1 - \phi_1}
+\end{align}
 $$
 
 In other words 
@@ -279,14 +281,14 @@ A solution to one of the problems from the lecture slides.
 
 
 $$
-y_{t} = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim WN(\sigma^2)
+y_{t} = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim N(0, \sigma^2)
 $$
-Roots of the lag-polynomial: 0.8, 0.2, -0.5. Roots of what?
+Roots of the lag-polynomial: 0.8, 0.2, -0.5. Roots of what? Remember that the lag operator shifts a series:
 
 $$
 Ly_{t} = y_{t - 1}\\
 Ly_{t - 1} = y_{t - 2}\\
-L\cdot Ly_{t} = y_{t - 2}\\
+L(L_{t}) = y_{t - 2}\\
 L^2y_{t} = y_{t - 2}\\
 L^3y_{t} = y_{t - 3}
 $$
@@ -302,8 +304,10 @@ $$
 Characteristic equation:
 
 $$
-\lambda^{3 - 0} - \phi_1\lambda^{3 - 1} - \phi_2 \lambda^{3 - 2} - \phi_3 \lambda ^ {3 - 3} = 0\\
-\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 = 0
+\begin{align}
+\lambda^{3 - 0} - \phi_1\lambda^{3 - 1} - \phi_2 \lambda^{3 - 2} - \phi_3 \lambda ^ {3 - 3} & = 0\\
+\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 & = 0
+\end{align}
 $$
 The roots of the characteristic polynomial determine whether the process is stationary
 or not. If the roots of this equation are less than 1 in absolute value then the process
