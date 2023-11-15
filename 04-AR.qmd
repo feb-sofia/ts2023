@@ -334,11 +334,15 @@ $$
 \lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3\\
 \lambda^3 -0.5\lambda^2 -0.34\lambda + 0.08
 $$
+So we have now recovered the process coefficients from the
+roots of the characteristic equation.
 
 $$
+\begin{align}
 \phi_1 = 0.5\\
 \phi_2 = 0.34\\
 \phi_3 = -0.08
+\end{align}
 $$
 $$
 \begin{align}
