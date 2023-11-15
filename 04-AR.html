@@ -183,6 +183,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#the-purely-random-process" id="toc-the-purely-random-process" class="nav-link active" data-scroll-target="#the-purely-random-process"><span class="header-section-number">4.1</span> The Purely Random Process</a></li>
   <li><a href="#ar1" id="toc-ar1" class="nav-link" data-scroll-target="#ar1"><span class="header-section-number">4.2</span> AR(1)</a></li>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise"><span class="header-section-number">4.3</span> Exercise</a></li>
+  <li><a href="#ar3" id="toc-ar3" class="nav-link" data-scroll-target="#ar3"><span class="header-section-number">4.4</span> AR(3)</a></li>
   </ul>
 </nav>
     </div>
@@ -324,23 +326,23 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 # Groups:   mu_lab [2]
   mu_lab  sigma_lab Average StdDev
   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-1 mu = 0  sigma = 1  0.0838   1.03
-2 mu = 0  sigma = 3  0.362    2.98
-3 mu = 10 sigma = 1  9.93     1.09
-4 mu = 10 sigma = 3 10.5      3.02</code></pre>
+1 mu = 0  sigma = 1  0.249   0.989
+2 mu = 0  sigma = 3 -0.0390  3.42 
+3 mu = 10 sigma = 1 10.1     1.10 
+4 mu = 10 sigma = 3 10.3     3.30 </code></pre>
 </div>
 </div>
 <p>Now that we have seen some realizations of a couple of purely random processes, let’s look at the empirical summaries of the time series.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.4076396</code></pre>
+<pre><code>[1] 0.1138879</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.90286</code></pre>
+<pre><code>[1] 2.037092</code></pre>
 </div>
 </div>
 <p>Let’s also compute is (empirical) auto-correlation coefficients applying the formula</p>
@@ -360,15 +362,15 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l1, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.009850822</code></pre>
+<pre><code>[1] 0.1710924</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l2, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1138851</code></pre>
+<pre><code>[1] 0.03531957</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l3, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.0357651</code></pre>
+<pre><code>[1] 0.07710402</code></pre>
 </div>
 </div>
 <p>You can obtain these auto-correlation coefficients using the <code>acf</code> function:</p>
@@ -379,9 +381,9 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 Autocorrelations of series 'dt$e', by lag
 
      0      1      2      3      4      5      6      7      8      9     10 
- 1.000 -0.010  0.112 -0.034  0.057  0.073  0.197  0.039  0.004  0.140 -0.166 
+ 1.000  0.171  0.035  0.077  0.158 -0.002  0.123  0.024  0.002  0.006  0.045 
     11     12     13     14     15     16     17     18     19     20 
- 0.094  0.089 -0.078  0.051  0.007 -0.004  0.019  0.127 -0.099  0.161 </code></pre>
+-0.138 -0.050  0.076 -0.081 -0.214 -0.115 -0.064 -0.083 -0.055 -0.144 </code></pre>
 </div>
 </div>
 <p>and you can visualize the auto-correlation coefficients</p>
@@ -410,7 +412,7 @@ Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
     Box-Pierce test
 
 data:  dt$e
-X-squared = 1.3824, df = 3, p-value = 0.7097</code></pre>
+X-squared = 3.6303, df = 3, p-value = 0.3042</code></pre>
 </div>
 </div>
 </section>
@@ -462,6 +464,74 @@ Var(y_{t}) = ?
 <div id="exr-ar-1-cor" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 4.2 (Autocorrelations of a AR(1) process) </strong></span>Express the first and second order auto-correlations of the AR(1) process in terms of its coefficients <span class="math inline">\(\phi_0\)</span> and <span class="math inline">\(\phi_1\)</span>. Without a loss of generality, assume that the process has a zero expected value.</p>
 </div>
+</section>
+<section id="exercise" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="exercise"><span class="header-section-number">4.3</span> Exercise</h2>
+</section>
+<section id="ar3" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="ar3"><span class="header-section-number">4.4</span> AR(3)</h2>
+<p><span class="math display">\[
+y_{t} = \delta + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim WN(\sigma^2)
+\]</span> Roots of the lag-polynomial: 0.8, 0.2, -0.5. Roots of what?</p>
+<p><span class="math display">\[
+Ly_{t} = y_{t - 1}\\
+Ly_{t - 1} = y_{t - 2}\\
+L\cdot Ly_{t} = y_{t - 2}\\
+L^2y_{t} = y_{t - 2}\\
+L^3y_{t} = y_{t - 3}
+\]</span></p>
+<p>Using the lag operator we can express the model as: <span class="math display">\[
+y_{t} = \delta + \phi_1 Ly_{t} + \phi_2 L^2y_{t} + \phi_3 L^3 y_{t} + e_t\\
+y_{t}(\underbrace{L^0 - \phi_1 L - \phi_2 L^2 - \phi_3 L^3}_{\text{lag polynomial}}) = \delta + e_t
+\]</span> Characteristic equation:</p>
+<p><span class="math display">\[
+\lambda^{3 - 0} - \phi_1\lambda^{3 - 1} - \phi_2 \lambda^{3 - 2} - \phi_3 \lambda ^ {3 - 3} = 0\\
+\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 = 0
+\]</span> The roots of the characteristic polynomial determine whether the process is stationary or not. If the roots of this equation are less than 1 in absolute value then the process is stationary.</p>
+<p>If we know that the roots of this equation are</p>
+<p><span class="math display">\[
+\lambda_1^* = 0.8, \lambda_2^* = 0.2, \lambda_3^* = -0.5
+\]</span> <span class="math display">\[
+\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 = (\lambda - \lambda_{1}^*)(\lambda - \lambda_2^*)(\lambda - \lambda_3^*)
+\]</span> <span class="math display">\[
+(\lambda - \lambda_{1}^*)(\lambda - \lambda_2^*)(\lambda - \lambda_3^*) = \\
+(\lambda - 0.8)(\lambda - 0.2)(\lambda + 0.5) = \\
+\left[\lambda^2 - \lambda + 0.16\right](\lambda + 0.5) = \\
+\lambda^3 - \lambda^2 + 0.16\lambda + 0.5\lambda^2 - 0.5\lambda + 0.08
+\]</span></p>
+<p><span class="math display">\[
+\lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3\\
+\lambda^3 -0.5\lambda^2 -0.34\lambda + 0.08
+\]</span></p>
+<p><span class="math display">\[
+\phi_1 = 0.5\\
+\phi_2 = 0.34\\
+\phi_3 = -0.08
+\]</span> <span class="math display">\[
+y_{t} = \delta + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t\\
+y_{t} = \delta + 0.5y_{t - 1} + 0.34y_{t - 2} - 0.08 y_{t - 3} + e_t
+\]</span> Now we can calculate</p>
+<p>First order autocorrelation: <span class="math display">\[
+\rho(y_{t}, y_{t - 1}) = \rho_1 = \frac{Cov(y_{t}, y_{t - 1})}{Var(y_{t})}
+\]</span> The Yule-Walker equations connect the autocorrelations (and autocovariances) and the model coefficients.</p>
+<p><span class="math display">\[
+\rho_1 = \phi_1 \rho_0 + \phi_2\rho_1 + \ldots + \phi_R\rho_{R - 1}\\
+\rho_2 = \phi_1 \rho_1 + \phi_2 + \ldots + \phi_R \rho_{R - 2} \\
+\vdots\\
+\rho_{R - 1} = \phi_1 \rho_{R - 1} + \phi_2\rho_{R - 2} + \ldots + \phi_R\rho_0
+\]</span> In the case of an AR(3)</p>
+<p><span class="math display">\[
+\rho_1 = \phi_1 + \phi_2 \rho_1 + \phi_3 \rho_2\\
+\rho_{2} = \phi_{1}\rho_{2 - 1} + \phi_2 \rho_{2 - 2} + \phi_3\rho_{3 - 2}\\
+\]</span></p>
+<p><span class="math display">\[
+\rho_1 = \phi_1 + \phi_2 \rho_1 + \phi_3 \rho_2\\
+\rho_{2} = \phi_{1}\rho_{1} + \phi_2 \rho_{0} + \phi_3\rho_{1}\\
+\]</span></p>
+<p><span class="math display">\[
+\rho_1 = 0.5 + 0.34 \rho_1 - 0.08 \rho_2\\
+\rho_2 = 0.5\rho_1 + 0.34 - 0.08\rho_1\\
+\]</span></p>
 
 
 </section>
