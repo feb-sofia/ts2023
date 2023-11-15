@@ -275,10 +275,11 @@ Express the first and second order auto-correlations of the AR(1) process in ter
 
 ## Exercise
 
-## AR(3)
+A solution to one of the problems from the lecture slides.
+
 
 $$
-y_{t} = \delta + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim WN(\sigma^2)
+y_{t} = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t, \quad e_t \sim WN(\sigma^2)
 $$
 Roots of the lag-polynomial: 0.8, 0.2, -0.5. Roots of what?
 
@@ -291,9 +292,12 @@ L^3y_{t} = y_{t - 3}
 $$
 
 Using the lag operator we can express the model as:
+
 $$
-y_{t} = \delta + \phi_1 Ly_{t} + \phi_2 L^2y_{t} + \phi_3 L^3 y_{t} + e_t\\
-y_{t}(\underbrace{L^0 - \phi_1 L - \phi_2 L^2 - \phi_3 L^3}_{\text{lag polynomial}}) = \delta + e_t
+\begin{align}
+y_{t} & = \phi_0 + \phi_1 Ly_{t} + \phi_2 L^2y_{t} + \phi_3 L^3 y_{t} + e_t\\
+y_{t}(\underbrace{L^0 - \phi_1 L - \phi_2 L^2 - \phi_3 L^3}_{\text{lag polynomial}}) & = \phi_0 + e_t
+\end{align}
 $$
 Characteristic equation:
 
