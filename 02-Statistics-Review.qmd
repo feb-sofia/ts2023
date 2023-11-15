@@ -210,7 +210,9 @@ You can see from @eq-variance that it is the expected value of the squared divia
 $$
 Var(X) = E(X - E(X))^2
 $$
+
 :::{#def-variance}
+
 ## Variance
 The variance of a random variable (distribution) is a summary of the distribution and 
 describes its spread: how different are the values that this distribution will generate.

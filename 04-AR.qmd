@@ -3,7 +3,7 @@
 library(tidyverse)
 ```
 
-# ARIMA
+# Autoregressive Processes
 
 Time series process: sequence of random variables
 
@@ -184,7 +184,7 @@ $$
 and is based on the test statistic:
 
 $$
-Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}_j^2}{T - j}
+Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
 $$
 Under the null hypothesis (i.e., if we assume the null hypothesis to be true)
 it follows a $\Chi^2$ distribution with $k$ degrees of freedom.
@@ -245,7 +245,7 @@ To see how the stability condition for the first order difference equation relat
 to the expected value, consider the solution to the equation that we derived last time. The only new thing here is the constant term $\phi_0$.
 
 $$
-y_{t} = 
+y_{t} = \phi_1^{t} y_{0} + \frac{1 - \phi_1^{t}}{1 - \phi_1} \phi_0 + \sum_{k = 0}^{t - 1} \phi_1^{k} u_{t - k}
 $$
 
 
