@@ -314,10 +314,12 @@ $$
 \lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3 = (\lambda - \lambda_{1}^*)(\lambda - \lambda_2^*)(\lambda - \lambda_3^*)
 $$
 $$
+\begin{align}
 (\lambda - \lambda_{1}^*)(\lambda - \lambda_2^*)(\lambda - \lambda_3^*) = \\
 (\lambda - 0.8)(\lambda - 0.2)(\lambda + 0.5) = \\
 \left[\lambda^2 - \lambda + 0.16\right](\lambda + 0.5) = \\
 \lambda^3 - \lambda^2 + 0.16\lambda + 0.5\lambda^2 - 0.5\lambda + 0.08
+\end{align}
 $$
 
 $$
@@ -331,8 +333,10 @@ $$
 \phi_3 = -0.08
 $$
 $$
-y_{t} = \delta + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t\\
-y_{t} = \delta + 0.5y_{t - 1} + 0.34y_{t - 2} - 0.08 y_{t - 3} + e_t
+\begin{align}
+y_{t} & = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t\\
+y_{t} & = \phi_0 + 0.5y_{t - 1} + 0.34y_{t - 2} - 0.08 y_{t - 3} + e_t
+\end{align}
 $$
 Now we can calculate
 
@@ -344,25 +348,39 @@ The Yule-Walker equations connect the autocorrelations (and autocovariances) and
 the model coefficients.
 
 $$
-\rho_1 = \phi_1 \rho_0 + \phi_2\rho_1 + \ldots + \phi_R\rho_{R - 1}\\
-\rho_2 = \phi_1 \rho_1 + \phi_2 + \ldots + \phi_R \rho_{R - 2} \\
+\begin{align}
+\rho_1 & = \phi_1 \rho_0 + \phi_2\rho_1 + \ldots + \phi_R\rho_{R - 1}\\
+\rho_2  & = \phi_1 \rho_1 + \phi_2 + \ldots + \phi_R \rho_{R - 2} \\
 \vdots\\
-\rho_{R - 1} = \phi_1 \rho_{R - 1} + \phi_2\rho_{R - 2} + \ldots + \phi_R\rho_0
+\rho_{R - 1}  & = \phi_1 \rho_{R - 1} + \phi_2\rho_{R - 2} + \ldots + \phi_R\rho_0
+\end{align}
 $$
 In the case of an AR(3)
 
 $$
-\rho_1 = \phi_1 + \phi_2 \rho_1 + \phi_3 \rho_2\\
-\rho_{2} = \phi_{1}\rho_{2 - 1} + \phi_2 \rho_{2 - 2} + \phi_3\rho_{3 - 2}\\
+\begin{align}
+\rho_1 & = \phi_1 + \phi_2 \rho_1 + \phi_3 \rho_2\\
+\rho_{2} & = \phi_{1}\rho_{2 - 1} + \phi_2 \rho_{2 - 2} + \phi_3\rho_{3 - 2}\\
+\end{align}
+$$
+Keep in mind that
+
+$$
+\rho(k) = \rho(-k)
 $$
 
 $$
-\rho_1 = \phi_1 + \phi_2 \rho_1 + \phi_3 \rho_2\\
-\rho_{2} = \phi_{1}\rho_{1} + \phi_2 \rho_{0} + \phi_3\rho_{1}\\
+\begin{align}
+\rho_1 & = \phi_1 + \phi_2 \rho_1 + \phi_3 \rho_2\\
+\rho_{2} & = \phi_{1}\rho_{1} + \phi_2 \rho_{0} + \phi_3\rho_{1}\\
+\end{align}
 $$
 
 $$
+\begin{align}
 \rho_1 = 0.5 + 0.34 \rho_1 - 0.08 \rho_2\\
 \rho_2 = 0.5\rho_1 + 0.34 - 0.08\rho_1\\
+\end{align}
 $$
+This is a system of two unknowns and two equations. Its solution is left as an exercise.
 
