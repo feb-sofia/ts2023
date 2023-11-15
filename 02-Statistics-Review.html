@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-AR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ARIMA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Autoregressive Processes</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -486,10 +486,13 @@ Var(X) &amp; = \sum_{x = 0}^{3} (x - \mu_x)^2 \times p_X(x) \\
 <p>You can see from <a href="#eq-variance">Equation&nbsp;<span>2.1</span></a> that it is the expected value of the squared diviations from the expected value.</p>
 <p><span class="math display">\[
 Var(X) = E(X - E(X))^2
-\]</span> :::{#def-variance} ## Variance The variance of a random variable (distribution) is a summary of the distribution and describes its spread: how different are the values that this distribution will generate.</p>
+\]</span></p>
+<div id="def-variance" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.1 (Variance) </strong></span>The variance of a random variable (distribution) is a summary of the distribution and describes its spread: how different are the values that this distribution will generate.</p>
 <p><span class="math display">\[
 Var(X) = E[(X - E(X))^2] = E(X^2) - E(X)^2
-\]</span> :::</p>
+\]</span></p>
+</div>
 <div id="exr-variance" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.4 (Variance) </strong></span>Compute the Variance of <span class="math inline">\(Y\)</span>.</p>
 </div>
@@ -1000,7 +1003,7 @@ argument.</code></pre>
 <h2 data-number="2.8" class="anchored" data-anchor-id="covariance"><span class="header-section-number">2.8</span> Covariance</h2>
 <p>The <em>covariance</em> measures the (linear) dependency between two random variables.</p>
 <div id="def-covariance" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1 (Covariance) </strong></span>The covariance of two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is given by</p>
+<p><span class="theorem-title"><strong>Definition 2.2 (Covariance) </strong></span>The covariance of two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is given by</p>
 <p><span class="math display">\[
 Cov(X, Y) = E[(X - E(X))(Y - E(Y))]
 \]</span> Alternatively, it can be computed using the decomposition formula:</p>
@@ -1014,7 +1017,7 @@ Cov(X, Y) = E(XY).
 \]</span></p>
 <p>Closely related to the covariance is the correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
 <div id="def-correlation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2 (Correlation) </strong></span><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 2.3 (Correlation) </strong></span><span class="math display">\[
 \rho(X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X)Var(Y)}}
 \]</span> It is easy to show that the correlation is bounded between -1 and 1.</p>
 <p><span class="math display">\[

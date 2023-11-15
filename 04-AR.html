@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Time Series Analysis 2023/2024 - 4&nbsp; ARIMA</title>
+<title>Introduction to Time Series Analysis 2023/2024 - 4&nbsp; Autoregressive Processes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -110,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-AR.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ARIMA</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-AR.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Autoregressive Processes</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-AR.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ARIMA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Autoregressive Processes</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -191,7 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ARIMA</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Autoregressive Processes</span></h1>
 </div>
 
 
@@ -239,7 +239,7 @@ y_1, y_2,\ldots,y_{T}
 \end{align}
 \]</span></p>
 </div>
-<p>From the definitions of variance (<span class="quarto-unresolved-ref">?def-variance</span>) and covariance (<a href="02-Statistics-Review.html#def-covariance">Definition&nbsp;<span>2.1</span></a>) you can see that the covariance between two time points is simply the expected value of the cross product of the terms, because <span class="math inline">\(E(e_t) = 0\)</span> for all <span class="math inline">\(t\)</span>.</p>
+<p>From the definitions of variance (<a href="02-Statistics-Review.html#def-variance">Definition&nbsp;<span>2.1</span></a>) and covariance (<a href="02-Statistics-Review.html#def-covariance">Definition&nbsp;<span>2.2</span></a>) you can see that the covariance between two time points is simply the expected value of the cross product of the terms, because <span class="math inline">\(E(e_t) = 0\)</span> for all <span class="math inline">\(t\)</span>.</p>
 <p><span class="math display">\[
 Cov(e_t, e_{t + k}) = E(e_{t}e_{t + k}) = 0
 \]</span></p>
@@ -324,23 +324,23 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 # Groups:   mu_lab [2]
   mu_lab  sigma_lab Average StdDev
   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-1 mu = 0  sigma = 1 -0.0985  0.916
-2 mu = 0  sigma = 3  0.323   2.70 
-3 mu = 10 sigma = 1  9.96    0.965
-4 mu = 10 sigma = 3  9.64    3.05 </code></pre>
+1 mu = 0  sigma = 1  0.0838   1.03
+2 mu = 0  sigma = 3  0.362    2.98
+3 mu = 10 sigma = 1  9.93     1.09
+4 mu = 10 sigma = 3 10.5      3.02</code></pre>
 </div>
 </div>
 <p>Now that we have seen some realizations of a couple of purely random processes, let’s look at the empirical summaries of the time series.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1998671</code></pre>
+<pre><code>[1] -0.4076396</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.017599</code></pre>
+<pre><code>[1] 1.90286</code></pre>
 </div>
 </div>
 <p>Let’s also compute is (empirical) auto-correlation coefficients applying the formula</p>
@@ -360,15 +360,15 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l1, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.07400899</code></pre>
+<pre><code>[1] -0.009850822</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l2, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.01962973</code></pre>
+<pre><code>[1] 0.1138851</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l3, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.0442587</code></pre>
+<pre><code>[1] -0.0357651</code></pre>
 </div>
 </div>
 <p>You can obtain these auto-correlation coefficients using the <code>acf</code> function:</p>
@@ -379,9 +379,9 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 Autocorrelations of series 'dt$e', by lag
 
      0      1      2      3      4      5      6      7      8      9     10 
- 1.000 -0.073 -0.019 -0.043 -0.009  0.071 -0.092 -0.075 -0.013 -0.040 -0.101 
+ 1.000 -0.010  0.112 -0.034  0.057  0.073  0.197  0.039  0.004  0.140 -0.166 
     11     12     13     14     15     16     17     18     19     20 
--0.053 -0.061  0.035  0.044  0.027  0.007  0.007 -0.024  0.112 -0.063 </code></pre>
+ 0.094  0.089 -0.078  0.051  0.007 -0.004  0.019  0.127 -0.099  0.161 </code></pre>
 </div>
 </div>
 <p>and you can visualize the auto-correlation coefficients</p>
@@ -401,7 +401,7 @@ Autocorrelations of series 'dt$e', by lag
 \]</span></p>
 <p>and is based on the test statistic:</p>
 <p><span class="math display">\[
-Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}_j^2}{T - j}
+Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
 \]</span> Under the null hypothesis (i.e., if we assume the null hypothesis to be true) it follows a <span class="math inline">\(\Chi^2\)</span> distribution with <span class="math inline">\(k\)</span> degrees of freedom.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(dt<span class="sc">$</span>e, <span class="at">lag =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -410,7 +410,7 @@ Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}_j^2}{T - j}
     Box-Pierce test
 
 data:  dt$e
-X-squared = 0.75654, df = 3, p-value = 0.8598</code></pre>
+X-squared = 1.3824, df = 3, p-value = 0.7097</code></pre>
 </div>
 </div>
 </section>
@@ -448,7 +448,7 @@ E(y_t) = E(y_{t - 1}) = \mu
 <p>This derivation begs the question: are we allowed to assume that the expected value does not change over time? The answer is yes, if the process is mean-stationary. This is just another way to say that the expected value does not change but we can derive a condition when this is the case.</p>
 <p>To see how the stability condition for the first order difference equation relates to the expected value, consider the solution to the equation that we derived last time. The only new thing here is the constant term <span class="math inline">\(\phi_0\)</span>.</p>
 <p><span class="math display">\[
-y_{t} =
+y_{t} = \phi_1^{t} y_{0} + \frac{1 - \phi_1^{t}}{1 - \phi_1} \phi_0 + \sum_{k = 0}^{t - 1} \phi_1^{k} u_{t - k}
 \]</span></p>
 <div id="exr-variance-ar-1" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 4.1 (Variance of a Stationary AR(1)) </strong></span>What is the variance of an AR(1) process given by:</p>
