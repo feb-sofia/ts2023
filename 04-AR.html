@@ -323,25 +323,25 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 4
 # Groups:   mu_lab [2]
-  mu_lab  sigma_lab Average StdDev
-  &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-1 mu = 0  sigma = 1  0.0156  0.981
-2 mu = 0  sigma = 3 -0.0502  3.11 
-3 mu = 10 sigma = 1  9.94    1.10 
-4 mu = 10 sigma = 3  9.84    3.01 </code></pre>
+  mu_lab  sigma_lab  Average StdDev
+  &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+1 mu = 0  sigma = 1  0.00405  1.11 
+2 mu = 0  sigma = 3  0.336    3.06 
+3 mu = 10 sigma = 1 10.1      0.902
+4 mu = 10 sigma = 3 10.2      2.65 </code></pre>
 </div>
 </div>
 <p>Now that we have seen some realizations of a couple of purely random processes, let’s look at the empirical summaries of the time series.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.01436201</code></pre>
+<pre><code>[1] 0.05994682</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.006292</code></pre>
+<pre><code>[1] 1.886723</code></pre>
 </div>
 </div>
 <p>Let’s also compute is (empirical) auto-correlation coefficients applying the formula</p>
@@ -361,15 +361,15 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l1, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.06224758</code></pre>
+<pre><code>[1] -0.005702583</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l2, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.077822</code></pre>
+<pre><code>[1] 0.05373805</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l3, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.01392417</code></pre>
+<pre><code>[1] -0.2339063</code></pre>
 </div>
 </div>
 <p>You can obtain these auto-correlation coefficients using the <code>acf</code> function:</p>
@@ -380,9 +380,9 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 Autocorrelations of series 'dt$e', by lag
 
      0      1      2      3      4      5      6      7      8      9     10 
- 1.000 -0.062  0.076 -0.014 -0.116 -0.099  0.080 -0.253  0.092  0.068  0.115 
+ 1.000 -0.006  0.053 -0.224  0.067 -0.046  0.193 -0.088  0.018 -0.080  0.054 
     11     12     13     14     15     16     17     18     19     20 
--0.076 -0.084 -0.151  0.131  0.043  0.033 -0.069  0.093  0.042  0.023 </code></pre>
+-0.103  0.080 -0.150  0.013  0.006  0.173  0.097  0.048 -0.239  0.022 </code></pre>
 </div>
 </div>
 <p>and you can visualize the auto-correlation coefficients</p>
@@ -411,7 +411,7 @@ Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
     Box-Pierce test
 
 data:  dt$e
-X-squared = 0.97798, df = 3, p-value = 0.8066</code></pre>
+X-squared = 5.2889, df = 3, p-value = 0.1518</code></pre>
 </div>
 </div>
 </section>
@@ -508,11 +508,13 @@ y_{t}(\underbrace{L^0 - \phi_1 L - \phi_2 L^2 - \phi_3 L^3}_{\text{lag polynomia
 <p><span class="math display">\[
 \lambda^{3} - \phi_1\lambda^{2} - \phi_2 \lambda - \phi_3\\
 \lambda^3 -0.5\lambda^2 -0.34\lambda + 0.08
-\]</span></p>
+\]</span> So we have now recovered the process coefficients from the roots of the characteristic equation.</p>
 <p><span class="math display">\[
+\begin{align}
 \phi_1 = 0.5\\
 \phi_2 = 0.34\\
 \phi_3 = -0.08
+\end{align}
 \]</span> <span class="math display">\[
 \begin{align}
 y_{t} &amp; = \phi_0 + \phi_{1}y_{t - 1} + \phi_2 y_{t - 2} + \phi_3 y_{t - 3} + e_t\\
