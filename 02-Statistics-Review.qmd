@@ -670,6 +670,9 @@ its time series (observed values). We will talk more extensively about (weak) _s
 which is a necessary (though not sufficient) condition for ergodicity. For (weakly) stationary time series the 
 mean, variance and covariances do not change over time.
 
+:::{#def-autocorrelations}
+## Autocovariances and Autocorrelations
+
 $$
 \begin{align}
 \mu & = E(X_1) = E(X_2) = \ldots = E(X_T) \\
@@ -679,6 +682,8 @@ $$
 \rho(k) & = \frac{\gamma(k)}{\gamma(0)} 
 \end{align}
 $$
+
+:::
 
 For a random process $X_1, X_2,\ldots, X_T$ and an observed time series $x_1, x_2, \ldots, x_T$, we will estimate the mean with the arithmetic average of the
 observed values.
