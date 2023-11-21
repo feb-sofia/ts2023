@@ -1094,7 +1094,8 @@ Var(aX + bY) = a^2 Var(X) + b^2Var(Y) + 2abCov(X, Y)
 </div>
 </div>
 <p>In order to be able to apply our usual technique for moments estimation we have to <em>assume</em> that the random process is ergodic, meaning that we can estimate its statistical properties (mean, variance, correlations) from the its time series (observed values). We will talk more extensively about (weak) <em>stationarity</em>, which is a necessary (though not sufficient) condition for ergodicity. For (weakly) stationary time series the mean, variance and covariances do not change over time.</p>
-<p><span class="math display">\[
+<div id="def-autocorrelations" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.4 (Autocovariances and Autocorrelations) </strong></span><span class="math display">\[
 \begin{align}
 \mu &amp; = E(X_1) = E(X_2) = \ldots = E(X_T) \\
 \gamma(0) &amp; = Var(X_1) = Var(X_2) = \ldots = Var(X_T) \\
@@ -1103,6 +1104,7 @@ Var(aX + bY) = a^2 Var(X) + b^2Var(Y) + 2abCov(X, Y)
 \rho(k) &amp; = \frac{\gamma(k)}{\gamma(0)}
 \end{align}
 \]</span></p>
+</div>
 <p>For a random process <span class="math inline">\(X_1, X_2,\ldots, X_T\)</span> and an observed time series <span class="math inline">\(x_1, x_2, \ldots, x_T\)</span>, we will estimate the mean with the arithmetic average of the observed values.</p>
 <p><span class="math display">\[
 \hat{\mu} = \frac{1}{T}\sum_{t = 1}^{T} x_{t}
