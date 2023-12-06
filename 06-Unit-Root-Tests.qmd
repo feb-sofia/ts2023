@@ -5,13 +5,19 @@ date: "1/4/2022"
 output: html_document
 ---
 
-ARIMA(p, d, q)
+# Unit Root Tests
 
 
 ```{r}
+# install.packages("urca")
+
 library(urca)
+library(tidyverse)
 ```
 
+```{r}
+renv::snapshot()
+```
 
 Random walk model without a drift
 
@@ -33,12 +39,22 @@ ARIMA(0, 1, 0)
 ## Random walks simulation 
 
 ```{r}
-rw1 <- arima.sim(model = list(order = c(0, 1, 0)), n = 200)
-rw2 <- arima.sim(model = list(order = c(0, 1, 0)), n = 200)
+n <- 200
+rw1 <- arima.sim(model = list(order = c(0, 1, 0)), n = n - 1)
+rw2 <- arima.sim(model = list(order = c(0, 1, 0)), n = n - 1)
 
 # rw2 <- 1.5 * rw1 + rnorm(n = 200)
-plot(rw1)
-plot(rw2)
+
+tibble(
+  y = c(rw1, rw2),
+  process = rep(c("A", "B"), each = 200),
+  time = rep(1:n, 2)
+) %>%
+  ggplot(
+    aes(x = time, y = y, color = process)
+  ) + 
+  geom_line()
+
 ```
 
 
@@ -68,11 +84,20 @@ H_1: \beta_1 \neq 0
 $$
 We reject the null hypothesis if the p-value of the test is less than 0.05 (convention).
 
-spurious regression
+Spurious regression if y and x are unit-root processes.
 
 $$
 \hat{y}_{t} = -1.86 + 0.19 x_{t}
 $$
+
+## How to check for spurious regression?
+
+
+```{r}
+res <- residuals(linreg_fit)
+acf(res)
+```
+
 
 
 # Unit root tests
@@ -97,10 +122,13 @@ simply equal to the pure random process $e_{t}$ and it is stationary by the prop
 ## Dickey-Fuller Unit Root Test
 
 $$
+\begin{align}
 y_{t} - y_{t - 1} = \alpha_1 y_{t - 1} + e_{t} - y_{t - 1} \\
 \iff\\
 \Delta y_{t} = (\alpha_1 - 1)y_{t - 1} + e_t
+\end{align}
 $$
+
 $$
 \alpha_1 - 1 = 0 \iff \alpha_1 = 1
 $$
@@ -112,6 +140,7 @@ special critical values in order to perform the test.
 ```{r}
 summary(ur.df(rw1, type = "none", lags = 0))
 ```
+
 -1 in the regression formula instructs lm to exclude the
 intercept from the regression equation.
 
@@ -123,6 +152,7 @@ t-value is the value of the t-statistic.
 $$
 t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)}
 $$
+
 $$
 -0.007011 / 0.008509 = -0.824
 $$
@@ -160,7 +190,7 @@ summary(ur.df(ar1, type = "none", lags = 0))
 ## Simulation 2: Stationary AR(1) with non-zero level
 
 $$
-y_{t} = 100 + 0.7y_{t - 1} + e_{t}, e_t \sim WN(1)
+y_{t} = 100 + 0.7y_{t - 1} + e_{t}, e_t \sim N(0, 1)
 $$
 
 ```{r}
@@ -171,6 +201,7 @@ plot(ar2)
 ```{r}
 summary(ur.df(ar2, type = "none", lags = 0))
 ```
+
 ```{r}
 summary(ur.df(ar2, type = "drift", lags = 0))
 ```
@@ -186,7 +217,7 @@ null hypothesis at a 1-percent significance level.
 ## Simulation 3 (Stationary AR(1) with trend)
 
 $$
-y_{t} = 10 + 0.1t + 0.7 y_{t - 1} + e_{t}
+y_{t} = 10 + 0.1t + 0.7 y_{t - 1} + e_{t}, e_t \sim N(0, 1)
 $$
 
 
@@ -260,7 +291,7 @@ $$
 ## Simulation: AR(3)
 
 $$
-y_t = 0.6y_{t - 1} + 0.4y_{t - 2} - 0.7y_{t - 2} + e_t, e_t \sim WN(1)
+y_t = 0.6y_{t - 1} + 0.4y_{t - 2} - 0.7y_{t - 2} + e_t, e_t \sim N(0, 1)
 $$
 
 ```{r}
@@ -268,9 +299,11 @@ set.seed(521)
 ar4 <- arima.sim(n = 200, model = list(ar = c(0.6, 0.4, -0.7)))
 plot(ar4)
 ```
+
 ```{r}
 summary(ur.df(ar4, type = "none", lags = 0))
 ```
+
 ```{r}
 summary(ur.df(ar4, type = "none", selectlags = "AIC"))
 ```
