@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#unit-root-tests" id="toc-unit-root-tests" class="nav-link active" data-scroll-target="#unit-root-tests"><span class="header-section-number">7</span> Unit Root Tests</a>
   <ul class="collapse">
-  <li><a href="#random-walks-simulation" id="toc-random-walks-simulation" class="nav-link" data-scroll-target="#random-walks-simulation"><span class="header-section-number">7.1</span> Random walks simulation</a></li>
+  <li><a href="#random-walks-simulation" id="toc-random-walks-simulation" class="nav-link" data-scroll-target="#random-walks-simulation"><span class="header-section-number">7.1</span> Random Walks Simulation</a></li>
   <li><a href="#how-to-check-for-spurious-regression" id="toc-how-to-check-for-spurious-regression" class="nav-link" data-scroll-target="#how-to-check-for-spurious-regression"><span class="header-section-number">7.2</span> How to check for spurious regression?</a></li>
   </ul></li>
   <li><a href="#unit-root-tests-1" id="toc-unit-root-tests-1" class="nav-link" data-scroll-target="#unit-root-tests-1"><span class="header-section-number">8</span> Unit root tests</a>
@@ -265,49 +265,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>- Lockfile written to "~/work/ts2023/ts2023/renv.lock".</code></pre>
-</div>
-</div>
 <p>Random walk model without a drift</p>
 <p><span class="math display">\[
+\begin{align}
 y_{t} = y_{t - 1} + e_{t}, e_t \sim WN(\sigma^2)\\
 \Delta y_{t} = y_{t} - y_{t - 1} = e_{t}\\
 f' = \lim_{\epsilon \to 0}\frac{f(x) - f(x + \epsilon)}{\epsilon}
-\]</span></p>
+\end{align}
+\]</span> The solution of the characteristic equation of this model is equal to one. We say that <em>the equation has a unit root</em>.</p>
 <p><span class="math display">\[
-\lambda - 1 = 0 \implies
+\lambda - 1 = 0 \implies \\
 \lambda^* = 1
 \]</span></p>
 <p>The solution of this characteristic equation is 1. We say that the characteristic equation has a unit root.</p>
 <p>ARIMA(0, 1, 0)</p>
 <section id="random-walks-simulation" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="random-walks-simulation"><span class="header-section-number">7.1</span> Random walks simulation</h2>
+<h2 data-number="7.1" class="anchored" data-anchor-id="random-walks-simulation"><span class="header-section-number">7.1</span> Random Walks Simulation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rw1 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">model =</span> <span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="at">n =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rw2 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">model =</span> <span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="at">n =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># rw2 &lt;- 1.5 * rw1 + rnorm(n = 200)</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(rw1, rw2),</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">process =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> <span class="dv">200</span>),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="dv">2</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> y, <span class="at">color =</span> process)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rw1 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">model =</span> <span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="at">n =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>rw2 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">model =</span> <span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="at">n =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># rw2 &lt;- 1.5 * rw1 + rnorm(n = 200)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(rw1, rw2),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">process =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> <span class="dv">200</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="dv">2</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> y, <span class="at">color =</span> process)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>linreg_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(rw2 <span class="sc">~</span> rw1)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(linreg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>linreg_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(rw2 <span class="sc">~</span> rw1)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(linreg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -315,25 +311,25 @@ lm(formula = rw2 ~ rw1)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--6.3584 -2.5489 -0.4126  2.5642  6.8761 
+-16.547  -1.469   1.616   4.090   9.837 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -3.02903    0.40453  -7.488 2.26e-12 ***
-rw1          0.54842    0.04058  13.516  &lt; 2e-16 ***
+            Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept) -0.42591    1.28377  -0.332  0.74041   
+rw1         -0.18555    0.06482  -2.863  0.00465 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 3.286 on 198 degrees of freedom
-Multiple R-squared:  0.4799,    Adjusted R-squared:  0.4772 
-F-statistic: 182.7 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 5.999 on 198 degrees of freedom
+Multiple R-squared:  0.03975,   Adjusted R-squared:  0.0349 
+F-statistic: 8.195 on 1 and 198 DF,  p-value: 0.004652</code></pre>
 </div>
 </div>
 <p>Regression model</p>
 <p><span class="math display">\[
-y_{t}: \text{ random walk 2}\\
-x_{t}: \text{ random walk 1}\\
-y_{t} = \beta_0 + \beta_1 x_{t} + e_{t}, e_{t} \sim N(0, \sigma^2)
+y_{t}: \text{ random walk 2} \\
+x_{t}: \text{ random walk 1} \\
+y_{t} = \beta_0 + \beta_1 x_{t} + u_{t}, u_{t} \sim N(0, \sigma^2)
 \]</span></p>
 <p>Estimated regression equation</p>
 <p><span class="math display">\[
@@ -351,10 +347,10 @@ H_1: \beta_1 \neq 0
 <section id="how-to-check-for-spurious-regression" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="how-to-check-for-spurious-regression"><span class="header-section-number">7.2</span> How to check for spurious regression?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(linreg_fit)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(linreg_fit)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -363,29 +359,29 @@ H_1: \beta_1 \neq 0
 <h1 data-number="8"><span class="header-section-number">8</span> Unit root tests</h1>
 <p>AR(1) process without a constant</p>
 <p><span class="math display">\[
-y_{t} = \alpha_1 y_{t - 1} + e_{t}, e_t \sim WN(\sigma^2)
-\]</span> If the process has a unit root, it follows that <span class="math inline">\(\alpha_1 = 1\)</span>.</p>
+y_{t} = \phi_1 y_{t - 1} + e_{t}, e_t \sim WN(\sigma^2)
+\]</span> If the process has a unit root, it follows that <span class="math inline">\(\phi_1 = 1\)</span>.</p>
 <p>We would like to test the hypothesis:</p>
 <p><span class="math display">\[
-H_0: \alpha_1 = 1\\
-H_1: \alpha_1 &lt; 1
+H_0: \phi_1 = 1\\
+H_1: \phi_1 &lt; 1
 \]</span></p>
 <p>The first difference of the random walk process is stationary, because it is simply equal to the pure random process <span class="math inline">\(e_{t}\)</span> and it is stationary by the properties of the pure random process. We say that the process (in this case the random walk process) is integrated of order 1.</p>
 <section id="dickey-fuller-unit-root-test" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="dickey-fuller-unit-root-test"><span class="header-section-number">8.1</span> Dickey-Fuller Unit Root Test</h2>
 <p><span class="math display">\[
 \begin{align}
-y_{t} - y_{t - 1} = \alpha_1 y_{t - 1} + e_{t} - y_{t - 1} \\
+y_{t} - y_{t - 1} = \phi_1 y_{t - 1} + e_{t} - y_{t - 1} \\
 \iff\\
-\Delta y_{t} = (\alpha_1 - 1)y_{t - 1} + e_t
+\Delta y_{t} = (\phi_1 - 1)y_{t - 1} + e_t
 \end{align}
 \]</span></p>
 <p><span class="math display">\[
-\alpha_1 - 1 = 0 \iff \alpha_1 = 1
+\phi_1 - 1 = 0 \iff \phi_1 = 1
 \]</span></p>
-<p>We can use the t-statistic for testing the hypothesis that the coefficient of <span class="math inline">\(y_{t - 1}\)</span> equals 0, but the distribution of this statistic under the <span class="math inline">\(H_0\)</span> (assuming that <span class="math inline">\(\alpha_1 = 1\)</span>) is not a t-distribution. Therefore, we need to use special critical values in order to perform the test.</p>
+<p>We can use the t-statistic for testing the hypothesis that the coefficient of <span class="math inline">\(y_{t - 1}\)</span> equals 0, but the distribution of this statistic under the <span class="math inline">\(H_0\)</span> (assuming that <span class="math inline">\(\phi_1 = 1\)</span>) is not a t-distribution. Therefore, we need to use special critical values in order to perform the test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(rw1, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(rw1, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -400,18 +396,18 @@ lm(formula = z.diff ~ z.lag.1 - 1)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--3.03499 -0.86008 -0.05705  0.73299  2.85821 
+-2.74996 -0.54882  0.06143  0.75492  2.91710 
 
 Coefficients:
-         Estimate Std. Error t value Pr(&gt;|t|)
-z.lag.1 -0.002846   0.007659  -0.372    0.711
+        Estimate Std. Error t value Pr(&gt;|t|)
+z.lag.1 0.001560   0.003548    0.44    0.661
 
-Residual standard error: 1.077 on 198 degrees of freedom
-Multiple R-squared:  0.000697,  Adjusted R-squared:  -0.00435 
-F-statistic: 0.1381 on 1 and 198 DF,  p-value: 0.7106
+Residual standard error: 0.9909 on 198 degrees of freedom
+Multiple R-squared:  0.0009758, Adjusted R-squared:  -0.00407 
+F-statistic: 0.1934 on 1 and 198 DF,  p-value: 0.6606
 
 
-Value of test-statistic is: -0.3716 
+Value of test-statistic is: 0.4398 
 
 Critical values for test statistics: 
       1pct  5pct 10pct
@@ -433,7 +429,7 @@ t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)}
 <p>and we reject the null hypothesis if the t-value value is lower than the critical values.</p>
 <p>-0.824 &gt; -1.62 (the critical value corresponding to a 10% significance level), so we cannot reject the null hypothesis.</p>
 <p><span class="math display">\[
-H_0: \alpha_1 - 1 = 0
+H_0: \phi_1 - 1 = 0
 \]</span></p>
 </section>
 <section id="simulation-2-stationary-ar1-with-zero-level" class="level2" data-number="8.2">
@@ -442,15 +438,15 @@ H_0: \alpha_1 - 1 = 0
 y_{t} = 0.7y_{t - 1} + e_{t}, e_t \sim WN(1)
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5445</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ar1 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">model =</span> <span class="fu">list</span>(<span class="at">ar =</span> <span class="fl">0.7</span>))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5445</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ar1 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">model =</span> <span class="fu">list</span>(<span class="at">ar =</span> <span class="fl">0.7</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar1, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar1, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -493,14 +489,14 @@ tau1 -2.58 -1.95 -1.62</code></pre>
 y_{t} = 100 + 0.7y_{t - 1} + e_{t}, e_t \sim N(0, 1)
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ar2 <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">+</span> ar1</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ar2 <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">+</span> ar1</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar2, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar2, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -534,7 +530,7 @@ tau1 -2.58 -1.95 -1.62</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar2, <span class="at">type =</span> <span class="st">"drift"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar2, <span class="at">type =</span> <span class="st">"drift"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -582,14 +578,14 @@ phi1  6.52  4.63  3.81</code></pre>
 y_{t} = 10 + 0.1t + 0.7 y_{t - 1} + e_{t}, e_t \sim N(0, 1)
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ar3 <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">+</span> <span class="fl">0.1</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(ar1)) <span class="sc">+</span> ar1</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ar3 <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">+</span> <span class="fl">0.1</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(ar1)) <span class="sc">+</span> ar1</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar3, <span class="at">type =</span> <span class="st">"drift"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar3, <span class="at">type =</span> <span class="st">"drift"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -628,7 +624,7 @@ phi1  6.52  4.63  3.81</code></pre>
 </div>
 <p>-0.9984 &gt; -2.57 =&gt; the test fails to reject the null hypothesis at any reasonable significance level.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar3, <span class="at">type =</span> <span class="st">"trend"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar3, <span class="at">type =</span> <span class="st">"trend"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -675,26 +671,26 @@ phi3  8.43  6.49  5.47</code></pre>
 <h2 data-number="8.5" class="anchored" data-anchor-id="adf-test"><span class="header-section-number">8.5</span> ADF-Test</h2>
 <p>Let us consider an AR(2) process</p>
 <p><span class="math display">\[
-y_{t} = \alpha_1 y_{t - 1} + \alpha_2 y_{t - 2} + e_t
+y_{t} = \phi_1 y_{t - 1} + \phi_2 y_{t - 2} + e_t
 \]</span></p>
 <p>If this process has a unit root, then its characteristic equation</p>
 <p><span class="math display">\[
-\lambda ^2 - \alpha_1 \lambda - \alpha_2 = 0
+\lambda ^2 - \phi_1 \lambda - \phi_2 = 0
 \]</span></p>
 <p>has a solution <span class="math inline">\(\lambda^{*} = 1\)</span>, therefore, setting <span class="math inline">\(\lambda = 1\)</span> satisfies the equation, and we obtain:</p>
 <p><span class="math display">\[
-1^2 - \alpha_1 - \alpha_2 = 0
+1^2 - \phi_1 - \phi_2 = 0
 \]</span></p>
-<p>Therefore, if the process has a unit root, its coefficients sum to one. This is a hypothesis that we can test using data. Following the approach of the DF-Test, we can try to construct a regression equation where one of the coefficients is <span class="math inline">\(1 - \alpha_1 - \alpha_2\)</span>. Then we can conduct a test of the null hypothesis that this coefficient is zero.</p>
+<p>Therefore, if the process has a unit root, its coefficients sum to one. This is a hypothesis that we can test using data. Following the approach of the DF-Test, we can try to construct a regression equation where one of the coefficients is <span class="math inline">\(1 - \phi_1 - \phi_2\)</span>. Then we can conduct a test of the null hypothesis that this coefficient is zero.</p>
 <p>It turns out that we can reparemetrize the AR(2) model to obtain such an equation:</p>
 <p><span class="math display">\[
 \begin{align}
-y_{t} - y_{t - 1} &amp; = \alpha_1 y_{t - 1} - y_{t - 1} + \alpha_2 y_{t - 2} + e_t\\
-\Delta y_{t} &amp; = (\alpha_1 - 1)y_{t - 1} + \alpha_2 y_{t - 2} + e_t\\
-\Delta y_{t} &amp; = (\alpha_1 - 1)y_{t - 1} + \alpha_2 y_{t - 1} - \alpha_2 y_{t - 1} + \alpha_2 y_{t - 2} + e_t\\
-\Delta y_{t} &amp; = (\alpha_1 + \alpha_2 - 1)y_{t - 1} - \alpha_2 y_{t - 1} \alpha_2 y_{t - 2} + e_t\\
-\Delta y_{t} &amp; = (\alpha_1 + \alpha_2 - 1)y_{t - 1} - \alpha_2(y_{t - 1} - y_{t - 2}) + e_t\\
-\Delta y_{t} &amp; = (\alpha_1 + \alpha_2 - 1)y_{t - 1} - \alpha_2\Delta y_{t - 1} + e_t\\
+y_{t} - y_{t - 1} &amp; = \phi_1 y_{t - 1} - y_{t - 1} + \phi_2 y_{t - 2} + e_t\\
+\Delta y_{t} &amp; = (\phi_1 - 1)y_{t - 1} + \phi_2 y_{t - 2} + e_t\\
+\Delta y_{t} &amp; = (\phi_1 - 1)y_{t - 1} + \phi_2 y_{t - 1} - \phi_2 y_{t - 1} + \phi_2 y_{t - 2} + e_t\\
+\Delta y_{t} &amp; = (\phi_1 + \phi_2 - 1)y_{t - 1} - \phi_2 y_{t - 1} \phi_2 y_{t - 2} + e_t\\
+\Delta y_{t} &amp; = (\phi_1 + \phi_2 - 1)y_{t - 1} - \phi_2(y_{t - 1} - y_{t - 2}) + e_t\\
+\Delta y_{t} &amp; = (\phi_1 + \phi_2 - 1)y_{t - 1} - \phi_2\Delta y_{t - 1} + e_t\\
 \end{align}
 \]</span></p>
 <p>In the general case of an AR(p) process the equation looks more complicated but it is derived in exactly the same way as for the AR(2) process:</p>
@@ -713,15 +709,15 @@ y_{t} - y_{t - 1} &amp; = \alpha_1 y_{t - 1} - y_{t - 1} + \alpha_2 y_{t - 2} + 
 y_t = 0.6y_{t - 1} + 0.4y_{t - 2} - 0.7y_{t - 2} + e_t, e_t \sim N(0, 1)
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">521</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>ar4 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">model =</span> <span class="fu">list</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>, <span class="sc">-</span><span class="fl">0.7</span>)))</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">521</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ar4 <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">model =</span> <span class="fu">list</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>, <span class="sc">-</span><span class="fl">0.7</span>)))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ar4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="06-Unit-Root-Tests_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar4, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar4, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">lags =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -757,7 +753,7 @@ tau1 -2.58 -1.95 -1.62</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar4, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">selectlags =</span> <span class="st">"AIC"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.df</span>(ar4, <span class="at">type =</span> <span class="st">"none"</span>, <span class="at">selectlags =</span> <span class="st">"AIC"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ############################################### 
@@ -803,7 +799,7 @@ y_t = \alpha_t + \beta t + e_t, e_t \sim WN(\sigma^2)
 <p>where <span class="math inline">\(\alpha_t\)</span> is a random walk process: <span class="math inline">\(\alpha_t = \alpha_{t - 1} + \epsilon_t\)</span>. If <span class="math inline">\(y_t\)</span> is trend-stationary (i.e.&nbsp;has no unit roots), then the variance of <span class="math inline">\(\epsilon_t\)</span> is zero (i.e.&nbsp;<span class="math inline">\(\alpha_t\)</span> is a constant process).</p>
 <p>With the KPSS test we reject the null hypothesis (trend-stationarity) for <em>large</em> values of the test statistic.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.kpss</span>(rw1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.kpss</span>(rw1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ####################### 
@@ -812,13 +808,13 @@ y_t = \alpha_t + \beta t + e_t, e_t \sim WN(\sigma^2)
 
 Test is of type: mu with 4 lags. 
 
-Value of test-statistic is: 3.6199 
+Value of test-statistic is: 2.4468 
 
 Critical value for a significance level of: 
                 10pct  5pct 2.5pct  1pct
 critical values 0.347 0.463  0.574 0.739</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.kpss</span>(ar1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">ur.kpss</span>(ar1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ####################### 
