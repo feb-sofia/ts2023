@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./05-Model-Fitting.html" rel="next">
 <link href="./03-linear-difference-equations.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -163,6 +163,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./04-AR.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Autoregressive Processes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-Model-Fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ARIMA Modeling (1)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-Unit-Root-Tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">DF-test</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -325,23 +337,23 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 # Groups:   mu_lab [2]
   mu_lab  sigma_lab Average StdDev
   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-1 mu = 0  sigma = 1 0.0388   0.973
-2 mu = 0  sigma = 3 0.00302  2.81 
-3 mu = 10 sigma = 1 9.98     0.928
-4 mu = 10 sigma = 3 9.58     2.86 </code></pre>
+1 mu = 0  sigma = 1  0.0481  0.949
+2 mu = 0  sigma = 3  0.320   2.94 
+3 mu = 10 sigma = 1 10.1     1.01 
+4 mu = 10 sigma = 3  9.54    2.75 </code></pre>
 </div>
 </div>
 <p>Now that we have seen some realizations of a couple of purely random processes, let’s look at the empirical summaries of the time series.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.07884787</code></pre>
+<pre><code>[1] -0.0199547</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.05242</code></pre>
+<pre><code>[1] 1.921277</code></pre>
 </div>
 </div>
 <p>Let’s also compute is (empirical) auto-correlation coefficients applying the formula</p>
@@ -361,15 +373,15 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l1, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.03608607</code></pre>
+<pre><code>[1] -0.1648049</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l2, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.04448208</code></pre>
+<pre><code>[1] 0.03252689</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l3, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1570746</code></pre>
+<pre><code>[1] -0.1184557</code></pre>
 </div>
 </div>
 <p>You can obtain these auto-correlation coefficients using the <code>acf</code> function:</p>
@@ -380,9 +392,9 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 Autocorrelations of series 'dt$e', by lag
 
      0      1      2      3      4      5      6      7      8      9     10 
- 1.000 -0.036 -0.042  0.149 -0.180  0.017  0.058 -0.086  0.116  0.062 -0.060 
+ 1.000 -0.161  0.032 -0.114  0.164 -0.099  0.093 -0.073  0.068 -0.080 -0.002 
     11     12     13     14     15     16     17     18     19     20 
--0.007 -0.044 -0.032  0.089  0.125 -0.106  0.161  0.027 -0.263  0.044 </code></pre>
+-0.182  0.055 -0.046  0.040 -0.168 -0.005  0.009  0.096 -0.052  0.043 </code></pre>
 </div>
 </div>
 <p>and you can visualize the auto-correlation coefficients</p>
@@ -411,7 +423,7 @@ Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
     Box-Pierce test
 
 data:  dt$e
-X-squared = 2.5335, df = 3, p-value = 0.4693</code></pre>
+X-squared = 3.9906, df = 3, p-value = 0.2625</code></pre>
 </div>
 </div>
 </section>
@@ -939,8 +951,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./05-Model-Fitting.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ARIMA Modeling (1)</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
