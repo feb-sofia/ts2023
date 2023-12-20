@@ -311,18 +311,18 @@ lm(formula = rw2 ~ rw1)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--6.9524 -2.8919 -0.6851  2.3682 10.8700 
+-6.2983 -1.1068  0.0838  1.5363  4.6148 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -8.13595    0.28959  -28.09   &lt;2e-16 ***
-rw1          0.50826    0.03956   12.85   &lt;2e-16 ***
+(Intercept)  3.64394    0.18580  19.613  &lt; 2e-16 ***
+rw1         -0.22219    0.02697  -8.237 2.37e-14 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 3.642 on 198 degrees of freedom
-Multiple R-squared:  0.4547,    Adjusted R-squared:  0.4519 
-F-statistic: 165.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 2.307 on 198 degrees of freedom
+Multiple R-squared:  0.2552,    Adjusted R-squared:  0.2515 
+F-statistic: 67.85 on 1 and 198 DF,  p-value: 2.365e-14</code></pre>
 </div>
 </div>
 <p>Regression model</p>
@@ -395,19 +395,19 @@ Call:
 lm(formula = z.diff ~ z.lag.1 - 1)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--3.02374 -0.66326 -0.00294  0.59429  2.36209 
+    Min      1Q  Median      3Q     Max 
+-3.2357 -0.6168  0.0293  0.7471  3.1181 
 
 Coefficients:
         Estimate Std. Error t value Pr(&gt;|t|)
-z.lag.1 0.004217   0.009641   0.437    0.662
+z.lag.1 -0.01012    0.01014  -0.998    0.319
 
-Residual standard error: 0.985 on 198 degrees of freedom
-Multiple R-squared:  0.0009654, Adjusted R-squared:  -0.00408 
-F-statistic: 0.1913 on 1 and 198 DF,  p-value: 0.6623
+Residual standard error: 0.9874 on 198 degrees of freedom
+Multiple R-squared:  0.005007,  Adjusted R-squared:  -1.868e-05 
+F-statistic: 0.9963 on 1 and 198 DF,  p-value: 0.3194
 
 
-Value of test-statistic is: 0.4374 
+Value of test-statistic is: -0.9981 
 
 Critical values for test statistics: 
       1pct  5pct 10pct
@@ -701,6 +701,12 @@ y_{t} - y_{t - 1} &amp; = \phi_1 y_{t - 1} - y_{t - 1} + \phi_2 y_{t - 2} + e_t\
 <p><span class="math display">\[
 \rho = \sum_{j = 1}^p \alpha_j \\
 \theta_i = - \sum_{j = i + 1}^{p} \alpha_j
+\]</span> ## Information Criteria</p>
+<p><span class="math display">\[
+AIC = -2 \log(L) + 2(p + q + k + 1)
+\]</span></p>
+<p><span class="math display">\[
+AICe = -2 \log(L) + 2(p + q + k + 1) + \frac{2(p + q + k + 1)(p + q + k + 2)}{T - p - q - k - 2}
 \]</span></p>
 </section>
 <section id="simulation-ar3" class="level2" data-number="8.6">
@@ -808,7 +814,7 @@ y_t = \alpha_t + \beta t + e_t, e_t \sim WN(\sigma^2)
 
 Test is of type: mu with 4 lags. 
 
-Value of test-statistic is: 3.351 
+Value of test-statistic is: 1.9656 
 
 Critical value for a significance level of: 
                 10pct  5pct 2.5pct  1pct
