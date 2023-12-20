@@ -287,6 +287,15 @@ $$
 \rho = \sum_{j = 1}^p \alpha_j \\
 \theta_i = - \sum_{j = i + 1}^{p} \alpha_j
 $$
+## Information Criteria
+
+$$
+AIC = -2 \log(L) + 2(p + q + k + 1)
+$$
+
+$$
+AICe = -2 \log(L) + 2(p + q + k + 1) + \frac{2(p + q + k + 1)(p + q + k + 2)}{T - p - q - k - 2}
+$$
 
 ## Simulation: AR(3)
 
