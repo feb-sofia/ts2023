@@ -317,6 +317,7 @@ summary(ur.df(ar4, type = "none", lags = 0))
 summary(ur.df(ar4, type = "none", selectlags = "AIC"))
 ```
 
+
 ## KPSS Test
 
 The KPSS test considers stationarity as the null hypothesis. Let's consider the following process:
