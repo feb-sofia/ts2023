@@ -328,13 +328,13 @@ $$
 If the process is ARIMA with $d = 1$, then we need to de-difference the forecast:
 
 $$
-\hat{y}_t(h) = y_t + \phi_0 \hat{y}_{t}(1) + \phi_0 \hat{y}_{t}(2) + \ldots + \phi_0 \hat{y}_{t}(h)
+\hat{y}_t(h) = y_t + \Delta \hat{y}_{t}(1) + \Delta \hat{y}_{t}(2) + \ldots + \Delta \hat{y}_{t}(h)
 $$
 
 If the process is ARIMA with $d = 2$:
 
 $$
-\hat{y}_t(h) = y_t + \left(\phi_0 y_t + \phi_0^2 \hat{y}_{t}(1)\right) + \left(\phi_0 y_t + \phi_0^2 \hat{y}_{t}(1) \phi_0^2 \hat{y}_t(2)\right) + \ldots + \left(\phi_0 y_t + \phi_0^2 \hat{y}_{t}(1) \phi_0^2 \hat{y}_t(2) + \ldots + \phi_0^2\hat{y}_t(h)\right)
+\hat{y}_t(h) = y_t + \left(\Delta y_t + \phi_0^2 \hat{y}_{t}(1)\right) + \left(\Delta y_t + \Delta^2 \hat{y}_{t}(1) \Delta^2 \hat{y}_t(2)\right) + \ldots + \left(\Delta y_t + \Delta^2 \hat{y}_{t}(1) \Delta^2 \hat{y}_t(2) + \ldots + \Delta^2\hat{y}_t(h)\right)
 $$
 
 
