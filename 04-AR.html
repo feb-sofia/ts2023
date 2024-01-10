@@ -179,6 +179,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./08-ARIMA-Forecasting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Forecasting ARIMA processes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-GARCH.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conditional Heteroskedasticity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -337,23 +349,23 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 # Groups:   mu_lab [2]
   mu_lab  sigma_lab Average StdDev
   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-1 mu = 0  sigma = 1 -0.0102  0.962
-2 mu = 0  sigma = 3  0.657   3.04 
-3 mu = 10 sigma = 1  9.95    1.04 
-4 mu = 10 sigma = 3  9.99    3.09 </code></pre>
+1 mu = 0  sigma = 1 -0.0536  1.01 
+2 mu = 0  sigma = 3  0.742   2.64 
+3 mu = 10 sigma = 1 10.1     0.926
+4 mu = 10 sigma = 3  9.63    3.22 </code></pre>
 </div>
 </div>
 <p>Now that we have seen some realizations of a couple of purely random processes, let’s look at the empirical summaries of the time series.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.06738883</code></pre>
+<pre><code>[1] 0.007434513</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(dt<span class="sc">$</span>e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.072295</code></pre>
+<pre><code>[1] 2.129704</code></pre>
 </div>
 </div>
 <p>Let’s also compute is (empirical) auto-correlation coefficients applying the formula</p>
@@ -373,15 +385,15 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l1, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.08942431</code></pre>
+<pre><code>[1] 0.05702815</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l2, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1146661</code></pre>
+<pre><code>[1] -0.08614049</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dt<span class="sc">$</span>e, dt<span class="sc">$</span>e_l3, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.1568072</code></pre>
+<pre><code>[1] -0.003671806</code></pre>
 </div>
 </div>
 <p>You can obtain these auto-correlation coefficients using the <code>acf</code> function:</p>
@@ -392,9 +404,9 @@ e^{(4)}_t &amp; \sim N(\mu = 10, \sigma^2 = 3^2)
 Autocorrelations of series 'dt$e', by lag
 
      0      1      2      3      4      5      6      7      8      9     10 
- 1.000 -0.089  0.113 -0.154  0.136  0.057  0.039  0.143 -0.241  0.134 -0.123 
+ 1.000  0.057 -0.083 -0.003  0.048  0.175  0.001  0.010 -0.229 -0.076  0.000 
     11     12     13     14     15     16     17     18     19     20 
- 0.282 -0.164  0.012 -0.247 -0.089  0.033 -0.059 -0.049 -0.250  0.035 </code></pre>
+ 0.008 -0.051 -0.108 -0.062  0.060  0.119  0.042  0.043 -0.069  0.096 </code></pre>
 </div>
 </div>
 <p>and you can visualize the auto-correlation coefficients</p>
@@ -423,7 +435,7 @@ Q = T(T + 2)\sum_{j = 1}^{k}\frac{\hat{\rho}^2(j)}{T - j}
     Box-Pierce test
 
 data:  dt$e
-X-squared = 4.4536, df = 3, p-value = 0.2165</code></pre>
+X-squared = 1.0093, df = 3, p-value = 0.799</code></pre>
 </div>
 </div>
 </section>

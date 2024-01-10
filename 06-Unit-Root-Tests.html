@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./08-ARIMA-Forecasting.html" rel="next">
 <link href="./05-Model-Fitting.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -177,6 +177,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./06-Unit-Root-Tests.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">DF-test</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-ARIMA-Forecasting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Forecasting ARIMA processes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-GARCH.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conditional Heteroskedasticity</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -311,18 +323,18 @@ lm(formula = rw2 ~ rw1)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--9.3416 -2.3999  0.1509  3.3182  7.2587 
+-15.041  -3.443   1.795   3.927   8.736 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -5.61414    0.28128 -19.959  &lt; 2e-16 ***
-rw1          0.16475    0.05561   2.962  0.00343 ** 
+(Intercept)  8.84108    0.49891   17.72   &lt;2e-16 ***
+rw1          0.97730    0.07749   12.61   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 3.978 on 198 degrees of freedom
-Multiple R-squared:  0.04244,   Adjusted R-squared:  0.03761 
-F-statistic: 8.776 on 1 and 198 DF,  p-value: 0.003426</code></pre>
+Residual standard error: 5.389 on 198 degrees of freedom
+Multiple R-squared:  0.4455,    Adjusted R-squared:  0.4427 
+F-statistic: 159.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Regression model</p>
@@ -396,18 +408,18 @@ lm(formula = z.diff ~ z.lag.1 - 1)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--3.00408 -0.65636 -0.04867  0.67877  2.18896 
+-3.07539 -0.65576  0.07352  0.67292  2.94538 
 
 Coefficients:
         Estimate Std. Error t value Pr(&gt;|t|)
-z.lag.1 -0.01693    0.01357  -1.248    0.214
+z.lag.1 -0.00999    0.01169  -0.854    0.394
 
-Residual standard error: 0.969 on 198 degrees of freedom
-Multiple R-squared:  0.007801,  Adjusted R-squared:  0.00279 
-F-statistic: 1.557 on 1 and 198 DF,  p-value: 0.2136
+Residual standard error: 1.061 on 198 degrees of freedom
+Multiple R-squared:  0.003674,  Adjusted R-squared:  -0.001358 
+F-statistic:  0.73 on 1 and 198 DF,  p-value: 0.3939
 
 
-Value of test-statistic is: -1.2477 
+Value of test-statistic is: -0.8544 
 
 Critical values for test statistics: 
       1pct  5pct 10pct
@@ -814,7 +826,7 @@ y_t = \alpha_t + \beta t + e_t, e_t \sim WN(\sigma^2)
 
 Test is of type: mu with 4 lags. 
 
-Value of test-statistic is: 3.0669 
+Value of test-statistic is: 1.4864 
 
 Critical value for a significance level of: 
                 10pct  5pct 2.5pct  1pct
@@ -1082,8 +1094,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./08-ARIMA-Forecasting.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Forecasting ARIMA processes</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
