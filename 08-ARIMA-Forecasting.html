@@ -426,18 +426,18 @@ ARIMA(1,0,0) with non-zero mean
 
 Coefficients:
          ar1    mean
-      0.5938  0.2059
-s.e.  0.0801  0.1932
+      0.4862  0.1276
+s.e.  0.0865  0.2043
 
-sigma^2 = 0.6456:  log likelihood = -119.22
-AIC=244.45   AICc=244.7   BIC=252.26</code></pre>
+sigma^2 = 1.146:  log likelihood = -147.83
+AIC=301.66   AICc=301.91   BIC=309.47</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forecast</span>(fit_AR1, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">h =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Point Forecast     Lo 95    Hi 95
-101     0.00153243 -1.573317 1.576382</code></pre>
+101      0.2706312 -1.827448 2.368711</code></pre>
 </div>
 </div>
 </section>
