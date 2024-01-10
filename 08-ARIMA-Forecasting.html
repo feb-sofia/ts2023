@@ -426,18 +426,18 @@ ARIMA(1,0,0) with non-zero mean
 
 Coefficients:
          ar1    mean
-      0.4862  0.1276
-s.e.  0.0865  0.2043
+      0.2993  0.2207
+s.e.  0.0961  0.1348
 
-sigma^2 = 1.146:  log likelihood = -147.83
-AIC=301.66   AICc=301.91   BIC=309.47</code></pre>
+sigma^2 = 0.9173:  log likelihood = -136.61
+AIC=279.23   AICc=279.48   BIC=287.05</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forecast</span>(fit_AR1, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">h =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Point Forecast     Lo 95    Hi 95
-101      0.2706312 -1.827448 2.368711</code></pre>
+101      0.6949418 -1.182233 2.572116</code></pre>
 </div>
 </div>
 </section>
@@ -509,11 +509,11 @@ y_{t} = \phi_0 + \phi_1 y_{t - 1} + e_t + \theta_1 e_{t - 1}
 <h2 data-number="8.3" class="anchored" data-anchor-id="forecasting-arima-processes"><span class="header-section-number">8.3</span> Forecasting ARIMA processes</h2>
 <p>If the process is ARIMA with <span class="math inline">\(d = 1\)</span>, then we need to de-difference the forecast:</p>
 <p><span class="math display">\[
-\hat{y}_t(h) = y_t + \phi_0 \hat{y}_{t}(1) + \phi_0 \hat{y}_{t}(2) + \ldots + \phi_0 \hat{y}_{t}(h)
+\hat{y}_t(h) = y_t + \Delta \hat{y}_{t}(1) + \Delta \hat{y}_{t}(2) + \ldots + \Delta \hat{y}_{t}(h)
 \]</span></p>
 <p>If the process is ARIMA with <span class="math inline">\(d = 2\)</span>:</p>
 <p><span class="math display">\[
-\hat{y}_t(h) = y_t + \left(\phi_0 y_t + \phi_0^2 \hat{y}_{t}(1)\right) + \left(\phi_0 y_t + \phi_0^2 \hat{y}_{t}(1) \phi_0^2 \hat{y}_t(2)\right) + \ldots + \left(\phi_0 y_t + \phi_0^2 \hat{y}_{t}(1) \phi_0^2 \hat{y}_t(2) + \ldots + \phi_0^2\hat{y}_t(h)\right)
+\hat{y}_t(h) = y_t + \left(\Delta y_t + \phi_0^2 \hat{y}_{t}(1)\right) + \left(\Delta y_t + \Delta^2 \hat{y}_{t}(1) \Delta^2 \hat{y}_t(2)\right) + \ldots + \left(\Delta y_t + \Delta^2 \hat{y}_{t}(1) \Delta^2 \hat{y}_t(2) + \ldots + \Delta^2\hat{y}_t(h)\right)
 \]</span></p>
 </section>
 <section id="example-from-the-lecture-arima1-1-1" class="level2" data-number="8.4">
