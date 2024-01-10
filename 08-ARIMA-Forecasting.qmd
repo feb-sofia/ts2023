@@ -203,12 +203,14 @@ To derive the variance of the forecast error it is convenient to use the MA($\in
 of the AR(1) process (Wold representation).
 
 $$
-y_t = \phi_0 + \phi_1 y_{t - 1} + e_t\\
+\begin{align}
+y_t & = \phi_0 + \phi_1 y_{t - 1} + e_t\\
 (1 - \phi_1 L) y_{t} =  \\
-y_{t} = \frac{\phi_0}{1 - \phi_1 L} + \frac{e_t}{1 - \phi_1 L} \\
-y_{t} = \frac{\phi_0}{1 - \phi_1} + (1 + \phi_1 L + \phi_1^2 L^2 + \phi_1^3 L^3 + \ldots) e_{t}\\
-y_{t} = \frac{\phi_0}{1 - \phi_1} + e_t + \phi_1 e_{t - 1} + \phi_1^2 e_{t - 2} + \phi_1^3 e_{t - 3} + \ldots \\
-y_{t} = \mu + e_t + \phi_1 e_{t - 1} + \phi_1^2 e_{t - 2} + \phi_1^3 e_{t - 3} + \ldots
+y_{t} & = \frac{\phi_0}{1 - \phi_1 L} + \frac{e_t}{1 - \phi_1 L} \\
+y_{t} & = \frac{\phi_0}{1 - \phi_1} + (1 + \phi_1 L + \phi_1^2 L^2 + \phi_1^3 L^3 + \ldots) e_{t}\\
+y_{t} & = \frac{\phi_0}{1 - \phi_1} + e_t + \phi_1 e_{t - 1} + \phi_1^2 e_{t - 2} + \phi_1^3 e_{t - 3} + \ldots \\
+y_{t} & = \mu + e_t + \phi_1 e_{t - 1} + \phi_1^2 e_{t - 2} + \phi_1^3 e_{t - 3} + \ldots
+\end{align}
 $$
 
 We can use this equation to obtain the forecast error for the AR(1) process:
@@ -339,12 +341,12 @@ $$
 ## Example from the Lecture: ARIMA(1, 1, 1)
 
 $$
-\Delta y_t = 0.1 \phi_0 \Delta y_{t−1} + e_t + 0.2 e_{t−1}
+\Delta y_t = 0.1 \Delta y_{t−1} + e_t + 0.2 e_{t−1}
 $$
 
 Compute the one-step ahead forecast of the model given the values
 
-| t   | y   | $x _t = \phi_0 y_{t}$ | $\hat{x}_{t - 1}(1)$                            | $\hat{e}_{t}$            |
+| t   | y   | $x _t = \Delta y_{t}$ | $\hat{x}_{t - 1}(1)$                            | $\hat{e}_{t}$            |
 |-----|-----|-----------------------|-------------------------------------------------|--------------------------|
 | -1  |     |                       |                                                 |                          |
 | 0   | -11 | NA                    |                                                 |                          |
@@ -360,15 +362,15 @@ To calculate the forecast, start with the observation at $t = 2$. For the observ
 
 $$
 \begin{align}
-\hat{x}_{t}(1) = E_{t}(x_{t + 1}) = E_{t}(0.1 x_t + e_{t + 1} + 0.2 e_{t}) \\
-\hat{x}_{t}(1) = E_{t}(x_{t + 1}) = 0.1 x_t + 0.2 \hat{e}_{t}
+\hat{x}_{t}(1) & = E_{t}(x_{t + 1}) = E_{t}(0.1 x_t + e_{t + 1} + 0.2 e_{t}) \\
+\hat{x}_{t}(1) & = E_{t}(x_{t + 1}) = 0.1 x_t + 0.2 \hat{e}_{t}
 \end{align}
 $$
 
 Let's calculate the one step ahead forecast for $x_2$:
 
 $$
-\hat{x}_{1}(1) = E_{1}(x_{2}) = 0.1 x_t + 0.2 \hat{e}_{1}
+\hat{x}_{1}(1) = E_{1}(x_{2}) = 0.1 x_1 + 0.2 \hat{e}_{1}
 $$
 
 For the next steps we will estimate $e_{t}$ from the forecast error but for the initial values (where we cannot compute the residual) we will set $e_{1} = 0$. There are different ways to choose the initial values, but this is the simplest one and is used in the `predict.Arima` function in R. Note that that the example in the lecture uses another approach.
@@ -380,9 +382,11 @@ $$
 The forecast for $x_3$ is:
 
 $$
-\hat{x}_{2}(1) = 0.1 x_{2} + 0.2 \hat{e}_{2}\\
-\hat{e}_{2} = x_2 - \hat{x}_1(1) = 3 - 1.3 = 1.7 \\
-\hat{x}_{2}(1) = 0.1 \cdot 3 + 0.2 1.7 = 0.64 \\
+\begin{align}
+\hat{x}_{2}(1) & = 0.1 x_{2} + 0.2 \hat{e}_{2}\\
+\hat{e}_{2} & = x_2 - \hat{x}_1(1) = 3 - 1.3 = 1.7 \\
+\hat{x}_{2}(1) & = 0.1 \cdot 3 + 0.2 1.7 = 0.64 \\
+\end{align}
 $$
 
 We repeat this calculation until we get to the final step. Note that when forecasting $x_7$ the
@@ -401,15 +405,19 @@ $$
 For the one step ahead prediction we obtain $(h = 1)$:
 
 $$
-\hat{y}_t(1) = y_t + \hat{x}_t(1) \\
-\hat{y}_5(1) = y_{5} + \hat{x}_5(1) = 4 + (−3.61712) = 0.38288
+\begin{align}
+\hat{y}_t(1) & = y_t + \hat{x}_t(1) \\
+\hat{y}_5(1) & = y_{5} + \hat{x}_5(1) = 4 + (−3.61712) = 0.38288
+\end{align}
 $$
 
 For the two steps prediction we obtain $(h = 2)$
 
 $$
-\hat{y}_t(2) = y_t + \hat{x}_t(1) + \hat{x}_t(2) \\
-\hat{y}_5(2) = y_{5} + \hat{x}_5(1) + \hat{x}_5(2) = 4 + (−3.61712) + (−0.361712) = 0.021168
+\begin{align}
+\hat{y}_t(2) & = y_t + \hat{x}_t(1) + \hat{x}_t(2) \\
+\hat{y}_5(2) & = y_{5} + \hat{x}_5(1) + \hat{x}_5(2) = 4 + (−3.61712) + (−0.361712) = 0.021168
+\end{align}
 $$
 
 We can verify the prediction using `arima` and `predict`. First, we enter the
@@ -460,10 +468,10 @@ predict(fit_ARIMA_1_1_1, n.ahead = 2)
 ## Example with ARIMA(2, 1, 1)
 
 $$
-\phi_0 y_t = 0.1 \phi_0 y_{t−1} + 0.3 \phi_0 y_{t - 2} + e_t + 0.2 e_{t−1}
+\Delta y_t = 0.1 \Delta y_{t−1} + 0.3 \phi_0 y_{t - 2} + e_t + 0.2 e_{t−1}
 $$
 
-Again, set $x_t = \phi_0 y_{t}$ to get a regular ARMA(2, 1) model.
+Again, set $x_t = \Delta y_{t}$ to get a regular ARMA(2, 1) model.
 
 $$
 x_t = 0.1 x_{t - 1} + 0.3 x_{t - 2} + e_t + 0.2 e_{t−1}
@@ -496,7 +504,7 @@ $$
 You continue this way until you reach the $t = 7$. Then you apply the de-differencing formula as in the previous example.
 
 
-| t   | y   | $x _t = \phi_0 y_{t}$ | $\hat{x}_{t - 1}(1)$ | $\hat{e}_{t}$          |
+| t   | y   | $x _t = \Delta y_{t}$ | $\hat{x}_{t - 1}(1)$ | $\hat{e}_{t}$          |
 |-----|-----|-----------------------|----------------------|------------------------|
 | -1  |     |                       |                      |                        |
 | 0   | -11 | NA                    |                      |                        |
@@ -527,7 +535,7 @@ predict(fit_ARIMA_2_0_1, n.ahead = 2)
 ## Example with ARIMA(1, 1, 2)
 
 $$
-\phi_0 y_t = 0.1 \phi_0 y_{t−1} + e_t + 0.2 e_{t−1} + 0.3 e_{t -2}
+\Delta y_t = 0.1 \Delta y_{t−1} + e_t + 0.2 e_{t−1} + 0.3 e_{t -2}
 $$
 
 Substituting $\Delta y_{t} = x_t$:
@@ -587,7 +595,7 @@ residuals(fit_ARIMA_1_0_2)
 ```
 
 
-| t   | y   | $x _t = \phi_0 y_{t}$ | $\hat{x}_{t - 1}(1)$ | $\hat{e}_{t}$  |
+| t   | y   | $x _t = \Delta y_{t}$ | $\hat{x}_{t - 1}(1)$ | $\hat{e}_{t}$  |
 |-----|-----|-----------------------|----------------------|----------------|
 | -1  |     |                       |                      |                |
 | 0   | -11 | NA                    |                      | $0$            |
