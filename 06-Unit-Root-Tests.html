@@ -323,18 +323,18 @@ lm(formula = rw2 ~ rw1)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--15.041  -3.443   1.795   3.927   8.736 
+-9.0143 -2.7556 -0.6161  4.0079  6.6858 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  8.84108    0.49891   17.72   &lt;2e-16 ***
-rw1          0.97730    0.07749   12.61   &lt;2e-16 ***
+(Intercept)  3.88282    0.38604  10.058   &lt;2e-16 ***
+rw1         -0.06537    0.04019  -1.627    0.105    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 5.389 on 198 degrees of freedom
-Multiple R-squared:  0.4455,    Adjusted R-squared:  0.4427 
-F-statistic: 159.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 3.998 on 198 degrees of freedom
+Multiple R-squared:  0.01319,   Adjusted R-squared:  0.008204 
+F-statistic: 2.646 on 1 and 198 DF,  p-value: 0.1054</code></pre>
 </div>
 </div>
 <p>Regression model</p>
@@ -407,19 +407,19 @@ Call:
 lm(formula = z.diff ~ z.lag.1 - 1)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--3.07539 -0.65576  0.07352  0.67292  2.94538 
+    Min      1Q  Median      3Q     Max 
+-2.2927 -0.8064 -0.0023  0.8259  3.7309 
 
 Coefficients:
-        Estimate Std. Error t value Pr(&gt;|t|)
-z.lag.1 -0.00999    0.01169  -0.854    0.394
+         Estimate Std. Error t value Pr(&gt;|t|)
+z.lag.1 -0.005844   0.008227   -0.71    0.478
 
-Residual standard error: 1.061 on 198 degrees of freedom
-Multiple R-squared:  0.003674,  Adjusted R-squared:  -0.001358 
-F-statistic:  0.73 on 1 and 198 DF,  p-value: 0.3939
+Residual standard error: 1.117 on 198 degrees of freedom
+Multiple R-squared:  0.002542,  Adjusted R-squared:  -0.002496 
+F-statistic: 0.5046 on 1 and 198 DF,  p-value: 0.4783
 
 
-Value of test-statistic is: -0.8544 
+Value of test-statistic is: -0.7104 
 
 Critical values for test statistics: 
       1pct  5pct 10pct
@@ -826,7 +826,7 @@ y_t = \alpha_t + \beta t + e_t, e_t \sim WN(\sigma^2)
 
 Test is of type: mu with 4 lags. 
 
-Value of test-statistic is: 1.4864 
+Value of test-statistic is: 0.7009 
 
 Critical value for a significance level of: 
                 10pct  5pct 2.5pct  1pct
