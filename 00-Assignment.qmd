@@ -1,0 +1,20 @@
+# Homework Assignment (graded) {.unnumbered}
+
+Please find the homework assignment here:
+
+<https://classroom.github.com/a/e4BEC2lD>
+
+In order to access the homework you will need a working GitHub account. If you don't have one, please create a profile with GitHub. Please use a working email address when opening your account, because you will receive notifications from GitHub related to the grading of the homework.
+
+After clicking the link and logging into GitHub you can select your student id from the roster. Please email me ([amarov\@feb.uni-sofia.bg](mailto:amarov@feb.uni-sofia.bg)) if you can't find you student id there!
+
+The homework is meant to be a group assignment. The team size is limited to five members. The first member of the group can open the assignment and create the team. The rest of the members can select that team when joining.
+
+After joining, GitHub will create a repository for your team. This repository will be empty and you will receive your assignment once all the teams are formed (approx. 27.01.2024). You will receive a notification via GitHub when the assignment is available. *The submission deadline is 11.02.2024 11:30*. 
+
+Clone your assignment repository or simply copy the assignment text into your 
+local R studio. You will find submission instructions at the top of the assignment file. 
+
+If you have any questions, please email me at [amarov\@feb.uni-sofia.bg](mailto:amarov\@feb.uni-sofia.bg).
+
+
