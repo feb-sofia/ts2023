@@ -145,6 +145,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./00-Assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework Assignment (graded)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01-Introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
@@ -386,7 +392,7 @@ E_{t - 1} y_t = \phi_0 + \phi_1 y_{t - 1}
 \]</span></p>
 <p>The idea of the ARCH models is to let the conditional variance depend on lagged values of the error term:</p>
 <p><span class="math display">\[
-h^2_t = Var_{t - 1}e_t = E_{t - 1}(e^2_t)
+h^2_t = Var_{t - 1}(e_t) = E_{t - 1}(e^2_t)
 \]</span></p>
 <p>The ARCH(q) model uses q lags of the squared error terms to model the conditional variance</p>
 <p><span class="math display">\[
@@ -531,7 +537,7 @@ Adjusted Pearson Goodness-of-Fit Test:
 4    50     48.21       0.5049
 
 
-Elapsed time : 0.3096917 </code></pre>
+Elapsed time : 0.2864449 </code></pre>
 </div>
 </div>
 <div class="cell">

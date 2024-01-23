@@ -145,6 +145,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./00-Assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework Assignment (graded)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01-Introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
@@ -323,18 +329,18 @@ lm(formula = rw2 ~ rw1)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--12.8944  -2.9879  -0.0065   3.8737  10.3704 
+-10.8927  -1.9475   0.0528   2.4467   9.9939 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  -0.4682     0.9624  -0.486    0.627    
-rw1          -0.7219     0.1134  -6.364 1.34e-09 ***
+(Intercept) -9.99389    0.27267 -36.652  &lt; 2e-16 ***
+rw1         -0.40679    0.07403  -5.495 1.19e-07 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 4.924 on 198 degrees of freedom
-Multiple R-squared:  0.1698,    Adjusted R-squared:  0.1656 
-F-statistic:  40.5 on 1 and 198 DF,  p-value: 1.336e-09</code></pre>
+Residual standard error: 3.75 on 198 degrees of freedom
+Multiple R-squared:  0.1323,    Adjusted R-squared:  0.1279 
+F-statistic: 30.19 on 1 and 198 DF,  p-value: 1.193e-07</code></pre>
 </div>
 </div>
 <p>Regression model</p>
@@ -407,19 +413,21 @@ Call:
 lm(formula = z.diff ~ z.lag.1 - 1)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--2.4319 -0.7968 -0.0641  0.6396  3.1853 
+     Min       1Q   Median       3Q      Max 
+-3.15907 -0.67482  0.01017  0.82262  2.19894 
 
 Coefficients:
-         Estimate Std. Error t value Pr(&gt;|t|)
-z.lag.1 -0.003369   0.008315  -0.405    0.686
+        Estimate Std. Error t value Pr(&gt;|t|)  
+z.lag.1 -0.03438    0.01940  -1.772    0.078 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.9943 on 198 degrees of freedom
-Multiple R-squared:  0.0008286, Adjusted R-squared:  -0.004218 
-F-statistic: 0.1642 on 1 and 198 DF,  p-value: 0.6858
+Residual standard error: 1.007 on 198 degrees of freedom
+Multiple R-squared:  0.01561,   Adjusted R-squared:  0.01064 
+F-statistic:  3.14 on 1 and 198 DF,  p-value: 0.07795
 
 
-Value of test-statistic is: -0.4052 
+Value of test-statistic is: -1.7719 
 
 Critical values for test statistics: 
       1pct  5pct 10pct
@@ -826,7 +834,7 @@ y_t = \alpha_t + \beta t + e_t, e_t \sim WN(\sigma^2)
 
 Test is of type: mu with 4 lags. 
 
-Value of test-statistic is: 1.7958 
+Value of test-statistic is: 2.1874 
 
 Critical value for a significance level of: 
                 10pct  5pct 2.5pct  1pct

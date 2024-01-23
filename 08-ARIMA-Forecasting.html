@@ -145,6 +145,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./00-Assignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework Assignment (graded)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01-Introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
@@ -426,18 +432,18 @@ ARIMA(1,0,0) with non-zero mean
 
 Coefficients:
          ar1    mean
-      0.2993  0.2207
-s.e.  0.0961  0.1348
+      0.2716  0.1317
+s.e.  0.0957  0.1384
 
-sigma^2 = 0.9173:  log likelihood = -136.61
-AIC=279.23   AICc=279.48   BIC=287.05</code></pre>
+sigma^2 = 1.044:  log likelihood = -143.09
+AIC=292.19   AICc=292.44   BIC=300</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forecast</span>(fit_AR1, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">h =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Point Forecast     Lo 95    Hi 95
-101      0.6949418 -1.182233 2.572116</code></pre>
+101     0.06035066 -1.942649 2.063351</code></pre>
 </div>
 </div>
 </section>
