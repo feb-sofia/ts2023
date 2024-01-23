@@ -121,7 +121,7 @@ $$
 The idea of the ARCH models is to let the conditional variance depend on lagged values of the error term:
 
 $$
-h^2_t = Var_{t - 1}e_t = E_{t - 1}(e^2_t)
+h^2_t = Var_{t - 1}(e_t) = E_{t - 1}(e^2_t)
 $$
 
 The ARCH(q) model uses q lags of the squared error terms to model the conditional variance
